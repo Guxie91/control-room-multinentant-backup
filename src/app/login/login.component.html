@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card login">
+      <div class="card-body login">
+        <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+          <div class="form-group input-group">
+            <input type="text" class="form-control inputField" id="username" ngModel name="username" required
+              placeholder="USERNAME" />
+          </div>
+          <img *ngIf="error" class="wrong" src="./assets/img/Wrong.png" alt="wrong" />
+          <br />
+          <div class="form-group input-group">
+            <input type="password" class="form-control inputField" id="password" ngModel name="password" required
+              placeholder="PASSWORD" />
+          </div>
+          <div>
+            <br />
+            <br />
+            <button type="submit" class="darkButton" id="button">
+              ACCEDI
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<a routerLink="redirect">
+  <img class="reroute" src="./assets/img/help.png" placement="left" ngbTooltip="Cerchi un altro login?"/>
+</a>
+

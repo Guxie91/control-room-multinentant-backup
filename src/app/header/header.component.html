@@ -1,0 +1,14 @@
+<div class="row darkBackground" id="header">
+  <div class="col-sm-11 col-md-11 col-lg-11">
+    <img class="headerImg" [src]="logoUrl" alt="logo" *ngIf="this.currentTenant.name!=''" />
+    <br />
+    <span class="headerLabel">
+      {{currentTenant.title}}
+    </span>
+  </div>
+  <div class="col-sm-1 col-md-1 col-lg-1">
+    <a *ngIf="currentUser!=''" [routerLink]="['/','logout']">
+      <img class="actionImg" src="./assets/img/Logout.png" alt="logout" />
+    </a>
+  </div>
+</div>

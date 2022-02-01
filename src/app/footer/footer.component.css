@@ -1,0 +1,19 @@
+.footerLabel {
+  font-size: 0.9em;
+  font-weight: normal;
+  font-family: "TIMSansWeb-Regular";
+  color: #fff;
+  line-height: 140%;
+  letter-spacing: 0px;
+  margin: 0px 10px 5px 0px;
+}
+.footer {
+  position: fixed;
+  bottom: 0px;
+  width: 110%;
+  height: 40px;
+}
+.footerImg{
+  margin-left: 10px;
+  margin-top: 5px;
+}

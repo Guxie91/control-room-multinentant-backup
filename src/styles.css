@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@fontsource/oswald/index.css";
+
+.darkButton {
+  margin-top: 10px;
+  margin-right: 5px;
+  height: 40px;
+  width: 128px;
+  font-size: 0.9em;
+  font-weight: bold;
+  border-width: 0px;
+  padding: 0px;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.darkButton:hover:enabled {
+  opacity: 40%;
+}
+
+body, html{
+  overflow-x: hidden;
+}
+
+@font-face {
+  font-family: "TIMSansWeb-Regular";
+  src: url("src\assets\font\TIMSansWeb-Regular.woff") format("woff2"),
+    url("src\assets\font\TIMSansWeb-Regular.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,0 +1,26 @@
+.darkBackground {
+  height: 100px;
+  color: white;
+}
+.actionImg {
+  width: 25px;
+  position: absolute;
+  top: 35px;
+  right: 30px;
+}
+.actionImg:hover {
+  opacity: 40%;
+}
+.headerImg {
+  height: 45px;
+  margin: 10px;
+}
+.headerLabel {
+  margin-left: 10px;
+  font-size: 1.4em;
+  font-family: "TIMSansWeb-Regular";
+  color: white;
+  line-height: 140%;
+  padding: 5px;
+  letter-spacing: 0px;
+}
