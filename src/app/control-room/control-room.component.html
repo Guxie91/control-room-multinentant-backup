@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-sm-8 col-md-8 col-lg-8">
+    <div class="map-container">
+      <div class="map-frame">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4 tableBackground">
+    <div class="buttonsControl">
+      <button class="btn btn-secondary filterButton" (click)="onFilter('itsEvents')" [disabled]="categories[0].active">ITS
+        Events</button>
+      <button class="btn btn-secondary filterButton" (click)="onFilter('vehicles')"
+        [disabled]="categories[1].active" [disabled]="categories[1].active">Vehicles</button>
+    </div>
+    <div class="buttonsControl" *ngIf="categories[0].active">
+      <button *ngFor="let sub of subCategoriesItsEvents" class="btn btn-primary filterButton"
+        (click)="onSubFilterIts(sub.name)" [ngClass]="{'filteredOut': !sub.active}">{{sub.name}}</button>
+    </div>
+    <div class="buttonsControl" *ngIf="categories[1].active">
+      <button *ngFor="let sub of subCategoriesVehicles" class="btn btn-primary filterButton"
+        (click)="onSubFilterVehicles(sub.name)" [ngClass]="{'filteredOut': !sub.active}">{{sub.name}}</button>
+    </div>
+    <table class="table eventsTable">
+      <tbody>
+        <tr class="tableLine" *ngFor="let event of events | filterTable: [subCategoriesItsEvents, subCategoriesVehicles]">
+          <td [id]="event.id" (click)="onFocus(event.id)">
+            <span class="eventLabel">{{event.id}}</span>-
+            <span class="eventLabel">{{event.info}}</span>-
+            <span class="eventLabel">{{event.timestamp | date:'short'}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,17 +1,20 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { LoginComponent } from './login/login.component';
-import { RedirectComponent } from './redirect/redirect.component';
-import { LogoutComponent } from './logout/logout.component';
-import { ControlRoomComponent } from './control-room/control-room.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { HeaderComponent } from "./header/header.component";
+import { FooterComponent } from "./footer/footer.component";
+import { LoginComponent } from "./login/login.component";
+import { RedirectComponent } from "./redirect/redirect.component";
+import { LogoutComponent } from "./logout/logout.component";
+import { ControlRoomComponent } from "./control-room/control-room.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { TableFilterPipe } from "./pipes/table-filter.pipe";
+import { MqttModule } from "ngx-mqtt";
+import { MQTT_SERVICE_OPTIONS } from "./utilities/mqtt-service-options";
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     RedirectComponent,
     LogoutComponent,
-    ControlRoomComponent
+    ControlRoomComponent,
+    TableFilterPipe,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +33,10 @@ import { HttpClientModule } from '@angular/common/http';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

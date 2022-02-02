@@ -1,4 +1,5 @@
 @import "~@fontsource/oswald/index.css";
+@import '~leaflet/dist/leaflet.css';
 
 .darkButton {
   margin-top: 10px;

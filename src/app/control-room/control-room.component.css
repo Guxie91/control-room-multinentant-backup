@@ -1,0 +1,39 @@
+.map-container {
+  margin: 10px 0px 0px 10px;
+  width: 100%;
+  height: calc(100vh - 155px);
+}
+.map-frame {
+  border: 0px solid black;
+  height: 100%;
+}
+#map {
+  height: 100%;
+}
+.tableBackground{
+  background-color: rgb(235, 235, 235);
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  padding: 0px;
+}
+.filterButton{
+  margin-right: 5px;
+  border: 1px solid black;
+}
+.buttonsControl{
+  text-align: center;
+  margin: 10px 0px 0px 10px;
+}
+.filteredOut{
+  opacity: 40%;
+}
+.eventsTable{
+  margin-top: 5px;
+  width: 100%;
+}
+.tableLine{
+  width: 100%;
+}
+.tableLine:hover{
+  background-color: white;
+}
