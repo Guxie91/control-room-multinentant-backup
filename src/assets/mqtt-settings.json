@@ -1,9 +1,20 @@
 {
-  "mqtt_settings": {
-    "mqtt_url_options": [
-      "wss://sen-ccar.tilab.com/mqtt/ccar",
-      "wss://sen-ccar.tilab.com/mqtt/ccar"
-    ],
-    "mqtt_options": { "username": "ccar", "password": "1q2w3e4r5t" }
-  }
+  "mqtt_settings": [
+    {
+      "url": "wss://sen-ccar.tilab.com/mqtt/ccar",
+      "options": {
+        "username": "ccar",
+        "password": "1q2w3e4r5t",
+        "rejectUnauthorized": false
+      }
+    },
+    {
+      "url": "wss://smart-roads.tilab.com/ws/",
+      "options": {
+        "username": "test",
+        "password": "test",
+        "rejectUnauthorized": false
+      }
+    }
+  ]
 }

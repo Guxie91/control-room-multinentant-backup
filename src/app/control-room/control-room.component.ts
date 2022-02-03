@@ -58,6 +58,11 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit(): void {
     let mqttMessagesSub = this.mqtt.eventsUpdated.subscribe((newMessages) => {
+      newMessages.sort((a, b) => {
+        if (b.category > a.category) return 1;
+        if (b.category < a.category) return -1;
+        return 0;
+      });
       this.events = newMessages;
       for (let message of this.events) {
         this.createOrUpdateMarker(message);

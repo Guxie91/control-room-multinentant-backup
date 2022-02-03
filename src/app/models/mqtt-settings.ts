@@ -1,12 +1,10 @@
 export class MqttSettings {
   constructor(
-    public mqtt_settings: {
-      mqtt_url_options: string[];
-      mqtt_options: {
+      public url: string,
+      public options: {
         username: string;
         password: string;
-        rejectUnauthorized: false;
-      };
-    }
+        rejectUnauthorized: boolean;
+      }
   ) {}
 }
