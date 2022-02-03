@@ -8,26 +8,35 @@
   </div>
   <div class="col-sm-4 col-md-4 col-lg-4 tableBackground">
     <div class="buttonsControl">
-      <button class="btn btn-secondary filterButton" (click)="onFilter('itsEvents')" [disabled]="categories[0].active">ITS
-        Events</button>
-      <button class="btn btn-secondary filterButton" (click)="onFilter('vehicles')"
-        [disabled]="categories[1].active" [disabled]="categories[1].active">Vehicles</button>
+      <button class="darkButton filterButton" (click)="onFilter('itsEvents')" [disabled]="categories[0].active"
+        [ngClass]="{'filteredOut': !categories[0].active}">EVENTI ITS</button>
+      <button class="darkButton filterButton" (click)="onFilter('vehicles')" [disabled]="categories[1].active"
+        [disabled]="categories[1].active" [ngClass]="{'filteredOut': !categories[1].active}">VEICOLI</button>
     </div>
     <div class="buttonsControl" *ngIf="categories[0].active">
-      <button *ngFor="let sub of subCategoriesItsEvents" class="btn btn-primary filterButton"
-        (click)="onSubFilterIts(sub.name)" [ngClass]="{'filteredOut': !sub.active}">{{sub.name}}</button>
+      <button *ngFor="let sub of subCategoriesItsEvents" class="filterButton" (click)="onSubFilterIts(sub.name)"
+        [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div class="buttonsControl" *ngIf="categories[1].active">
-      <button *ngFor="let sub of subCategoriesVehicles" class="btn btn-primary filterButton"
-        (click)="onSubFilterVehicles(sub.name)" [ngClass]="{'filteredOut': !sub.active}">{{sub.name}}</button>
+      <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
+        [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
+    </div>
+    <div *ngIf="events.length == 0" class="loadingDiv">
+      <app-loading-spinner></app-loading-spinner>
     </div>
     <table class="table eventsTable">
       <tbody>
-        <tr class="tableLine" *ngFor="let event of events | filterTable: [subCategoriesItsEvents, subCategoriesVehicles]">
-          <td [id]="event.id" (click)="onFocus(event.id)">
-            <span class="eventLabel">{{event.id}}</span>-
-            <span class="eventLabel">{{event.info}}</span>-
-            <span class="eventLabel">{{event.timestamp | date:'short'}}</span>
+        <tr class="tableLine" [id]="event.id"
+          *ngFor="let event of events | filterTable: [subCategoriesItsEvents, subCategoriesVehicles]"
+          [ngClass]="{'selected': event.id==lastSelectedEvent, 'hidden': event.hide}" (click)="onFocus(event.id)">
+          <td>
+            <app-event-icon [event]="event"></app-event-icon>
+          </td>
+          <td>
+            <span class="eventLabel">{{event.info}}</span>
+          </td>
+          <td nowrap>
+            <span class="eventLabel">{{event.timestamp | date:'mediumTime'}}</span>
           </td>
         </tr>
       </tbody>

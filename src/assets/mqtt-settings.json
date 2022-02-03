@@ -1,0 +1,9 @@
+{
+  "mqtt_settings": {
+    "mqtt_url_options": [
+      "wss://sen-ccar.tilab.com/mqtt/ccar",
+      "wss://sen-ccar.tilab.com/mqtt/ccar"
+    ],
+    "mqtt_options": { "username": "ccar", "password": "1q2w3e4r5t" }
+  }
+}

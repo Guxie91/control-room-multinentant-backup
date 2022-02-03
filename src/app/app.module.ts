@@ -15,6 +15,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { TableFilterPipe } from "./pipes/table-filter.pipe";
 import { MqttModule } from "ngx-mqtt";
 import { MQTT_SERVICE_OPTIONS } from "./utilities/mqtt-service-options";
+import { EventIconComponent } from './control-room/event-icon/event-icon.component';
+import { LoadingSpinnerComponent } from './utilities/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { MQTT_SERVICE_OPTIONS } from "./utilities/mqtt-service-options";
     LogoutComponent,
     ControlRoomComponent,
     TableFilterPipe,
+    EventIconComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

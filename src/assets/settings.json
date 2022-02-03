@@ -8,7 +8,8 @@
       "title": "Control Room CV2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"]
+      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"],
+      "topics": ["its/#"]
     },
     {
       "id": "2",
@@ -19,7 +20,8 @@
       "title": "Control Room CV2X",
       "footerText": "",
       "color": "rgb(146, 27, 43)",
-      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico"]
+      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico"],
+      "topics": ["its/#"]
     },
     {
       "id": "4",
@@ -30,7 +32,8 @@
       "title": "Control Room CV2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"]
+      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"],
+      "topics": ["its/#"]
     }
   ]
 }

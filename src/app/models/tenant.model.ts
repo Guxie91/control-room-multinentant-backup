@@ -8,6 +8,7 @@ export class Tenant {
     public title: string = "",
     public footerText: string = "",
     public color:string = "",
-    public categories:string[]=["Lavori in corso", "Avvisi", "Meteo", "Traffico"]
+    public categories:string[]=["Lavori in corso", "Avvisi", "Meteo", "Traffico"],
+    public topics:string[]=["its/#"]
   ) {}
 }

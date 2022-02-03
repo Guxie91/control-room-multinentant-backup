@@ -1,3 +1,6 @@
+button {
+  border: 0px;
+}
 .map-container {
   margin: 10px 0px 0px 10px;
   width: 100%;
@@ -10,30 +13,42 @@
 #map {
   height: 100%;
 }
-.tableBackground{
+.tableBackground {
   background-color: rgb(235, 235, 235);
   height: calc(100vh - 120px);
   overflow-y: scroll;
   padding: 0px;
 }
-.filterButton{
+.filterButton {
   margin-right: 5px;
-  border: 1px solid black;
 }
-.buttonsControl{
+.subFilterImg {
+  max-width: 40px;
+}
+.buttonsControl {
   text-align: center;
   margin: 10px 0px 0px 10px;
 }
-.filteredOut{
+.filteredOut {
   opacity: 40%;
 }
-.eventsTable{
+.eventsTable {
   margin-top: 5px;
   width: 100%;
 }
-.tableLine{
+.tableLine {
   width: 100%;
 }
-.tableLine:hover{
+.tableLine:hover {
   background-color: white;
+}
+.selected {
+  background-color: white;
+}
+.hidden {
+  display: none;
+}
+.loadingDiv{
+  margin-top: 10px;
+  text-align: center;
 }
