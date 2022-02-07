@@ -1,9 +1,14 @@
 <div class="row footer" id="footer">
   <div class="col-sm-10 col-md-10 col-lg-10">
-    <img class="footerImg" [src]="footerImg" alt="logo" *ngIf="this.currentTenant.name!=''"/>
+    <img class="footerImg" [src]="footerImg" alt="logo" *ngIf="this.currentTenant.name!=''" />
     <span class="footerLabel">{{currentTenant.footerText}}</span>
   </div>
   <div class="col-sm-2 col-md-2 col-lg-2">
-    <span *ngIf="currentUser" class="footerLabel">{{currentUser}}</span>
+    <span *ngIf="currentUser" class="footerLabel">
+      {{currentUser}}
+      <a (click)="openSettings()">
+        <img class="settingsIcon" src="./assets/img/WhiteGear.png" alt="settings" />
+      </a>
+    </span>
   </div>
 </div>

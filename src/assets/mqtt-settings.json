@@ -1,6 +1,7 @@
 {
   "mqtt_settings": [
     {
+      "name": "SEN",
       "url": "wss://sen-ccar.tilab.com/mqtt/ccar",
       "options": {
         "username": "ccar",
@@ -9,6 +10,7 @@
       }
     },
     {
+      "name": "ITS",
       "url": "wss://smart-roads.tilab.com/ws/",
       "options": {
         "username": "test",

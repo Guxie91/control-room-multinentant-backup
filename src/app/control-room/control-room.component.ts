@@ -44,6 +44,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   subscriptions: Subscription[] = [];
   markers: MarkerBundle[] = [];
   lastSelectedEvent = "-1";
+  searchKey = "";
   /* ************************************** */
   constructor(private mqtt: MqttHandlerService) {}
   ngOnDestroy(): void {
@@ -167,15 +168,19 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     let dynamicIcon = DefaultIcon;
     if (etsiMessage.category == "roadworks") {
       dynamicIcon = RoadworksIcon;
-    }
-    if (etsiMessage.category == "weather") {
-      dynamicIcon = WeatherIcon;
-    }
-    if (etsiMessage.category == "traffic") {
-      dynamicIcon = TrafficIcon;
+      etsiMessage.hide = !this.subCategoriesItsEvents[0].active;
     }
     if (etsiMessage.category == "info") {
       dynamicIcon = DangerIcon;
+      etsiMessage.hide = !this.subCategoriesItsEvents[1].active;
+    }
+    if (etsiMessage.category == "weather") {
+      dynamicIcon = WeatherIcon;
+      etsiMessage.hide = !this.subCategoriesItsEvents[2].active;
+    }
+    if (etsiMessage.category == "traffic") {
+      etsiMessage.hide = !this.subCategoriesItsEvents[3].active;
+      dynamicIcon = TrafficIcon;
     }
     const type = etsiMessage.type == "denm/alert" ? "denm" : etsiMessage.type;
     var newMarker = L.marker(
@@ -190,6 +195,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         etsiMessage.timestamp.toLocaleString() +
         "</span>"
     );
+    newMarker.on("click", () => {
+      this.onMarkerClicked(etsiMessage.id);
+    });
     let mark = new MarkerBundle(
       etsiMessage.id,
       newMarker,
@@ -198,19 +206,25 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     this.markers.push(mark);
     this.markers[this.markers.length - 1].marker.addTo(this.map);
+    if (etsiMessage.hide) {
+      this.hideMarker(etsiMessage.id);
+    }
   }
   onFocus(id: string) {
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = "-1";
+      for (let mark of this.markers) {
+        if (mark.messageId == id) {
+          mark.marker.closePopup();
+        }
+      }
       return;
     } else {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
-          this.map.setView(
-            [mark.marker.getLatLng().lat, mark.marker.getLatLng().lng],
-            this.map.getZoom()
-          );
+          this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
           this.lastSelectedEvent = id;
+          mark.marker.openPopup();
           break;
         }
       }
@@ -230,6 +244,28 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let mark of this.markers) {
       if (mark.messageId == id) {
         mark.marker.addTo(this.map);
+      }
+    }
+  }
+  onMarkerClicked(id: string) {
+    if (this.lastSelectedEvent == id) {
+      this.lastSelectedEvent = "-1";
+      for (let mark of this.markers) {
+        if (mark.messageId == id) {
+          mark.marker.closePopup();
+          break;
+        }
+      }
+    } else {
+      for (let mark of this.markers) {
+        if (mark.messageId == id) {
+          this.lastSelectedEvent = id;
+          let elem = document.getElementById(mark.messageId);
+          elem?.scrollIntoView({ behavior: "smooth" });
+          this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
+          mark.marker.openPopup();
+          break;
+        }
       }
     }
   }

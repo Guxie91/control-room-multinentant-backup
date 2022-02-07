@@ -17,7 +17,6 @@ button {
   background-color: rgb(235, 235, 235);
   height: calc(100vh - 120px);
   padding: 0px;
-  overflow-y: scroll;
 }
 .filterButton {
   margin-right: 5px;
@@ -27,6 +26,10 @@ button {
 }
 .buttonsControl {
   text-align: center;
+  margin: 0px 0px 0px 10px;
+}
+.subButtonsControl {
+  text-align: center;
   margin: 10px 0px 0px 10px;
 }
 .filteredOut {
@@ -35,6 +38,9 @@ button {
 .eventsTable {
   margin-top: 5px;
   width: 100%;
+  height: 80%;
+  overflow-y: scroll;
+  display: block;
 }
 .tableLine {
   width: 100%;
@@ -51,4 +57,11 @@ button {
 .loadingDiv {
   margin-top: 10px;
   text-align: center;
+}
+.searchBox {
+  padding-top: 5px;
+  text-align: center;
+}
+.searchInput {
+  width: 90% !important;
 }

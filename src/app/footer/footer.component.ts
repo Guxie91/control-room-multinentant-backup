@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { Tenant } from "../models/tenant.model";
 import { AuthService } from "../services/auth.service";
 import { TenantHandlerService } from "../services/tenant-handler.service";
+import { SettingsMenuComponent } from "../settings-menu/settings-menu.component";
 
 @Component({
   selector: "app-footer",
@@ -16,7 +18,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   footerImg = "";
   constructor(
     private tenantService: TenantHandlerService,
-    private auth: AuthService  ) {}
+    private auth: AuthService,
+    private modalService: NgbModal  ) {}
   ngOnDestroy(): void {
     for (let sub of this.subscriptions) {
       sub.unsubscribe();
@@ -32,5 +35,8 @@ export class FooterComponent implements OnInit, OnDestroy {
       this.currentUser = user.username;
     });
     this.subscriptions.push(userSub);
+  }
+  openSettings(){
+    this.modalService.open(SettingsMenuComponent);
   }
 }

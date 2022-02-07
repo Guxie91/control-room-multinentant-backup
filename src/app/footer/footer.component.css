@@ -17,3 +17,11 @@
   margin-left: 10px;
   margin-top: 5px;
 }
+.settingsIcon {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+.settingsIcon:hover {
+  opacity: 30%;
+}

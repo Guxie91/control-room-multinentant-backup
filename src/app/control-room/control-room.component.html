@@ -13,13 +13,17 @@
       <button class="darkButton filterButton" (click)="onFilter('vehicles')" [disabled]="categories[1].active"
         [disabled]="categories[1].active" [ngClass]="{'filteredOut': !categories[1].active}">VEICOLI</button>
     </div>
-    <div class="buttonsControl" *ngIf="categories[0].active">
+    <div class="subButtonsControl" *ngIf="categories[0].active">
       <button *ngFor="let sub of subCategoriesItsEvents" class="filterButton" (click)="onSubFilterIts(sub.name)"
         [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
-    <div class="buttonsControl" *ngIf="categories[1].active">
+    <div class="subButtonsControl" *ngIf="categories[1].active">
       <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
         [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
+    </div>
+    <div class="searchBox" style="margin-left: 5px;">
+      <input id="search" class="searchInput inputField" type="text" [(ngModel)]="searchKey"
+        placeholder="Cerca nella descrizione dell'evento" />
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
       <app-loading-spinner></app-loading-spinner>
@@ -27,8 +31,7 @@
     <div class="eventsTable">
       <table class="table">
         <tbody>
-          <tr class="tableLine" [id]="event.id"
-            *ngFor="let event of events | filterTable: [subCategoriesItsEvents, subCategoriesVehicles]"
+          <tr class="tableLine" [id]="event.id" *ngFor="let event of events | filterTable: [searchKey]"
             [ngClass]="{'selected': event.id==lastSelectedEvent, 'hidden': event.hide}" (click)="onFocus(event.id)">
             <td>
               <app-event-icon [event]="event"></app-event-icon>

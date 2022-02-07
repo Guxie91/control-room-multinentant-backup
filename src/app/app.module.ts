@@ -17,6 +17,7 @@ import { MqttModule } from "ngx-mqtt";
 import { MQTT_SERVICE_OPTIONS } from "./utilities/mqtt-service-options";
 import { EventIconComponent } from './control-room/event-icon/event-icon.component';
 import { LoadingSpinnerComponent } from './utilities/loading-spinner/loading-spinner.component';
+import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { LoadingSpinnerComponent } from './utilities/loading-spinner/loading-spi
     TableFilterPipe,
     EventIconComponent,
     LoadingSpinnerComponent,
+    SettingsMenuComponent,
   ],
   imports: [
     BrowserModule,
