@@ -15,11 +15,11 @@
     </div>
     <div class="subButtonsControl" *ngIf="categories[0].active">
       <button *ngFor="let sub of subCategoriesItsEvents" class="filterButton" (click)="onSubFilterIts(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.name.toUpperCase()"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div class="subButtonsControl" *ngIf="categories[1].active">
       <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.name.toUpperCase()"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div class="searchBox" style="margin-left: 5px;">
       <input id="search" class="searchInput inputField" type="text" [(ngModel)]="searchKey"
@@ -27,6 +27,8 @@
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
       <app-loading-spinner></app-loading-spinner>
+      <br/>
+      <span class="loadingTip">Connessione con il broker in corso...</span>
     </div>
     <div class="eventsTable">
       <table class="table">

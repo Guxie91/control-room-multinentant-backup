@@ -40,7 +40,8 @@ export class TenantHandlerService {
         this.tenant.next(this.currentTenant);
         localStorage.setItem("tenant", tenant);
         localStorage.setItem("lat", this.currentTenant.coordinates[0].toString());
-        localStorage.setItem("lng", this.currentTenant.coordinates[1].toString())
+        localStorage.setItem("lng", this.currentTenant.coordinates[1].toString());
+        localStorage.setItem("zoom", this.currentTenant.zoom.toString());
         this.loadIcon();
         this.loadStyle();
       });

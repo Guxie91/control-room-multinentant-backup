@@ -65,3 +65,8 @@ button {
 .searchInput {
   width: 90% !important;
 }
+.loadingTip{
+  font-style: italic;
+  font-size: smaller;
+  color: darkgrey;
+}

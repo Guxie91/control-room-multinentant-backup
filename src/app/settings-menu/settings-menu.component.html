@@ -7,7 +7,8 @@
   </div>
   <div class="modal-body">
     <form>
-      <label class="labelSettings" for="broker">Broker (attuale: {{currentBroker.name}})</label>
+      <label class="labelSettings" for="broker">Seleziona un broker (attuale:
+        <strong>{{currentBroker.name}}</strong>)</label>
       <select class="form-control" id="broker" name="broker" [(ngModel)]="currentBroker">
         <option *ngFor="let option of brokers" [ngValue]="option">{{option.name}}</option>
       </select>
@@ -18,4 +19,3 @@
     </form>
   </div>
 </div>
-

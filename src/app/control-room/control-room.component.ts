@@ -85,13 +85,15 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   private initMap(): void {
     let lat = localStorage.getItem("lat");
     let lng = localStorage.getItem("lng");
-    if (!lat || !lng) {
+    let zoom = localStorage.getItem("zoom");
+    if (!lat || !lng || !zoom) {
       lat = "44.40233147421894";
       lng = "8.946791963838923";
+      zoom = "10";
     }
     this.map = L.map("map", {
       center: [+lat, +lng],
-      zoom: 10,
+      zoom: +zoom,
     });
     OPEN_STREET_MAP.addTo(this.map);
     L.control
