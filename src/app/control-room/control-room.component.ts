@@ -351,6 +351,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         return;
       }
     }
+    console.log("ATTENZIONE: errore su messaggio da dashboard/hud!");
     console.log("stationID " + message.stationId + " non trovato!");
   }
 }
