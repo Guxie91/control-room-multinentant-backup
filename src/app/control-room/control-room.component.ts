@@ -107,11 +107,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.getCategories();
     let mqttMessagesSub = this.mqtt.eventsUpdated.subscribe((newMessages) => {
-      newMessages.sort((a, b) => {
-        if (b.category > a.category) return 1;
-        if (b.category < a.category) return -1;
-        return 0;
-      });
       this.events = newMessages;
       for (let message of this.events) {
         this.createOrUpdateMarker(message);
@@ -207,7 +202,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           lat: etsiMessage.coordinates.lat,
           lng: etsiMessage.coordinates.lng,
         });
-        if(mark.messageId == this.lastSelectedEvent){
+        if (mark.messageId == this.lastSelectedEvent) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
         }
         return;
@@ -249,7 +244,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
-      { icon: dynamicIcon }
+      { icon: dynamicIcon, riseOnHover:true }
     );
     newMarker.on("click", () => {
       this.onMarkerClicked(etsiMessage.id);
@@ -286,6 +281,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     for (let mark of this.markers) {
       if (mark.messageId == id) {
+        mark.marker.closePopup();
         mark.marker.removeFrom(this.map);
       }
     }
@@ -294,6 +290,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let mark of this.markers) {
       if (mark.messageId == id) {
         mark.marker.addTo(this.map);
+        mark.marker.openPopup();
       }
     }
   }
@@ -332,20 +329,30 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   handleCustomMessage(message: CustomMessage) {
     for (let marker of this.markers) {
-      if (marker.messageId == message.stationId && message.status == "on") {
+      if (
+        marker.messageId == message.stationId &&
+        message.status == "on" &&
+        marker.type == "cam"
+      ) {
         let popup = L.popup({
           autoClose: false,
           closeButton: false,
           closeOnClick: false,
           closeOnEscapeKey: false,
-          className: "popup"
+          className: "popup",
         });
         popup.setContent(message.popup);
+        marker.marker.closePopup();
+        marker.marker.unbindPopup();
         marker.marker.bindPopup(popup);
         marker.marker.openPopup();
         return;
       }
-      if (marker.messageId == message.stationId && message.status == "off") {
+      if (
+        marker.messageId == message.stationId &&
+        message.status == "off" &&
+        marker.type == "cam"
+      ) {
         marker.marker.closePopup();
         marker.marker.unbindPopup();
         return;

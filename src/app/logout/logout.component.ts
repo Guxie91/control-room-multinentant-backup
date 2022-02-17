@@ -20,6 +20,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
     let currentTenant = localStorage.getItem("tenant");
     localStorage.clear();
     this.mqtt.disconnectFromBroker();
+    this.mqtt.readyToConnect = false;
     if (!currentTenant) {
       this.router.navigate(["/", "genova", "login"]);
     } else {

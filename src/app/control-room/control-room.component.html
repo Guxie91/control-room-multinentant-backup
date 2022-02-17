@@ -45,9 +45,21 @@
               </td>
             </tr>
             <tr class="tableLineExtra" *ngIf="event.id==lastSelectedEvent">
-              <td>[{{event.type.toUpperCase()}}]</td>
-              <td class="infoCell">[{{event.topic}}]</td>
-              <td>[ID: {{event.id}}]</td>
+              <td>
+                <span class="eventLabel">
+                  [{{event.type.toUpperCase()}}]
+                </span>
+              </td>
+              <td class="infoCell">
+                <span class="eventLabel">
+                  [{{event.topic}}]
+                </span>
+              </td>
+              <td>
+                <span class="eventLabel">
+                  [ID: {{event.id}}]
+                </span>
+              </td>
             </tr>
           </div>
         </tbody>

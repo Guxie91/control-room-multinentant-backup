@@ -16,6 +16,11 @@ export class TableFilterPipe implements PipeTransform {
     let filtered = list.filter((message: EtsiMessage) =>
       message.info.includes(searchKey)
     );
+    filtered.sort((a, b) => {
+      if (b.category > a.category) return 1;
+      if (b.category < a.category) return -1;
+      return 0;
+    });
     return filtered;
   }
 }

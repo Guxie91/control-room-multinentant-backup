@@ -86,4 +86,6 @@ table{
 }
 .popup{
   font-weight: bold;
+  font-family: "TIMSansWeb-Regular";
+  color: blue;
 }
