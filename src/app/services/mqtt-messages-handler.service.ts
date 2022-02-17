@@ -26,11 +26,11 @@ export class MqttMessagesHandlerService {
     let payloadJSON = JSON.parse(message.payload.toString());
     //identify message type
     if (payloadJSON["ivi"]) {
-      newEtsiMessage = this.createIVIMMessage(topic, quadkeyArr, payloadJSON);
+      newEtsiMessage = this.createIVIMMessage(message.topic, quadkeyArr, payloadJSON);
     } else if (payloadJSON["denm"]) {
-      newEtsiMessage = this.createDENMMessage(topic, quadkeyArr, payloadJSON);
+      newEtsiMessage = this.createDENMMessage(message.topic, quadkeyArr, payloadJSON);
     } else if (payloadJSON["cam"]) {
-      newEtsiMessage = this.createCAMMessage(topic, quadkeyArr, payloadJSON);
+      newEtsiMessage = this.createCAMMessage(message.topic, quadkeyArr, payloadJSON);
     } else {
       //if the type is unknown, create dummy log
       console.log("error: unknown message type!");
@@ -104,28 +104,42 @@ export class MqttMessagesHandlerService {
   }
   createCAMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
     let id = payloadJSON.header.stationID;
-    const stationType =
-      payloadJSON.cam.camParameters.basicContainer.stationType;
-    if (stationType == "1") {
-      id = "301";
-    }
+    const stationType = payloadJSON.cam.camParameters.basicContainer.stationType.toString();
     let latitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.latitude;
-    latitude = latitude / 10000000;
+    //latitude = latitude / 10000000;
     let longitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.longitude;
-    longitude = longitude / 10000000;
-    let info = payloadJSON.network.device.id;
-    if (id == "103") {
-      info = "Navetta (On-Board Unit)";
+    //longitude = longitude / 10000000;
+    let info =
+      "messageID: " +
+      payloadJSON.header.messageID +
+      ", stationID: " +
+      payloadJSON.header.stationID +
+      ", stationType: " +
+      stationType;
+    let category = "";
+    switch (stationType) {
+      case "101":
+        info = "Pedone [stationID: " + payloadJSON.header.stationID + "]";
+        category = "pedestrians";
+        break;
+      case "102":
+        info = "Veicolo [stationID: " + payloadJSON.header.stationID + "]";
+        category = "cars";
+        break;
+      case "103":
+        info =
+          "Veicolo d'emergenza [stationID: " +
+          payloadJSON.header.stationID +
+          "]";
+        category = "emergency";
+        break;
+      default:
+        console.log("stationType " + stationType + " non riconosciuto!");
+        info = "stationType non riconosciuto";
+        category = "";
     }
-    if (id == "301") {
-      info = "Pedone";
-    }
-    if (id == "1103") {
-      info = "Navetta (API Navya)";
-    }
-    const category = topic.split("/")[1];
     let newEtsiMessage = new EtsiMessage(
       category,
       "cam",
@@ -147,7 +161,9 @@ export class MqttMessagesHandlerService {
       topic,
       quadkeyArr,
       new LatLng(0, 0),
-      new Date()
+      new Date(),
+      false,
+      false
     );
     return newEtsiMessage;
   }

@@ -6,11 +6,11 @@
       "api_key": "bc77b7a056186e0b804d359c45b90b6f:e0a46d9efb822ce6b9027991c3a83a5d",
       "coordinates": [45.06865987316147, 7.686697920766666],
       "zoom": 10,
-      "title": "Control Room CV2X",
+      "title": "Control Room C-V2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"],
-      "topics": ["its/#"]
+      "categories": ["Lavori in corso", "Info", "Meteo", "Traffico", "Avvisi"],
+      "topics": ["its/#","dashboard/hud", "json/#"]
     },
     {
       "id": "2",
@@ -19,11 +19,11 @@
       "api_key": "4fa9fb05c7aafdfbd315eca23074d929:c41d5443e860087e8484bb4ac356cd98",
       "coordinates": [44.40233147421894, 8.946791963838923],
       "zoom": 10,
-      "title": "Control Room CV2X",
+      "title": "Città Metropolitana di Genova - Control Room C-V2X",
       "footerText": "",
       "color": "rgb(146, 27, 43)",
-      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico"],
-      "topics": ["its/#"]
+      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico", "Avvisi"],
+      "topics": ["its/#","dashboard/hud", "json/#"]
     },
     {
       "id": "4",
@@ -32,11 +32,11 @@
       "api_key": "789",
       "coordinates": [41.96197018263711, 12.46440905663906],
       "zoom": 17,
-      "title": "Control Room CV2X",
+      "title": "Control Room C-V2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico"],
-      "topics": ["its/+/120232221103/#"]
+      "categories": ["Lavori in corso", "Info", "Meteo", "Traffico", "Avvisi"],
+      "topics": ["its/+/120232221103/#","dashboard/hud", "json/120232221103/#"]
     }
   ]
 }

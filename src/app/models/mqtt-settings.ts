@@ -1,10 +1,11 @@
 export class MqttSettings {
   constructor(
-      public url: string,
-      public options: {
-        username: string;
-        password: string;
-        rejectUnauthorized: boolean;
-      }
+    public name: string,
+    public url: string,
+    public options: {
+      username: string;
+      password: string;
+      rejectUnauthorized: boolean;
+    }
   ) {}
 }

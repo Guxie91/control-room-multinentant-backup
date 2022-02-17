@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { take } from "rxjs/operators";
 import { HttpHandlerService } from "../services/http-handler.service";
+import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
 
 export class BrokerMQTT {
@@ -31,7 +33,8 @@ export class SettingsMenuComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    private http: HttpHandlerService
+    private http: HttpHandlerService,
+    private mqtt: MqttHandlerService
   ) {}
   ngOnInit(): void {
     this.http
@@ -49,5 +52,15 @@ export class SettingsMenuComponent implements OnInit {
   trackByFn(index: number) {
     return index;
   }
-  onSubmit() {}
+  onSubmit(form: NgForm) {
+    let broker = form.value.broker;
+    this.mqtt.disconnectFromBroker();
+    console.log(
+      "Disconnected from previous broker, switching to " + broker.name + "..."
+    );
+    MQTT_SERVICE_OPTIONS.url = broker.url;
+    this.mqtt.connectToBroker(broker.options);
+    this.activeModal.close();
+    return;
+  }
 }

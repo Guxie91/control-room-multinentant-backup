@@ -15,39 +15,48 @@
     </div>
     <div class="subButtonsControl" *ngIf="categories[0].active">
       <button *ngFor="let sub of subCategoriesItsEvents" class="filterButton" (click)="onSubFilterIts(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.name.toUpperCase()"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img class="subFilterImg"
+          [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div class="subButtonsControl" *ngIf="categories[1].active">
       <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.name.toUpperCase()"><img class="subFilterImg" [src]="sub.url" [alt]="sub.name" /></button>
-    </div>
-    <div class="searchBox" style="margin-left: 5px;">
-      <input id="search" class="searchInput inputField" type="text" [(ngModel)]="searchKey"
-        placeholder="Cerca nella descrizione dell'evento" />
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img class="subFilterImg"
+          [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
       <app-loading-spinner></app-loading-spinner>
-      <br/>
+      <br />
       <span class="loadingTip">Connessione con il broker in corso...</span>
     </div>
     <div class="eventsTable">
       <table class="table">
         <tbody>
-          <tr class="tableLine" [id]="event.id" *ngFor="let event of events | filterTable: [searchKey]"
-            [ngClass]="{'selected': event.id==lastSelectedEvent, 'hidden': event.hide}" (click)="onFocus(event.id)">
-            <td>
-              <app-event-icon [event]="event"></app-event-icon>
-            </td>
-            <td>
-              <span class="eventLabel">{{event.info}}</span>
-            </td>
-            <td nowrap>
-              <span class="eventLabel">{{event.timestamp | date:'mediumTime'}}</span>
-            </td>
-          </tr>
+          <div *ngFor="let event of events | filterTable: [searchKey]">
+            <tr class="tableLine" [id]="event.id"
+              [ngClass]="{'selected': event.id==lastSelectedEvent, 'hidden': event.hide}" (click)="onFocus(event.id)">
+              <td nowrap style="text-align:center">
+                <app-event-icon [event]="event"></app-event-icon>
+              </td>
+              <td class="infoCell">
+                <span class="eventLabel">{{event.info}}</span>
+              </td>
+              <td nowrap>
+                <span class="eventLabel">{{event.timestamp | date:'mediumTime'}}</span>
+              </td>
+            </tr>
+            <tr class="tableLineExtra" *ngIf="event.id==lastSelectedEvent">
+              <td>[{{event.type.toUpperCase()}}]</td>
+              <td class="infoCell">[{{event.topic}}]</td>
+              <td>[ID: {{event.id}}]</td>
+            </tr>
+          </div>
         </tbody>
       </table>
     </div>
-
+    <div class="searchBox" *ngIf="events.length > 0">
+      <img src="./assets/img/src/View.png" alt="search" class="searchLens" />
+      <input id="search" class="searchInput inputField" type="text" [(ngModel)]="searchKey"
+        placeholder="Cerca nella descrizione dell'evento" />
+    </div>
   </div>
 </div>

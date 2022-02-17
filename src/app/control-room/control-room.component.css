@@ -13,6 +13,9 @@ button {
 #map {
   height: 100%;
 }
+table{
+  width: 100%;
+}
 .tableBackground {
   background-color: rgb(235, 235, 235);
   height: calc(100vh - 120px);
@@ -36,20 +39,26 @@ button {
   opacity: 40%;
 }
 .eventsTable {
-  margin-top: 5px;
-  width: 100%;
-  height: 80%;
+  margin-top: 10px;
+  height: 78%;
   overflow-y: scroll;
-  display: block;
 }
 .tableLine {
-  width: 100%;
+  border-bottom: 1px solid white !important;
+}
+.tableLineExtra {
+  background-color: white;
 }
 .tableLine:hover {
   background-color: white;
+  cursor: pointer;
+}
+.infoCell{
+  width: 500px;
 }
 .selected {
   background-color: white;
+  border-bottom: 0px !important;
 }
 .hidden {
   display: none;
@@ -59,14 +68,22 @@ button {
   text-align: center;
 }
 .searchBox {
+  margin-top: 5px;
+  margin-bottom: 5px;
   padding-top: 5px;
   text-align: center;
 }
 .searchInput {
-  width: 90% !important;
+  width: 80% !important;
 }
-.loadingTip{
+.loadingTip {
   font-style: italic;
   font-size: smaller;
   color: darkgrey;
+}
+.searchLens {
+  width: 25px;
+}
+.popup{
+  font-weight: bold;
 }

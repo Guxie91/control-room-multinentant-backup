@@ -3,9 +3,9 @@ import { Router } from "@angular/router";
 import { IMqttMessage, MqttService } from "ngx-mqtt";
 import { Subject, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
+import { CustomMessage } from "../models/custom-message.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MqttSettings } from "../models/mqtt-settings";
-import { Tenant } from "../models/tenant.model";
 import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
 import { HttpHandlerService } from "./http-handler.service";
 import { MqttMessagesHandlerService } from "./mqtt-messages-handler.service";
@@ -20,8 +20,10 @@ export class MqttHandlerService {
   events: EtsiMessage[] = [];
   eventsUpdated = new Subject<EtsiMessage[]>();
   expiredEventId = new Subject<string>();
-  mqtt_options: MqttSettings[] = [];
+  newCustomMessage = new Subject<CustomMessage>();
+  brokers: MqttSettings[] = [];
   readyToConnect = false;
+  currentBroker!: MqttSettings;
 
   constructor(
     private _mqtt: MqttService,
@@ -54,48 +56,68 @@ export class MqttHandlerService {
           .fetchMqttOptions()
           .pipe(take(1))
           .subscribe((data: any) => {
-            this.mqtt_options = data.mqtt_settings;
+            this.brokers = data.mqtt_settings;
             this.readyToConnect = true;
             this.connectToBroker();
           });
       });
   }
-  connectToBroker(options?: any) {
+  connectToBroker(options?: {
+    username: string;
+    password: string;
+    rejectUnauthorized: boolean;
+  }) {
     if (!this.readyToConnect) {
       this.initConnection();
       return;
     }
     if (this.connectedToBroker) {
-      this.disconnectFromBroker();
+      return;
     }
-    if (MQTT_SERVICE_OPTIONS.url == "") {
-      MQTT_SERVICE_OPTIONS.url = this.mqtt_options[1].url;
-      console.log("Connecting to default broker: " + this.mqtt_options[0].url);
-      options = this.mqtt_options[1].options;
+    if (MQTT_SERVICE_OPTIONS.url == "" || !options) {
+      MQTT_SERVICE_OPTIONS.url = this.brokers[0].url;
+      console.log("Connecting to default broker: " + this.brokers[0].name);
+      options = this.brokers[0].options;
     }
     this._mqtt.connect(options);
-    console.log("Connected to " + MQTT_SERVICE_OPTIONS.url);
+    for (let opt of this.brokers) {
+      if (MQTT_SERVICE_OPTIONS.url == opt.url && options) {
+        console.log(
+          "Connected to " + opt.name + " with username: " + options.username
+        );
+        this.currentBroker = opt;
+        break;
+      }
+    }
     this.connectedToBroker = true;
     let topicSubscription;
     for (let topic of this.topics) {
       console.log("Subscribing to topic " + topic);
       topicSubscription = this._mqtt.observe(topic).subscribe(
         (message: IMqttMessage) => {
-          let etsiMessage: EtsiMessage = this.messageHandler.manageMessage(
-            message
-          );
-          let found = false;
-          for (let event of this.events) {
-            if (event.id == etsiMessage.id) {
-              event.timestamp = etsiMessage.timestamp;
-              found = true;
+          let topicData = message.topic.split("/");
+          const topic = topicData[0] + "/" + topicData[1];
+          if (topic == "dashboard/hud") {
+            this.handleCustomMessage(message);
+            return;
+          } else {
+            let etsiMessage: EtsiMessage = this.messageHandler.manageMessage(
+              message
+            );
+            let found = false;
+            for (let event of this.events) {
+              if (event.id == etsiMessage.id) {
+                event.timestamp = etsiMessage.timestamp;
+                event.coordinates = etsiMessage.coordinates;
+                found = true;
+              }
             }
+            if (!found) {
+              this.events.push(etsiMessage);
+            }
+            this.checkForExpiredEvents();
+            this.eventsUpdated.next(this.events);
           }
-          if (!found) {
-            this.events.push(etsiMessage);
-          }
-          this.checkForExpiredEvents();
-          this.eventsUpdated.next(this.events);
         },
         (error) => {
           console.log("ERROR ON TOPIC: " + this.topics[0]);
@@ -106,23 +128,35 @@ export class MqttHandlerService {
     }
   }
   disconnectFromBroker() {
-    console.log("Disconnecting from " + MQTT_SERVICE_OPTIONS.url);
+    if (!this.connectedToBroker) {
+      return;
+    }
     this._mqtt.disconnect();
+    console.log("Disconnected from " + this.currentBroker.name);
+    this.currentBroker.name = "";
+    MQTT_SERVICE_OPTIONS.url == "";
     for (let sub of this.subscriptions) {
       sub.unsubscribe();
     }
-    this.subscriptions = [];
     this.connectedToBroker = false;
+    for (let event of this.events) {
+      this.expiredEventId.next(event.id);
+    }
+    this.eventsUpdated.next([]);
   }
   checkForExpiredEvents() {
     for (let event of this.events) {
       let eventTime = new Date(event.timestamp).getTime();
       let currentTime = new Date().getTime();
-      if (currentTime - eventTime > 20000) {
+      if (currentTime - eventTime > 60000) {
         let index = this.events.indexOf(event);
         this.events.splice(index, 1);
         this.expiredEventId.next(event.id);
       }
     }
+  }
+  handleCustomMessage(message: IMqttMessage) {
+    let customMessage: CustomMessage = JSON.parse(message.payload.toString());
+    this.newCustomMessage.next(customMessage);
   }
 }

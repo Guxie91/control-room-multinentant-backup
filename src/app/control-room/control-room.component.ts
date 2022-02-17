@@ -1,13 +1,20 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import * as L from "leaflet";
 import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
+import { CustomMessage } from "../models/custom-message.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MarkerBundle } from "../models/marker-bundle.model";
+import { HttpHandlerService } from "../services/http-handler.service";
 import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { OPEN_STREET_MAP } from "../utilities/maps";
 import {
+  CarIcon,
   DangerIcon,
   DefaultIcon,
+  EmergencyIcon,
+  InfoIcon,
+  PedestrianIcon,
   RoadworksIcon,
   TrafficIcon,
   WeatherIcon,
@@ -27,15 +34,52 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     { name: "vehicles", active: false, url: "" },
   ];
   subCategoriesItsEvents = [
-    { name: "roadworks", active: true, url: "./assets/img/RoadworksCat.png" },
-    { name: "info", active: true, url: "./assets/img/AlertCat.png" },
-    { name: "weather", active: true, url: "./assets/img/WeatherCat.png" },
-    { name: "traffic", active: true, url: "./assets/img/TrafficCat.png" },
+    {
+      label: "LAVORI IN CORSO",
+      name: "roadworks",
+      active: true,
+      url: "./assets/img/RoadworksCat.png",
+    },
+    {
+      label: "INFO",
+      name: "info",
+      active: true,
+      url: "./assets/img/InfoCat.png",
+    },
+    {
+      label: "METEO",
+      name: "weather",
+      active: true,
+      url: "./assets/img/WeatherCat.png",
+    },
+    {
+      label: "TRAFFICO",
+      name: "traffic",
+      active: true,
+      url: "./assets/img/TrafficCat.png",
+    },
+    {
+      label: "AVVISI",
+      name: "alert",
+      active: true,
+      url: "./assets/img/AlertCat.png",
+    },
   ];
   subCategoriesVehicles = [
-    { name: "cars", active: true, url: "./assets/img/ShuttleCat.png" },
-    { name: "emergency", active: true, url: "./assets/img/BikeCat.png" },
     {
+      label: "AUTO",
+      name: "cars",
+      active: true,
+      url: "./assets/img/CarCat.png",
+    },
+    {
+      label: "EMERGENZA",
+      name: "emergency",
+      active: true,
+      url: "./assets/img/AmbulanceCat.png",
+    },
+    {
+      label: "PEDONI",
       name: "pedestrians",
       active: true,
       url: "./assets/img/PedestrianCat.png",
@@ -46,7 +90,10 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   lastSelectedEvent = "-1";
   searchKey = "";
   /* ************************************** */
-  constructor(private mqtt: MqttHandlerService) {}
+  constructor(
+    private mqtt: MqttHandlerService,
+    private http: HttpHandlerService
+  ) {}
   ngOnDestroy(): void {
     this.map.removeLayer(OPEN_STREET_MAP);
     this.mqtt.disconnectFromBroker();
@@ -58,6 +105,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initMap();
   }
   ngOnInit(): void {
+    this.getCategories();
     let mqttMessagesSub = this.mqtt.eventsUpdated.subscribe((newMessages) => {
       newMessages.sort((a, b) => {
         if (b.category > a.category) return 1;
@@ -78,9 +126,15 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
+    let newCustomMessageSub = this.mqtt.newCustomMessage.subscribe(
+      (message: CustomMessage) => {
+        this.handleCustomMessage(message);
+      }
+    );
     this.mqtt.connectToBroker();
     this.subscriptions.push(mqttMessagesSub);
     this.subscriptions.push(mqttExpiredEventId);
+    this.subscriptions.push(newCustomMessageSub);
   }
   private initMap(): void {
     let lat = localStorage.getItem("lat");
@@ -94,6 +148,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     this.map = L.map("map", {
       center: [+lat, +lng],
       zoom: +zoom,
+      closePopupOnClick: false,
     });
     OPEN_STREET_MAP.addTo(this.map);
     L.control
@@ -152,17 +207,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           lat: etsiMessage.coordinates.lat,
           lng: etsiMessage.coordinates.lng,
         });
-        const type =
-          etsiMessage.type == "denm/alert" ? "denm" : etsiMessage.type;
-        mark.marker.setPopupContent(
-          "<span style='font-size:0.9em; font-weight:normal; font-family:'TIMSansWeb-Regular';color:white;line-height:140%;padding:5px;color:#484848;letter-spacing:0px;'><strong>" +
-            type.toUpperCase() +
-            "</strong><br/>" +
-            etsiMessage.info +
-            "<br/>" +
-            etsiMessage.timestamp.toLocaleString() +
-            "</span>"
-        );
+        if(mark.messageId == this.lastSelectedEvent){
+          this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
+        }
         return;
       }
     }
@@ -173,7 +220,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesItsEvents[0].active;
     }
     if (etsiMessage.category == "info") {
-      dynamicIcon = DangerIcon;
+      dynamicIcon = InfoIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[1].active;
     }
     if (etsiMessage.category == "weather") {
@@ -184,18 +231,25 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesItsEvents[3].active;
       dynamicIcon = TrafficIcon;
     }
-    const type = etsiMessage.type == "denm/alert" ? "denm" : etsiMessage.type;
+    if (etsiMessage.category == "alert") {
+      etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
+      dynamicIcon = DangerIcon;
+    }
+    if (etsiMessage.category == "pedestrians") {
+      etsiMessage.hide = !this.subCategoriesVehicles[2].active;
+      dynamicIcon = PedestrianIcon;
+    }
+    if (etsiMessage.category == "cars") {
+      etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+      dynamicIcon = CarIcon;
+    }
+    if (etsiMessage.category == "emergency") {
+      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+      dynamicIcon = EmergencyIcon;
+    }
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
       { icon: dynamicIcon }
-    ).bindPopup(
-      "<span style='font-size:0.9em; font-weight:normal; font-family:'TIMSansWeb-Regular';color:white;line-height:140%;padding:5px;color:#484848;letter-spacing:0px;'><strong>" +
-        type.toUpperCase() +
-        "</strong><br/>" +
-        etsiMessage.info +
-        "<br/>" +
-        etsiMessage.timestamp.toLocaleString() +
-        "</span>"
     );
     newMarker.on("click", () => {
       this.onMarkerClicked(etsiMessage.id);
@@ -215,18 +269,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   onFocus(id: string) {
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = "-1";
-      for (let mark of this.markers) {
-        if (mark.messageId == id) {
-          mark.marker.closePopup();
-        }
-      }
       return;
     } else {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
           this.lastSelectedEvent = id;
-          mark.marker.openPopup();
           break;
         }
       }
@@ -252,12 +300,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   onMarkerClicked(id: string) {
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = "-1";
-      for (let mark of this.markers) {
-        if (mark.messageId == id) {
-          mark.marker.closePopup();
-          break;
-        }
-      }
     } else {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
@@ -265,10 +307,50 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           let elem = document.getElementById(mark.messageId);
           elem?.scrollIntoView({ behavior: "smooth" });
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
-          mark.marker.openPopup();
           break;
         }
       }
     }
+  }
+  getCategories() {
+    let currentTenantName = localStorage.getItem("tenant");
+    this.http
+      .fetchLabels()
+      .pipe(take(1))
+      .subscribe((data) => {
+        let tenants = data.tenants;
+        for (let tnt of tenants) {
+          if (tnt.name == currentTenantName) {
+            for (let i = 0; i < this.subCategoriesItsEvents.length; i++) {
+              this.subCategoriesItsEvents[i].label = tnt.categories[
+                i
+              ].toUpperCase();
+            }
+          }
+        }
+      });
+  }
+  handleCustomMessage(message: CustomMessage) {
+    for (let marker of this.markers) {
+      if (marker.messageId == message.stationId && message.status == "on") {
+        let popup = L.popup({
+          autoClose: false,
+          closeButton: false,
+          closeOnClick: false,
+          closeOnEscapeKey: false,
+          className: "popup"
+        });
+        popup.setContent(message.popup);
+        marker.marker.bindPopup(popup);
+        marker.marker.openPopup();
+        return;
+      }
+      if (marker.messageId == message.stationId && message.status == "off") {
+        marker.marker.closePopup();
+        marker.marker.unbindPopup();
+        return;
+      }
+    }
+    console.log("stationID " + message.stationId + " non trovato!");
   }
 }
