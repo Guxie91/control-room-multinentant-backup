@@ -356,6 +356,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         marker.marker.unbindPopup();
         marker.marker.bindPopup(popup);
         marker.marker.openPopup();
+        /*
+        POPUP BACKGROUND EXPERIMENT
+        */
         let popupElement = document.getElementsByClassName(
           "leaflet-popup-content-wrapper"
         );
@@ -365,6 +368,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           htmlPopupElement.style.backgroundColor = "lightyellow";
           console.log(htmlPopupElement);
         }
+        /****************************************** */
         return;
       }
       if (
