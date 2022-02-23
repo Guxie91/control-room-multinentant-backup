@@ -9,7 +9,7 @@
       "title": "Control Room C-V2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Info", "Meteo", "Traffico", "Avvisi"],
+      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
       "topics": ["its/#","dashboard/hud", "json/#"]
     },
     {
@@ -22,7 +22,7 @@
       "title": "Città Metropolitana di Genova - Control Room C-V2X",
       "footerText": "",
       "color": "rgb(146, 27, 43)",
-      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico", "Avvisi"],
+      "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico", "Pericoli"],
       "topics": ["its/#","dashboard/hud", "json/#"]
     },
     {
@@ -35,7 +35,7 @@
       "title": "Control Room C-V2X",
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
-      "categories": ["Lavori in corso", "Info", "Meteo", "Traffico", "Avvisi"],
+      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
       "topics": ["its/+/120232221103/#","dashboard/hud", "json/120232221103/#"]
     }
   ]

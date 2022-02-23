@@ -19,6 +19,7 @@ import {
   TrafficIcon,
   WeatherIcon,
 } from "../utilities/marker-icons";
+import { POPUP_CONTENT } from "../utilities/popup-ballon";
 
 @Component({
   selector: "app-control-room",
@@ -244,7 +245,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
-      { icon: dynamicIcon, riseOnHover:true }
+      { icon: dynamicIcon, riseOnHover: true }
     );
     newMarker.on("click", () => {
       this.onMarkerClicked(etsiMessage.id);
@@ -339,13 +340,31 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           closeButton: false,
           closeOnClick: false,
           closeOnEscapeKey: false,
-          className: "popup",
+          className: "popupBackground",
         });
-        popup.setContent(message.popup);
+        popup.setContent(
+          "<span class='popupLabel'>Stringa ricevuta: " +
+            message.popup +
+            "</span><br/>" +
+            POPUP_CONTENT +
+            "<label='popup'>" +
+            "Messaggio visualizzato alle : " +
+            new Date().toLocaleTimeString("it-IT") +
+            "</label>"
+        );
         marker.marker.closePopup();
         marker.marker.unbindPopup();
         marker.marker.bindPopup(popup);
         marker.marker.openPopup();
+        let popupElement = document.getElementsByClassName(
+          "leaflet-popup-content-wrapper"
+        );
+        let htmlPopupElement;
+        if (popupElement[0] instanceof HTMLElement) {
+          htmlPopupElement = popupElement[0] as HTMLElement;
+          htmlPopupElement.style.backgroundColor = "lightyellow";
+          console.log(htmlPopupElement);
+        }
         return;
       }
       if (
