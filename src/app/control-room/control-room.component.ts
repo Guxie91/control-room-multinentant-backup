@@ -2,7 +2,9 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import * as L from "leaflet";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
+import { forEachTrailingCommentRange } from "typescript";
 import { CustomMessage } from "../models/custom-message.model";
+import { DENMMessage } from "../models/DENMMessage.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MarkerBundle } from "../models/marker-bundle.model";
 import { HttpHandlerService } from "../services/http-handler.service";
@@ -15,6 +17,7 @@ import {
   EmergencyIcon,
   InfoIcon,
   PedestrianIcon,
+  RedEmergencyIcon,
   RoadworksIcon,
   TrafficIcon,
   WeatherIcon,
@@ -127,10 +130,23 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         this.handleCustomMessage(message);
       }
     );
+    let DENMMessageSub = this.mqtt.newDENMMessage.subscribe(
+      (message: DENMMessage) => {
+        this.handleDENM(message);
+        return;
+      }
+    );
+    let DENMExpiredSub = this.mqtt.DENMExpired.subscribe(
+      (message: DENMMessage) => {
+        this.handleExpiredDENM(message);
+      }
+    );
     this.mqtt.connectToBroker();
+    this.subscriptions.push(DENMExpiredSub);
     this.subscriptions.push(mqttMessagesSub);
     this.subscriptions.push(mqttExpiredEventId);
     this.subscriptions.push(newCustomMessageSub);
+    this.subscriptions.push(DENMMessageSub);
   }
   private initMap(): void {
     let lat = localStorage.getItem("lat");
@@ -383,5 +399,72 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     console.log("ATTENZIONE: errore su messaggio da dashboard/hud!");
     console.log("stationID " + message.stationId + " non trovato!");
+  }
+  handleDENM(message: DENMMessage) {
+    for (let event of this.events) {
+      if (message.stationID == event.id) {
+        for (let denm of event.denms) {
+          if (
+            denm.causeCode == message.causeCode &&
+            denm.subCauseCode == message.subCauseCode
+          ) {
+            denm.expired = false;
+            denm.timestamp = message.timestamp;
+            if (message.causeCode == "0" && message.subCauseCode == "0") {
+              for (let mark of this.markers) {
+                if (mark.messageId == event.id) {
+                  mark.marker.setIcon(RedEmergencyIcon);
+                }
+              }
+            }
+            return;
+          }
+        }
+        event.denms.push(message);
+        if (
+          event.category == "emergency" &&
+          message.causeCode == "0" &&
+          message.subCauseCode == "0"
+        ) {
+          for (let mark of this.markers) {
+            if (mark.messageId == event.id) {
+              mark.marker.setIcon(RedEmergencyIcon);
+            }
+          }
+        }
+        console.log("denm match found!");
+        return;
+      }
+    }
+    console.log("ERROR: DENM stationID " + message.stationID + " not found!");
+  }
+  handleExpiredDENM(message: DENMMessage) {
+    for (let event of this.events) {
+      if (message.stationID == event.id) {
+        for (let denm of event.denms) {
+          if (
+            denm.causeCode == message.causeCode &&
+            denm.subCauseCode == message.subCauseCode
+          ) {
+            denm.expired = true;
+            for (let mark of this.markers) {
+              if (mark.messageId == event.id) {
+                switch (event.category) {
+                  case "emergency":
+                    mark.marker.setIcon(EmergencyIcon);
+                    return;
+                  case "pedestrians":
+                    mark.marker.setIcon(PedestrianIcon);
+                    return;
+                  case "cars":
+                    mark.marker.setIcon(CarIcon);
+                    return;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

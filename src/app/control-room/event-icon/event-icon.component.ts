@@ -1,28 +1,74 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { EtsiMessage } from 'src/app/models/etsi-message.model';
+import { ThisReceiver } from "@angular/compiler";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { DENMMessage } from "src/app/models/DENMMessage.model";
+import { EtsiMessage } from "src/app/models/etsi-message.model";
+import { MqttHandlerService } from "src/app/services/mqtt-handler.service";
 
 @Component({
-  selector: 'app-event-icon',
-  templateUrl: './event-icon.component.html',
-  styleUrls: ['./event-icon.component.css']
+  selector: "app-event-icon",
+  templateUrl: "./event-icon.component.html",
+  styleUrls: ["./event-icon.component.css"],
 })
-export class EventIconComponent implements OnInit {
-
+export class EventIconComponent implements OnInit, OnDestroy {
   @Input() event!: EtsiMessage;
   unknown = false;
+  red = false;
+  subscriptions: Subscription[] = [];
 
-  constructor() { }
+  constructor(private mqtt: MqttHandlerService) {}
 
   ngOnInit(): void {
-    if(this.event.category !="roadworks" &&
-    this.event.category !="weather" &&
-    this.event.category !="info" &&
-    this.event.category !="traffic" &&
-    this.event.category !="pedestrians" &&
-    this.event.category !="cars" &&
-    this.event.category !="emergency"){
+    let DENMMessageSub = this.mqtt.newDENMMessage.subscribe(
+      (message: DENMMessage) => {
+        if (message.stationID == this.event.id) {
+          if(message.causeCode == "0" && message.subCauseCode == "0"){
+            this.red = true;
+          }
+          for (let denm of this.event.denms) {
+            if (
+              message.causeCode == denm.causeCode &&
+              message.subCauseCode == denm.subCauseCode
+            ) {
+              denm.timestamp = message.timestamp;
+              return;
+            }
+          }
+          this.event.denms.push(message);
+        }
+      }
+    );
+    this.subscriptions.push(DENMMessageSub);
+    let DENMExpiredSub = this.mqtt.DENMExpired.subscribe(
+      (message: DENMMessage) => {
+        for (let denm of this.event.denms) {
+          if (
+            denm.stationID == message.stationID &&
+            denm.causeCode == message.causeCode &&
+            denm.subCauseCode == message.subCauseCode
+          ) {
+            denm.expired = true;
+            this.red = false;
+          }
+        }
+      }
+    );
+    this.subscriptions.push(DENMExpiredSub);
+    if (
+      this.event.category != "roadworks" &&
+      this.event.category != "weather" &&
+      this.event.category != "info" &&
+      this.event.category != "traffic" &&
+      this.event.category != "pedestrians" &&
+      this.event.category != "cars" &&
+      this.event.category != "emergency"
+    ) {
       this.unknown = true;
     }
   }
-
+  ngOnDestroy(): void {
+    for (let sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
+  }
 }

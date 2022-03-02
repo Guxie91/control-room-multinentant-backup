@@ -4,6 +4,7 @@ import { IMqttMessage, MqttService } from "ngx-mqtt";
 import { Subject, Subscription } from "rxjs";
 import { take } from "rxjs/operators";
 import { CustomMessage } from "../models/custom-message.model";
+import { DENMMessage } from "../models/DENMMessage.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MqttSettings } from "../models/mqtt-settings";
 import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
@@ -21,6 +22,8 @@ export class MqttHandlerService {
   eventsUpdated = new Subject<EtsiMessage[]>();
   expiredEventId = new Subject<string>();
   newCustomMessage = new Subject<CustomMessage>();
+  newDENMMessage = new Subject<DENMMessage>();
+  DENMExpired = new Subject<DENMMessage>();
   brokers: MqttSettings[] = [];
   readyToConnect = false;
   currentBroker!: MqttSettings;
@@ -97,6 +100,10 @@ export class MqttHandlerService {
         (message: IMqttMessage) => {
           let topicData = message.topic.split("/");
           const topic = topicData[0] + "/" + topicData[1];
+          if(topic == "json/denm"){
+            this.handleDENM(message);
+            return;
+          }
           if (topic == "dashboard/hud") {
             this.handleCustomMessage(message);
             return;
@@ -153,10 +160,34 @@ export class MqttHandlerService {
         this.events.splice(index, 1);
         this.expiredEventId.next(event.id);
       }
+      if(event.type == "cam" && event.denms.length>0){
+        for(let denm of event.denms){
+          let denmTime = denm.timestamp.getTime();
+          if(currentTime - denmTime > 10000){
+            console.log("DENM scaduto!");
+            this.DENMExpired.next(denm);
+          }
+        }
+      }
     }
   }
   handleCustomMessage(message: IMqttMessage) {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
     this.newCustomMessage.next(customMessage);
+  }
+  handleDENM(message: IMqttMessage){
+    let payloadJSON = JSON.parse(message.payload.toString());
+    let stationID = payloadJSON.denm.management.actionID.originatingStationID;
+    let causeCode = payloadJSON.denm.situation.eventType.causeCode;
+    let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
+    let timestamp = new Date();
+    let denm = new DENMMessage(
+      stationID,
+      causeCode,
+      subCauseCode,
+      false,
+      timestamp
+    );
+    this.newDENMMessage.next(denm);
   }
 }

@@ -26,11 +26,17 @@ export class MqttMessagesHandlerService {
     let payloadJSON = JSON.parse(message.payload.toString());
     //identify message type
     if (payloadJSON["ivi"]) {
-      newEtsiMessage = this.createIVIMMessage(message.topic, quadkeyArr, payloadJSON);
-    } else if (payloadJSON["denm"]) {
-      newEtsiMessage = this.createDENMMessage(message.topic, quadkeyArr, payloadJSON);
+      newEtsiMessage = this.createIVIMMessage(
+        message.topic,
+        quadkeyArr,
+        payloadJSON
+      );
     } else if (payloadJSON["cam"]) {
-      newEtsiMessage = this.createCAMMessage(message.topic, quadkeyArr, payloadJSON);
+      newEtsiMessage = this.createCAMMessage(
+        message.topic,
+        quadkeyArr,
+        payloadJSON
+      );
     } else {
       //if the type is unknown, create dummy log
       console.log("error: unknown message type!");
@@ -64,44 +70,6 @@ export class MqttMessagesHandlerService {
     );
     return newEtsiMessage;
   }
-  createDENMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
-    const causeCode = payloadJSON.denm.situation.eventType.causeCode.toString();
-    const subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode.toString();
-    let id = payloadJSON.denm.management.actionID.originatingStationID;
-    let info = "causeCode: " + causeCode + "/ suCauseCode: " + subCauseCode;
-    let type = "denm";
-    if (topic != "its/roadworks") {
-      //change to category
-      id = id - 1 + causeCode;
-      type += "/alert";
-      if (causeCode == "97") {
-        info = "Utente vulnerabile";
-      } else if (causeCode == "3") {
-        info = "Lavori in corso";
-      } else {
-        info = info;
-      }
-    }
-    if (topic == "its/roadworks") {
-      info = "Lavori in corso";
-    }
-    let latitude = +payloadJSON.denm.management.eventPosition.latitude;
-    latitude = latitude / 10000000;
-    let longitude = +payloadJSON.denm.management.eventPosition.longitude;
-    longitude = longitude / 10000000;
-    const category = topic.split("/")[1];
-    let newEtsiMessage = new EtsiMessage(
-      category,
-      type,
-      id,
-      info,
-      topic,
-      quadkeyArr,
-      new LatLng(latitude, longitude),
-      new Date()
-    );
-    return newEtsiMessage;
-  }
   createCAMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
     let id = payloadJSON.header.stationID;
     const stationType = payloadJSON.cam.camParameters.basicContainer.stationType.toString();
@@ -121,18 +89,15 @@ export class MqttMessagesHandlerService {
     let category = "";
     switch (stationType) {
       case "101":
-        info = "Pedone [stationID: " + payloadJSON.header.stationID + "]";
+        info = payloadJSON.header.stationID;
         category = "pedestrians";
         break;
       case "102":
-        info = "Veicolo [stationID: " + payloadJSON.header.stationID + "]";
+        info = payloadJSON.header.stationID;
         category = "cars";
         break;
       case "103":
-        info =
-          "Veicolo d'emergenza [stationID: " +
-          payloadJSON.header.stationID +
-          "]";
+        info = payloadJSON.header.stationID;
         category = "emergency";
         break;
       default:

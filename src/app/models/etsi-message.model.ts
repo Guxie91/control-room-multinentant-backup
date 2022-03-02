@@ -1,4 +1,5 @@
 import { LatLng } from "leaflet";
+import { DENMMessage } from "./DENMMessage.model";
 
 export class EtsiMessage{
   constructor(
@@ -11,7 +12,8 @@ export class EtsiMessage{
     public coordinates:LatLng,
     public timestamp: Date,
     public highlight = false,
-    public hide = false
+    public hide = false,
+    public denms:DENMMessage[] = []
   ) {
 
   }

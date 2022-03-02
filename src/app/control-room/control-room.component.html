@@ -38,10 +38,14 @@
                 <app-event-icon [event]="event"></app-event-icon>
               </td>
               <td class="infoCell">
-                <span class="eventLabel">{{event.info}}</span>
+                <span class="eventLabel">
+                  {{event.info}}
+                </span>
               </td>
               <td nowrap>
-                <span class="eventLabel">{{event.timestamp | date:'mediumTime'}}</span>
+                <span class="eventLabel">
+                  {{event.timestamp | date:'mediumTime'}}
+                </span>
               </td>
             </tr>
             <tr class="tableLineExtra" *ngIf="event.id==lastSelectedEvent">
@@ -51,16 +55,44 @@
                 </span>
               </td>
               <td class="infoCell">
-                <span class="eventLabel">
-                  [{{event.topic}}]
+                <span class="eventLabel" *ngIf="event.type=='cam'">
+                  Cooperative Awareness Message
+                </span>
+                <span *ngIf="event.type!='cam'">
+                  {{event.topic}}
                 </span>
               </td>
-              <td>
-                <span class="eventLabel">
+              <td nowrap>
+                <span class="eventLabel" *ngIf="event.type == 'ivim'">
                   [ID: {{event.id}}]
+                </span>
+                <span class="eventLabel" *ngIf="event.type != 'ivim'">
+                  [{{event.category}}]
                 </span>
               </td>
             </tr>
+            <div class="tableLineExtra" *ngIf="event.id==lastSelectedEvent && event.denms.length>0">
+              <table class="table">
+                <caption style="caption-side:top; text-align:center">DENM</caption>
+                <tr *ngFor="let denm of event.denms">
+                  <td nowrap>
+                    <span class="eventLabel">
+                      [DENM]
+                    </span>
+                  </td>
+                  <td>
+                    <span class="eventLabel">
+                      Emergency Vehicle Warning
+                    </span>
+                  </td>
+                  <td nowrap>
+                    <span class="eventLabel">
+                      [{{denm.stationID + "_" +denm.causeCode + "_"+ denm.subCauseCode}}]
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </tbody>
       </table>

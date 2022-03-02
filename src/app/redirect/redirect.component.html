@@ -1,5 +1,5 @@
 <div style="text-align:center; margin-top: 50px;">
-  <h2>Login disponibili</h2>
+  <h2>Tenant disponibili</h2>
   <div *ngFor="let tenant of tenants">
     <a [routerLink]="['/',tenant.name,'login']">
       <span class="eventLabel">{{tenant.name.toUpperCase()}}</span>
