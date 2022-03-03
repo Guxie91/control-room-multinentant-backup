@@ -437,7 +437,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     console.log("ERROR: DENM stationID " + message.stationID + " not found!");
   }
-  //test
+  //test2
   handleExpiredDENM(message: DENMMessage) {
     for (let event of this.events) {
       if (message.stationID == event.id) {
