@@ -163,8 +163,7 @@ export class MqttHandlerService {
       if(event.type == "cam" && event.denms.length>0){
         for(let denm of event.denms){
           let denmTime = denm.timestamp.getTime();
-          if(currentTime - denmTime > 10000){
-            console.log("DENM scaduto!");
+          if(currentTime - denmTime > 15000){
             this.DENMExpired.next(denm);
           }
         }
@@ -181,10 +180,13 @@ export class MqttHandlerService {
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
+    //handle description somehow?????
+    let description = "Emergency Vehicle Warning";
     let denm = new DENMMessage(
       stationID,
       causeCode,
       subCauseCode,
+      description,
       false,
       timestamp
     );

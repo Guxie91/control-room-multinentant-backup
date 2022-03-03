@@ -382,7 +382,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         if (popupElement[0] instanceof HTMLElement) {
           htmlPopupElement = popupElement[0] as HTMLElement;
           htmlPopupElement.style.backgroundColor = "lightyellow";
-          console.log(htmlPopupElement);
         }
         /****************************************** */
         return;
@@ -432,7 +431,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
         }
-        console.log("denm match found!");
+        console.log("denm match not found!");
         return;
       }
     }
