@@ -8,6 +8,7 @@ import { DENMMessage } from "../models/DENMMessage.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MqttSettings } from "../models/mqtt-settings";
 import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
+import { CodeHandlerService } from "./code-handler.service";
 import { HttpHandlerService } from "./http-handler.service";
 import { MqttMessagesHandlerService } from "./mqtt-messages-handler.service";
 
@@ -32,7 +33,8 @@ export class MqttHandlerService {
     private _mqtt: MqttService,
     private messageHandler: MqttMessagesHandlerService,
     private http: HttpHandlerService,
-    private router: Router
+    private router: Router,
+    private codeHandler: CodeHandlerService
   ) {}
 
   initConnection() {
@@ -180,14 +182,12 @@ export class MqttHandlerService {
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
-    //handle description somehow?????
-    let description = "Emergency Vehicle Warning";
+    let description = this.codeHandler.getDescription(causeCode,subCauseCode);
     let denm = new DENMMessage(
       stationID,
       causeCode,
       subCauseCode,
       description,
-      false,
       timestamp
     );
     this.newDENMMessage.next(denm);

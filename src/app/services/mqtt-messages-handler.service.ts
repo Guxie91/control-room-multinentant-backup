@@ -88,15 +88,15 @@ export class MqttMessagesHandlerService {
       stationType;
     let category = "";
     switch (stationType) {
-      case "101":
+      case "1":
         info = payloadJSON.header.stationID;
         category = "pedestrians";
         break;
-      case "102":
+      case "5":
         info = payloadJSON.header.stationID;
         category = "cars";
         break;
-      case "103":
+      case "10":
         info = payloadJSON.header.stationID;
         category = "emergency";
         break;

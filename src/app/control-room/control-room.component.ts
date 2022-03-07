@@ -2,11 +2,11 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import * as L from "leaflet";
 import { Subscription } from "rxjs";
 import { take } from "rxjs/operators";
-import { forEachTrailingCommentRange } from "typescript";
 import { CustomMessage } from "../models/custom-message.model";
 import { DENMMessage } from "../models/DENMMessage.model";
 import { EtsiMessage } from "../models/etsi-message.model";
 import { MarkerBundle } from "../models/marker-bundle.model";
+import { CodeHandlerService } from "../services/code-handler.service";
 import { HttpHandlerService } from "../services/http-handler.service";
 import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { OPEN_STREET_MAP } from "../utilities/maps";
@@ -96,7 +96,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
-    private http: HttpHandlerService
+    private http: HttpHandlerService,
+    private codeHandler: CodeHandlerService
   ) {}
   ngOnDestroy(): void {
     this.map.removeLayer(OPEN_STREET_MAP);
@@ -219,7 +220,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           lat: etsiMessage.coordinates.lat,
           lng: etsiMessage.coordinates.lng,
         });
-        if (mark.messageId == this.lastSelectedEvent) {
+        if (mark.messageId == this.lastSelectedEvent && mark.type == "cam") {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
         }
         return;
@@ -407,32 +408,22 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             denm.causeCode == message.causeCode &&
             denm.subCauseCode == message.subCauseCode
           ) {
-            denm.expired = false;
             denm.timestamp = message.timestamp;
-            if (message.causeCode == "0" && message.subCauseCode == "0") {
-              for (let mark of this.markers) {
-                if (mark.messageId == event.id) {
-                  mark.marker.setIcon(RedEmergencyIcon);
-                }
-              }
-            }
             return;
           }
         }
         event.denms.push(message);
-        if (
-          event.category == "emergency" &&
-          message.causeCode == "0" &&
-          message.subCauseCode == "0"
-        ) {
-          for (let mark of this.markers) {
-            if (mark.messageId == event.id) {
-              mark.marker.setIcon(RedEmergencyIcon);
-            }
+        let icon = this.codeHandler.getIcon(
+          message.causeCode,
+          message.subCauseCode,
+          event.category
+        );
+        for (let mark of this.markers) {
+          if (mark.messageId == event.id) {
+            mark.marker.setIcon(icon);
+            return;
           }
         }
-        console.log("denm match not found!");
-        return;
       }
     }
     console.log("ERROR: DENM stationID " + message.stationID + " not found!");
@@ -446,7 +437,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             denm.causeCode == message.causeCode &&
             denm.subCauseCode == message.subCauseCode
           ) {
-            denm.expired = true;
+            let index = event.denms.indexOf(denm);
+            event.denms.splice(index, 1);
             for (let mark of this.markers) {
               if (mark.messageId == event.id) {
                 switch (event.category) {

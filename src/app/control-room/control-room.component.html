@@ -73,7 +73,6 @@
             </tr>
             <div class="tableLineExtra" *ngIf="event.id==lastSelectedEvent && event.denms.length>0">
               <table class="table">
-                <caption style="caption-side:top; text-align:center">Messaggi inviati</caption>
                 <tr *ngFor="let denm of event.denms">
                   <td nowrap>
                     <span class="eventLabel">
@@ -87,7 +86,7 @@
                   </td>
                   <td nowrap style="text-align:right;">
                     <span class="eventLabel">
-                      [{{denm.stationID + "_" +denm.causeCode + "_"+ denm.subCauseCode}}]
+                      {{denm.timestamp | date: "mediumTime"}}
                     </span>
                   </td>
                 </tr>

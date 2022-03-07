@@ -22,7 +22,7 @@ export class EventIconComponent implements OnInit, OnDestroy {
     let DENMMessageSub = this.mqtt.newDENMMessage.subscribe(
       (message: DENMMessage) => {
         if (message.stationID == this.event.id) {
-          if(message.causeCode == "0" && message.subCauseCode == "0"){
+          if (message.causeCode == "95" && message.subCauseCode == "1") {
             this.red = true;
           }
           for (let denm of this.event.denms) {
@@ -41,15 +41,8 @@ export class EventIconComponent implements OnInit, OnDestroy {
     this.subscriptions.push(DENMMessageSub);
     let DENMExpiredSub = this.mqtt.DENMExpired.subscribe(
       (message: DENMMessage) => {
-        for (let denm of this.event.denms) {
-          if (
-            denm.stationID == message.stationID &&
-            denm.causeCode == message.causeCode &&
-            denm.subCauseCode == message.subCauseCode
-          ) {
-            denm.expired = true;
-            this.red = false;
-          }
+        if(message.stationID == this.event.id){
+          this.red = false;
         }
       }
     );
