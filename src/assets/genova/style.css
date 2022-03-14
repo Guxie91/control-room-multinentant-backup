@@ -109,6 +109,10 @@ td {
   letter-spacing: 0px;
 }
 
+.alertLabel {
+	font-family:"Oswald" !important;
+}
+
 .headerLabel {
   font-size: 1.4em;
   font-weight: normal;

@@ -56,6 +56,10 @@ td {
   border: 3px solid #ffffff;
 }
 
+.alertLabel {
+	font-family:"TIMSansWeb-Regular" !important;
+}
+
 .fixedFooter {
   width: 100%;
   height: 40px !important;

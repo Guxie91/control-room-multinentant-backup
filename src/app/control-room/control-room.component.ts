@@ -22,7 +22,6 @@ import {
   TrafficIcon,
   WeatherIcon,
 } from "../utilities/marker-icons";
-import { POPUP_CONTENT } from "../utilities/popup-ballon";
 
 @Component({
   selector: "app-control-room",
@@ -352,6 +351,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         message.status == "on" &&
         marker.type == "cam"
       ) {
+        marker.marker.closePopup();
+        marker.marker.unbindPopup();
         let popup = L.popup({
           autoClose: false,
           closeButton: false,
@@ -359,32 +360,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           closeOnEscapeKey: false,
           className: "popupBackground",
         });
-        popup.setContent(
-          "<span class='popupLabel'>Stringa ricevuta: " +
-            message.popup +
-            "</span><br/>" +
-            POPUP_CONTENT +
-            "<label='popup'>" +
-            "Messaggio visualizzato alle : " +
-            new Date().toLocaleTimeString("it-IT") +
-            "</label>"
-        );
-        marker.marker.closePopup();
-        marker.marker.unbindPopup();
+        let content = this.codeHandler.getPopupContent(message.popup);
+        popup.setContent(content);
         marker.marker.bindPopup(popup);
         marker.marker.openPopup();
-        /*
-        POPUP BACKGROUND EXPERIMENT
-        */
+        /* POPUP BACKGROUND EXPERIMENT
         let popupElement = document.getElementsByClassName(
           "leaflet-popup-content-wrapper"
         );
         let htmlPopupElement;
         if (popupElement[0] instanceof HTMLElement) {
           htmlPopupElement = popupElement[0] as HTMLElement;
-          htmlPopupElement.style.backgroundColor = "lightyellow";
+          htmlPopupElement.style.backgroundColor = "rgb(235, 235, 235)";
         }
-        /****************************************** */
+        */
         return;
       }
       if (
