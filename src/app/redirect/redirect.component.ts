@@ -18,6 +18,11 @@ export class RedirectComponent implements OnInit {
       .pipe(take(1))
       .subscribe((result) => {
         this.tenants = result.tenants;
+        if(this.tenants.length<9){
+          while(this.tenants.length<9){
+            this.tenants.push(new Tenant());
+          }
+        }
       });
   }
 }
