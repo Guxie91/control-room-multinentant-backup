@@ -11,12 +11,16 @@ import {
   emergencyVehicleApproachingPopup,
   pedestrianWalkingPopup,
 } from "../utilities/popup-ballon";
+declare var denm: any;
+
 @Injectable({
   providedIn: "root",
 })
 export class CodeHandlerService {
   constructor() {}
-
+  getDescription2(message:any){
+    return denm.getCauseCode(message);
+  }
   getDescription(causeCode: string, subCauseCode: string) {
     if (causeCode == "95" && subCauseCode == "1") {
       return "Emergency Vehicle Approaching";

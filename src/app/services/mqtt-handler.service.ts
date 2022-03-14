@@ -183,13 +183,13 @@ export class MqttHandlerService {
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
     let description = this.codeHandler.getDescription(causeCode,subCauseCode);
-    let denm = new DENMMessage(
+    let new_denm = new DENMMessage(
       stationID,
       causeCode,
       subCauseCode,
       description,
       timestamp
     );
-    this.newDENMMessage.next(denm);
+    this.newDENMMessage.next(new_denm);
   }
 }
