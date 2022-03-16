@@ -5,6 +5,7 @@ import {
   EmergencyIcon,
   PedestrianIcon,
   RedEmergencyIcon,
+  RedPedestrianIcon,
 } from "../utilities/marker-icons";
 import {
   defaultPopup,
@@ -18,14 +19,25 @@ declare var denm: any;
 })
 export class CodeHandlerService {
   constructor() {}
-  getDescription2(message:any){
-    return denm.getCauseCode(message);
+  getDescriptionDetail(message: any) {
+    let causeCodeDesc = denm.getCauseCode(message);
+    let subCauseCodeDesc = denm.getSubCauseCode(message);
+    if (subCauseCodeDesc.length > 3 && causeCodeDesc.length > 3) {
+      return causeCodeDesc + ": " + subCauseCodeDesc;
+    } else {
+      return (
+        "causeCode: " + causeCodeDesc + ", subCauseCode: " + subCauseCodeDesc
+      );
+    }
   }
-  getDescription(causeCode: string, subCauseCode: string) {
+  getAdHocDescription(description:string, causeCode: string, subCauseCode: string){
     if (causeCode == "95" && subCauseCode == "1") {
       return "Emergency Vehicle Approaching";
     }
-    return "causeCode: " + causeCode + ", subCauseCode: " + subCauseCode;
+    if (causeCode == "12" && subCauseCode == "1") {
+      return "Children on Roadway";
+    }
+    return description;
   }
   getIcon(causeCode: string, subCausdeCode: string, category: string) {
     if (causeCode == "95" && subCausdeCode == "1" && category == "emergency") {
@@ -36,6 +48,9 @@ export class CodeHandlerService {
     }
     if (category == "cars") {
       return CarIcon;
+    }
+    if (causeCode == "12" && category == "pedestrians") {
+      return RedPedestrianIcon;
     }
     if (category == "pedestrians") {
       return PedestrianIcon;

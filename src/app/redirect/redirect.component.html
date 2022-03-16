@@ -5,7 +5,7 @@
         <a [routerLink]="['/',tenant.name,'login']">
           <div class="card tenantCard" [ngClass]="{'obscuredTenant': tenant.name === 'default'}">
             <div [style.background-color]="tenant.color" class="cardImgSpace">
-              <img class="cardImg" [src]='"./assets/" + tenant.name + "/img/logo.png"' />
+              <img class="cardImg" [src]='"./assets/" + tenant.name + "/img/card.png"' />
             </div>
             <div class="card-body tenantName" [style.background-color]="tenant.color">
               <span class="headerLabel">{{tenant.name=="default"?"":tenant.name.toUpperCase()}}</span>

@@ -89,3 +89,6 @@ table{
   font-family: "TIMSansWeb-Regular";
   color: blue;
 }
+.tagCell{
+  width: 80px;
+}

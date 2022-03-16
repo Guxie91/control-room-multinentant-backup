@@ -157,7 +157,7 @@ export class MqttHandlerService {
     for (let event of this.events) {
       let eventTime = new Date(event.timestamp).getTime();
       let currentTime = new Date().getTime();
-      if (currentTime - eventTime > 60000) {
+      if (currentTime - eventTime > 60000) { //CAM EXPIRING TIME 60sec
         let index = this.events.indexOf(event);
         this.events.splice(index, 1);
         this.expiredEventId.next(event.id);
@@ -165,7 +165,7 @@ export class MqttHandlerService {
       if(event.type == "cam" && event.denms.length>0){
         for(let denm of event.denms){
           let denmTime = denm.timestamp.getTime();
-          if(currentTime - denmTime > 15000){
+          if(currentTime - denmTime > 30000){ //DENM EXPIRING TIME 30sec
             this.DENMExpired.next(denm);
           }
         }
@@ -182,7 +182,8 @@ export class MqttHandlerService {
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
-    let description = this.codeHandler.getDescription(causeCode,subCauseCode);
+    let tempDescription = this.codeHandler.getDescriptionDetail(payloadJSON);
+    let description = this.codeHandler.getAdHocDescription(tempDescription, causeCode, subCauseCode);
     let new_denm = new DENMMessage(
       stationID,
       causeCode,

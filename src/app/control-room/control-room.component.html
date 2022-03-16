@@ -34,7 +34,7 @@
           <div *ngFor="let event of events | filterTable: [searchKey]">
             <tr class="tableLine" [id]="event.id"
               [ngClass]="{'selected': event.id==lastSelectedEvent, 'hidden': event.hide}" (click)="onFocus(event.id)">
-              <td nowrap style="text-align:center">
+              <td style="text-align:center" class="tagCell">
                 <app-event-icon [event]="event"></app-event-icon>
               </td>
               <td class="infoCell">
@@ -49,7 +49,7 @@
               </td>
             </tr>
             <tr class="tableLineExtra" *ngIf="event.id==lastSelectedEvent">
-              <td>
+              <td class="tagCell">
                 <span class="eventLabel">
                   [{{event.type.toUpperCase()}}]
                 </span>
@@ -74,7 +74,7 @@
             <div class="tableLineExtra" *ngIf="event.id==lastSelectedEvent && event.denms.length>0">
               <table class="table">
                 <tr *ngFor="let denm of event.denms">
-                  <td nowrap>
+                  <td class="tagCell">
                     <span class="eventLabel">
                       [DENM]
                     </span>

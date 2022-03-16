@@ -1,10 +1,10 @@
 {
+  "jshint.options": {
+    "asi": true
+  },
   "workbench.colorCustomizations": {
     "activityBar.background": "#0F3239",
     "titleBar.activeBackground": "#164650",
     "titleBar.activeForeground": "#F4FBFC"
-  },
-  "jshint.options": {
-    "asi": true
   }
 }

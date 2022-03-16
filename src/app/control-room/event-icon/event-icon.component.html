@@ -3,7 +3,8 @@
 <img class="CatImg" src="./assets/img/InfoCat.png" alt="event-icon" *ngIf="event.category=='info'" />
 <img class="CatImg" src="./assets/img/TrafficCat.png" alt="event-icon" *ngIf="event.category=='traffic'" />
 <img class="CatImg" src="./assets/img/AlertCat.png" alt="event-icon" *ngIf="event.category=='alert'" />
-<img class="CatImg" src="./assets/img/PedestrianCat.png" alt="event-icon" *ngIf="event.category=='pedestrians'" />
+<img class="CatImg" src="./assets/img/PedestrianCat.png" alt="event-icon" *ngIf="event.category=='pedestrians' && !red" />
+<img class="CatImg" src="./assets/img/RedPedestrian.png" alt="event-icon" *ngIf="event.category=='pedestrians' && red" />
 <img class="CatImg" src="./assets/img/CarCat.png" alt="event-icon" *ngIf="event.category=='cars'" />
 <img class="CatImg" src="./assets/img/help.png" alt="event-icon" *ngIf="unknown" />
 <img class="CatImg" src="./assets/img/AmbulanceCat.png" alt="event-icon" *ngIf="event.category=='emergency' && !red" />
