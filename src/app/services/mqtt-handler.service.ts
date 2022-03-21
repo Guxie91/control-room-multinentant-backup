@@ -28,6 +28,7 @@ export class MqttHandlerService {
   brokers: MqttSettings[] = [];
   readyToConnect = false;
   currentBroker!: MqttSettings;
+  autoFocusChanged = new Subject<string>();
 
   constructor(
     private _mqtt: MqttService,

@@ -83,6 +83,7 @@ table{
 }
 .searchLens {
   width: 25px;
+  margin-right: 10px;
 }
 .popup{
   font-weight: bold;

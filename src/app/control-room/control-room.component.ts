@@ -17,7 +17,6 @@ import {
   EmergencyIcon,
   InfoIcon,
   PedestrianIcon,
-  RedEmergencyIcon,
   RoadworksIcon,
   TrafficIcon,
   WeatherIcon,
@@ -93,6 +92,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   markers: MarkerBundle[] = [];
   lastSelectedEvent = "-1";
   searchKey = "";
+  autoFocus = "on";
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
@@ -142,12 +142,18 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         this.handleExpiredDENM(message);
       }
     );
+    let autoFocusSub = this.mqtt.autoFocusChanged.subscribe(
+      (value: string) => {
+        this.autoFocus = value;
+      }
+    );
     this.mqtt.connectToBroker();
     this.subscriptions.push(DENMExpiredSub);
     this.subscriptions.push(mqttMessagesSub);
     this.subscriptions.push(mqttExpiredEventId);
     this.subscriptions.push(newCustomMessageSub);
     this.subscriptions.push(DENMMessageSub);
+    this.subscriptions.push(autoFocusSub);
   }
   private initMap(): void {
     let lat = localStorage.getItem("lat");
@@ -167,6 +173,10 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     L.control
       .scale({ position: "topright", imperial: false, maxWidth: 200 })
       .addTo(this.map);
+    let autoFocus = localStorage.getItem("autoFocus");
+    if (autoFocus != null) {
+      this.autoFocus = autoFocus;
+    }
   }
   onFilter(filter: string) {
     for (let cat of this.categories) {
@@ -220,7 +230,11 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           lat: etsiMessage.coordinates.lat,
           lng: etsiMessage.coordinates.lng,
         });
-        if (mark.messageId == this.lastSelectedEvent && mark.type == "cam") {
+        if (
+          mark.messageId == this.lastSelectedEvent &&
+          mark.type == "cam" &&
+          this.autoFocus == "on"
+        ) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
         }
         return;

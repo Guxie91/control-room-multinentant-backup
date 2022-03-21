@@ -6,11 +6,19 @@
     </button>
   </div>
   <div class="modal-body">
-    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+    <form #authForm="ngForm" (ngSubmit)="onSubmit()">
       <label class="labelSettings" for="broker">Seleziona un broker (attuale:
-        <strong>{{currentBroker.name}}</strong>)</label>
-      <select class="form-control" id="broker" name="broker" [(ngModel)]="currentBroker">
+        <strong>{{previousBroker.name}}</strong>)</label>
+      <br />
+      <select class="form-control" id="broker" name="broker" [(ngModel)]="currentlySelectedBroker">
         <option *ngFor="let option of brokers" [ngValue]="option">{{option.name}}</option>
+      </select>
+      <br />
+      <label class="labelSettings" for="autoFocus">Segui il veicolo selezionato automaticamente</label>
+      <br />
+      <select class="form-control" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus">
+        <option value=true>ON</option>
+        <option value=false>OFF</option>
       </select>
       <hr />
       <div style="text-align: center">

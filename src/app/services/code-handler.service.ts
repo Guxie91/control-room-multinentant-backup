@@ -1,3 +1,4 @@
+import { RedCarIcon } from "./../utilities/marker-icons";
 import { Injectable } from "@angular/core";
 import {
   CarIcon,
@@ -11,6 +12,10 @@ import {
   defaultPopup,
   emergencyVehicleApproachingPopup,
   pedestrianWalkingPopup,
+  roadworksPopup,
+  stationaryVehicleWarning,
+  trafficPopup,
+  weatherPopup,
 } from "../utilities/popup-ballon";
 declare var denm: any;
 
@@ -30,12 +35,19 @@ export class CodeHandlerService {
       );
     }
   }
-  getAdHocDescription(description:string, causeCode: string, subCauseCode: string){
+  getAdHocDescription(
+    description: string,
+    causeCode: string,
+    subCauseCode: string
+  ) {
     if (causeCode == "95" && subCauseCode == "1") {
       return "Emergency Vehicle Approaching";
     }
-    if (causeCode == "12" && subCauseCode == "1") {
-      return "Children on Roadway";
+    if (causeCode == "12" && subCauseCode == "0") {
+      return "Vulnerable Road User";
+    }
+    if (causeCode == "91" && subCauseCode == "0") {
+      return "Vehicle Breakdown";
     }
     return description;
   }
@@ -43,15 +55,20 @@ export class CodeHandlerService {
     if (causeCode == "95" && subCausdeCode == "1" && category == "emergency") {
       return RedEmergencyIcon;
     }
-    if (category == "emergency") {
-      return EmergencyIcon;
-    }
-    if (category == "cars") {
-      return CarIcon;
+    if (causeCode == "91" && category == "cars") {
+      return RedCarIcon;
     }
     if (causeCode == "12" && category == "pedestrians") {
       return RedPedestrianIcon;
     }
+    if (category == "emergency") {
+      return EmergencyIcon;
+    }
+
+    if (category == "cars") {
+      return CarIcon;
+    }
+
     if (category == "pedestrians") {
       return PedestrianIcon;
     }
@@ -59,10 +76,18 @@ export class CodeHandlerService {
   }
   getPopupContent(popup: string) {
     switch (popup) {
-      case "pedestrianWalking":
+      case "RWW":
+        return roadworksPopup;
+      case "WCW":
+        return weatherPopup;
+      case "TCW":
+        return trafficPopup;
+      case "VRUW":
         return pedestrianWalkingPopup;
-      case "emergencyVehicleApproaching":
+      case "EVW":
         return emergencyVehicleApproachingPopup;
+      case "SVW":
+        return stationaryVehicleWarning;
       default:
         return (
           defaultPopup +

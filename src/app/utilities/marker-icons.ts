@@ -8,7 +8,7 @@ export const RoadworksIcon = L.icon({
 });
 
 export const InfoIcon = L.icon({
-  iconUrl: "./assets/img/InfoCat.png",
+  iconUrl: "./assets/img/OrangeInfo.png",
   iconSize: [34, 30], // size of the icon
   iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
@@ -43,14 +43,21 @@ export const PedestrianIcon = L.icon({
 });
 
 export const RedPedestrianIcon = L.icon({
-  iconUrl: "./assets/img/RedPedestrian.png",
-  iconSize: [15, 30], // size of the icon
+  iconUrl: "./assets/img/RedPedestrianCat.png",
+  iconSize: [30, 30], // size of the icon
   iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
 
 export const CarIcon = L.icon({
   iconUrl: "./assets/img/CarCat.png",
+  iconSize: [34, 30], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
+export const RedCarIcon = L.icon({
+  iconUrl: "./assets/img/RedCarCat.png",
   iconSize: [34, 30], // size of the icon
   iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
