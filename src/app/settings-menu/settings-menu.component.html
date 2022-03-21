@@ -14,7 +14,7 @@
         <option *ngFor="let option of brokers" [ngValue]="option">{{option.name}}</option>
       </select>
       <br />
-      <label class="labelSettings" for="autoFocus">Segui il veicolo selezionato automaticamente</label>
+      <label class="labelSettings" for="autoFocus">Centra la mappa sul veicolo selezionato</label>
       <br />
       <select class="form-control" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus">
         <option value=true>ON</option>

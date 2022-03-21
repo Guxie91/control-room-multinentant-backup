@@ -1,5 +1,5 @@
 @import "~@fontsource/oswald/index.css";
-@import '~leaflet/dist/leaflet.css';
+@import "~leaflet/dist/leaflet.css";
 
 .darkButton {
   margin-top: 10px;
@@ -18,7 +18,8 @@
   opacity: 40%;
 }
 
-body, html{
+body,
+html {
   overflow-x: hidden;
 }
 
@@ -29,7 +30,7 @@ body, html{
   font-weight: normal;
   font-style: normal;
 }
-.popupImg{
+.popupImg {
   width: 30px;
 }
 .popupLabel {
@@ -41,17 +42,41 @@ body, html{
   color: black;
   letter-spacing: 0px;
 }
-.popupBackground{
+.popupBackground {
   background-color: transparent !important;
 }
-.alertImg  {
-	height:60px;
+.alertImg {
+  height: 60px;
 }
 .alertLabel {
-	font-size:1.1em;
-	font-weight:bold;
-	line-height:140%;
-	padding:5px;
-	color:#000000;
-	letter-spacing:0px;
+  font-size: 1.1em;
+  font-weight: bold;
+  line-height: 140%;
+  padding: 5px;
+  color: #000000;
+  letter-spacing: 0px;
+}
+
+.leaflet-popup-content-wrapper {
+  width: 210px;
+  height: 140px;
+  background-color: black;
+  opacity: 80%;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  border: 3px ridge white;
+  margin-left: 240px !important;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+  background-color: transparent;
+}
+
+.leaflet-popup-tip-container {
+  opacity: 0%;
+}
+
+.whiteText {
+  color: white !important;
 }
