@@ -69,20 +69,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   subCategoriesVehicles = [
     {
-      label: "AUTO",
+      label: "VEICOLI",
       name: "cars",
       active: true,
       url: "./assets/img/CarCat.png",
     },
     {
-      label: "PEDONI",
+      label: "UTENTI VULNERABILI",
       name: "pedestrians",
       active: true,
       url: "./assets/img/PedestrianCat.png",
     },
 
     {
-      label: "EMERGENZA",
+      label: "VEICOLI DI EMERGENZA",
       name: "emergency",
       active: true,
       url: "./assets/img/AmbulanceCat.png",

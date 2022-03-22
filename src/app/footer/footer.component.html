@@ -3,8 +3,8 @@
     <img class="footerImg" [src]="footerImg" alt="logo" *ngIf="this.currentTenant.name!=''" />
     <span class="footerLabel">{{currentTenant.footerText}}</span>
   </div>
-  <div class="col-sm-2 col-md-2 col-lg-2">
-    <span *ngIf="currentUser" class="footerLabel">
+  <div class="col-sm-2 col-md-2 col-lg-2" >
+    <span *ngIf="currentUser" class="footerLabel userSettings">
       {{currentUser}}
       <a (click)="openSettings()">
         <img class="settingsIcon" src="./assets/img/WhiteGear.png" alt="settings" />
