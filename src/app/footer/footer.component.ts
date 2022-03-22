@@ -13,13 +13,14 @@ import { SettingsMenuComponent } from "../settings-menu/settings-menu.component"
 })
 export class FooterComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
-  currentTenant:Tenant = new Tenant();
+  currentTenant: Tenant = new Tenant();
   currentUser = "";
   footerImg = "";
   constructor(
     private tenantService: TenantHandlerService,
     private auth: AuthService,
-    private modalService: NgbModal  ) {}
+    private modalService: NgbModal
+  ) {}
   ngOnDestroy(): void {
     for (let sub of this.subscriptions) {
       sub.unsubscribe();
@@ -28,7 +29,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     let tenantSub = this.tenantService.tenant.subscribe((tenant) => {
       this.currentTenant = tenant;
-      this.footerImg = "./assets/"+this.currentTenant.name+"/img/footer.png"
+      this.footerImg =
+        "./assets/" + this.currentTenant.name + "/img/footer.png";
     });
     this.subscriptions.push(tenantSub);
     let userSub = this.auth.newUser.subscribe((user) => {
@@ -36,7 +38,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(userSub);
   }
-  openSettings(){
-    this.modalService.open(SettingsMenuComponent);
+  openSettings() {
+    this.modalService.open(SettingsMenuComponent, { centered: true });
   }
 }

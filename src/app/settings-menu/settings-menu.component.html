@@ -1,28 +1,27 @@
 <div class="settings">
-  <div class="modal-header darkBackground">
-    <h4 class="headerLabel">Impostazioni</h4>
+  <div class="modal-body">
+    <img src="./assets/img/BlackGear.png" class="gearIcon" />
     <button type="darkButton" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <div class="modal-body">
     <form #authForm="ngForm" (ngSubmit)="onSubmit()">
-      <label class="labelSettings" for="broker">Seleziona un broker (attuale:
-        <strong>{{previousBroker.name}}</strong>)</label>
+      <label class="labelSettings" for="broker">Message broker</label>
       <br />
-      <select class="form-control" id="broker" name="broker" [(ngModel)]="currentlySelectedBroker">
+      <select class="comboBox settingsSelect" id="broker" name="broker" [(ngModel)]="currentlySelectedBroker">
         <option *ngFor="let option of brokers" [ngValue]="option">{{option.name}}</option>
       </select>
       <br />
-      <label class="labelSettings" for="autoFocus">Centra la mappa sul veicolo selezionato</label>
       <br />
-      <select class="form-control" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus">
+      <label class="labelSettings " for="autoFocus">Centra la mappa sul veicolo selezionato</label>
+      <br />
+      <select class="comboBox settingsSelect" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus">
         <option value=true>ON</option>
         <option value=false>OFF</option>
       </select>
       <hr />
-      <div style="text-align: center">
+      <div style="text-align: left">
         <button type="submit" class="darkButton">SALVA</button>
+        <button type="button" class="darkButton" (click)="onCancel()">ANNULLA</button>
       </div>
     </form>
   </div>

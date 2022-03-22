@@ -30,9 +30,6 @@ html {
   font-weight: normal;
   font-style: normal;
 }
-.popupImg {
-  width: 30px;
-}
 .popupLabel {
   font-size: 1.4em;
   font-weight: bold;
@@ -79,4 +76,9 @@ html {
 
 .whiteText {
   color: white !important;
+}
+
+.popupImg{
+  margin-top: 8px;
+  margin-bottom: 5px;
 }

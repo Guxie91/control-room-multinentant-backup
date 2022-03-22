@@ -91,7 +91,7 @@ export class CodeHandlerService {
       default:
         return (
           defaultPopup +
-          '<div style="text-align:center;min-width: 100px;"><span class="alertLabel">' +
+          '<div style="text-align:center;min-width: 100px;"><span class="alertLabel whiteText">' +
           popup +
           "</span></div>"
         );

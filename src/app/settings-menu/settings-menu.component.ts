@@ -56,7 +56,6 @@ export class SettingsMenuComponent implements OnInit {
       this.autoFocus = false;
       this.mqtt.autoFocusChanged.next("off");
     }
-
   }
   onSubmit() {
     let broker = this.currentlySelectedBroker;
@@ -79,5 +78,8 @@ export class SettingsMenuComponent implements OnInit {
     }
     this.activeModal.close();
     return;
+  }
+  onCancel() {
+    this.activeModal.close();
   }
 }
