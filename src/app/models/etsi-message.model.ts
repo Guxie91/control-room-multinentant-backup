@@ -13,7 +13,8 @@ export class EtsiMessage{
     public timestamp: Date,
     public highlight = false,
     public hide = false,
-    public denms:DENMMessage[] = []
+    public denms:DENMMessage[] = [],
+    public special:boolean = false
   ) {
 
   }

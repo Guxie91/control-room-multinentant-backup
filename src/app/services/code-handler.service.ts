@@ -17,13 +17,17 @@ import {
   trafficPopup,
   weatherPopup,
 } from "../utilities/popup-ballon";
+import { EtsiMessage } from "../models/etsi-message.model";
+import { HttpHandlerService } from "./http-handler.service";
 declare var denm: any;
 
 @Injectable({
   providedIn: "root",
 })
 export class CodeHandlerService {
+
   constructor() {}
+
   getDescriptionDetail(message: any) {
     let causeCodeDesc = denm.getCauseCode(message);
     let subCauseCodeDesc = denm.getSubCauseCode(message);
@@ -51,7 +55,7 @@ export class CodeHandlerService {
     }
     return description;
   }
-  getIcon(causeCode: string, subCausdeCode: string, category: string) {
+  getIconForDENM(causeCode: string, subCausdeCode: string, category: string) {
     if (causeCode == "95" && subCausdeCode == "1" && category == "emergency") {
       return RedEmergencyIcon;
     }

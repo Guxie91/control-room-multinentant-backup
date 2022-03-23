@@ -38,4 +38,9 @@ export class HttpHandlerService {
       "./assets/settings.json?t=" + new Date().getTime()
     );
   }
+  fetchSpecialVehicles(){
+    return this.http.get<any>(
+      "./assets/special-vehicles/vehicles-list.json?t=" + new Date().getTime()
+    );
+  }
 }

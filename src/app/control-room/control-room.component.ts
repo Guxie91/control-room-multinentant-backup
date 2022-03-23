@@ -93,6 +93,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   lastSelectedEvent = "-1";
   searchKey = "";
   autoFocus = "on";
+  specialVehicles: string[] = [];
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
@@ -142,11 +143,14 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         this.handleExpiredDENM(message);
       }
     );
-    let autoFocusSub = this.mqtt.autoFocusChanged.subscribe(
-      (value: string) => {
-        this.autoFocus = value;
-      }
-    );
+    let autoFocusSub = this.mqtt.autoFocusChanged.subscribe((value: string) => {
+      this.autoFocus = value;
+    });
+    let specialVehiclesSub = this.http
+      .fetchSpecialVehicles()
+      .subscribe((data) => {
+        this.specialVehicles = data.special_ids;
+      });
     this.mqtt.connectToBroker();
     this.subscriptions.push(DENMExpiredSub);
     this.subscriptions.push(mqttMessagesSub);
@@ -154,6 +158,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions.push(newCustomMessageSub);
     this.subscriptions.push(DENMMessageSub);
     this.subscriptions.push(autoFocusSub);
+    this.subscriptions.push(specialVehiclesSub);
   }
   private initMap(): void {
     let lat = localStorage.getItem("lat");
@@ -274,6 +279,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesVehicles[1].active;
       dynamicIcon = EmergencyIcon;
     }
+    dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
       { icon: dynamicIcon, riseOnHover: true }
@@ -379,16 +385,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         popup.setContent(content);
         marker.marker.bindPopup(popup);
         marker.marker.openPopup();
-        /* POPUP BACKGROUND EXPERIMENT
-        let popupElement = document.getElementsByClassName(
-          "leaflet-popup-content-wrapper"
-        );
-        let htmlPopupElement;
-        if (popupElement[0] instanceof HTMLElement) {
-          htmlPopupElement = popupElement[0] as HTMLElement;
-          htmlPopupElement.style.backgroundColor = "rgb(235, 235, 235)";
-        }
-        */
         return;
       }
       if (
@@ -417,11 +413,16 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
         event.denms.push(message);
-        let icon = this.codeHandler.getIcon(
+        let icon = this.codeHandler.getIconForDENM(
           message.causeCode,
           message.subCauseCode,
           event.category
         );
+        for (let id of this.specialVehicles) {
+          if (event.id == id) {
+            icon = this.createRedSpecialIcon(event.id);
+          }
+        }
         for (let mark of this.markers) {
           if (mark.messageId == event.id) {
             mark.marker.setIcon(icon);
@@ -445,16 +446,23 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             event.denms.splice(index, 1);
             for (let mark of this.markers) {
               if (mark.messageId == event.id) {
+                for (let id of this.specialVehicles) {
+                  if (event.id == id) {
+                    let customIcon = this.createSpecialIcon(event.id);
+                    mark.marker.setIcon(customIcon);
+                    return;
+                  }
+                }
                 switch (event.category) {
                   case "emergency":
                     mark.marker.setIcon(EmergencyIcon);
-                    return;
+                    break;
                   case "pedestrians":
                     mark.marker.setIcon(PedestrianIcon);
-                    return;
+                    break;
                   case "cars":
                     mark.marker.setIcon(CarIcon);
-                    return;
+                    break;
                 }
               }
             }
@@ -462,5 +470,36 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+  }
+  getSpecialMarkerIcon(previousIcon: L.Icon, etsiMessage: EtsiMessage) {
+    for (let id of this.specialVehicles) {
+      if (etsiMessage.id == id) {
+        let customIcon = this.createSpecialIcon(etsiMessage.id);
+        for(let event of this.events) {
+          if(event.id == etsiMessage.id){
+            event.special = true;
+            break;
+          }
+        }
+        return customIcon;
+      }
+    }
+    return previousIcon;
+  }
+  createSpecialIcon(id:string){
+    return L.icon({
+      iconUrl: "./assets/special-vehicles/" + id + "/default.png",
+      iconSize: [44, 44], // size of the icon
+      iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+    });
+  }
+  createRedSpecialIcon(id:string){
+    return L.icon({
+      iconUrl: "./assets/special-vehicles/" + id + "/red.png",
+      iconSize: [44, 44], // size of the icon
+      iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+    });
   }
 }
