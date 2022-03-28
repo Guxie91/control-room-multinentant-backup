@@ -48,11 +48,11 @@ export class SettingsMenuComponent implements OnInit {
         }
       });
     let autoFocus = localStorage.getItem("autoFocus");
-    if (autoFocus == "true" || autoFocus == null) {
+    if (autoFocus == "on" || autoFocus == null) {
       this.autoFocus = true;
       this.mqtt.autoFocusChanged.next("on");
     }
-    if (autoFocus == "false") {
+    if (autoFocus == "off") {
       this.autoFocus = false;
       this.mqtt.autoFocusChanged.next("off");
     }
@@ -69,6 +69,7 @@ export class SettingsMenuComponent implements OnInit {
     } else {
       console.log("No broker changes detected!");
     }
+    console.log(this.autoFocus)
     if (this.autoFocus == true) {
       this.mqtt.autoFocusChanged.next("on");
       localStorage.setItem("autoFocus", "on");

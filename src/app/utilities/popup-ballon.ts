@@ -1,7 +1,7 @@
 export const pedestrianWalkingPopup =
   '<div style="text-align:center;">' +
-  '<img src="./assets/img/WhitePedestrianCat.png" class="alertImg" />' +
-  '<br/><span class="alertLabel whiteText">Vulnerable Road User</span></div>';
+  '<img src="./assets/img/WhitePedestrianCat.png" class="alertImg" style="margin-top: 5px;"/>' +
+  '<br/><span class="alertLabel whiteText" style="margin-top: 10px;">Vulnerable Road User</span></div>';
 
 export const emergencyVehicleApproachingPopup =
   '<div style="text-align:center;">' +
