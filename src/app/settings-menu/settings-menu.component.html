@@ -14,9 +14,9 @@
       <br />
       <label class="labelSettings " for="autoFocus">Centra la mappa sul veicolo selezionato</label>
       <br />
-      <select class="comboBox settingsSelect" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus">
-        <option value=true>ON</option>
-        <option value=false>OFF</option>
+      <select class="comboBox settingsSelect" id="autoFocus" name="autoFocus" [(ngModel)]="autoFocus" (ngModelChange)="onChangeFocus()">
+        <option value="on">ON</option>
+        <option value="off">OFF</option>
       </select>
       <br />
       <br />

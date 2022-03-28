@@ -25,7 +25,7 @@ export class BrokerMQTT {
 })
 export class SettingsMenuComponent implements OnInit {
   brokers: BrokerMQTT[] = [];
-  autoFocus: boolean = true;
+  autoFocus: string = "on";
   currentlySelectedBroker: BrokerMQTT = new BrokerMQTT();
   previousBroker: BrokerMQTT = new BrokerMQTT();
 
@@ -49,12 +49,14 @@ export class SettingsMenuComponent implements OnInit {
       });
     let autoFocus = localStorage.getItem("autoFocus");
     if (autoFocus == "on" || autoFocus == null) {
-      this.autoFocus = true;
+      this.autoFocus = "on";
       this.mqtt.autoFocusChanged.next("on");
+      localStorage.setItem("autoFocus", "on");
     }
     if (autoFocus == "off") {
-      this.autoFocus = false;
+      this.autoFocus = "off";
       this.mqtt.autoFocusChanged.next("off");
+      localStorage.setItem("autoFocus", "off");
     }
   }
   onSubmit() {
@@ -69,11 +71,11 @@ export class SettingsMenuComponent implements OnInit {
     } else {
       console.log("No broker changes detected!");
     }
-    console.log(this.autoFocus)
-    if (this.autoFocus == true) {
+    if (this.autoFocus == "on") {
       this.mqtt.autoFocusChanged.next("on");
       localStorage.setItem("autoFocus", "on");
-    } else {
+    }
+    if (this.autoFocus == "off") {
       this.mqtt.autoFocusChanged.next("off");
       localStorage.setItem("autoFocus", "off");
     }
@@ -82,5 +84,8 @@ export class SettingsMenuComponent implements OnInit {
   }
   onCancel() {
     this.activeModal.close();
+  }
+  onChangeFocus() {
+    console.log(this.autoFocus);
   }
 }
