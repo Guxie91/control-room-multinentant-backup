@@ -3,6 +3,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { Tenant } from "../models/tenant.model";
 import { AuthService } from "../services/auth.service";
+import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { TenantHandlerService } from "../services/tenant-handler.service";
 import { SettingsMenuComponent } from "../settings-menu/settings-menu.component";
 
@@ -16,10 +17,12 @@ export class FooterComponent implements OnInit, OnDestroy {
   currentTenant: Tenant = new Tenant();
   currentUser = "";
   footerImg = "";
+  connected = false;
   constructor(
     private tenantService: TenantHandlerService,
     private auth: AuthService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private mqtt: MqttHandlerService
   ) {}
   ngOnDestroy(): void {
     for (let sub of this.subscriptions) {
@@ -37,6 +40,12 @@ export class FooterComponent implements OnInit, OnDestroy {
       this.currentUser = user.username;
     });
     this.subscriptions.push(userSub);
+    let connectionStatusSub = this.mqtt.connectionStatusChanged.subscribe(
+      (status) => {
+        this.connected = status;
+      }
+    );
+    this.subscriptions.push(connectionStatusSub);
   }
   openSettings() {
     this.modalService.open(SettingsMenuComponent, { centered: true });

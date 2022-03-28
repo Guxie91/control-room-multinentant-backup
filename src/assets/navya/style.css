@@ -10,6 +10,10 @@
 .darkButton {
   background-color: #0164f2;
 }
+
+.headerImg{
+  margin-left: 15px !important;
+}
 /* general */
 
 body {

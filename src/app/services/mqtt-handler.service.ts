@@ -29,6 +29,7 @@ export class MqttHandlerService {
   readyToConnect = false;
   currentBroker!: MqttSettings;
   autoFocusChanged = new Subject<string>();
+  connectionStatusChanged = new Subject<boolean>();
 
   constructor(
     private _mqtt: MqttService,
@@ -36,7 +37,15 @@ export class MqttHandlerService {
     private http: HttpHandlerService,
     private router: Router,
     private codeHandler: CodeHandlerService
-  ) {}
+  ) {
+    this._mqtt.state.subscribe((status: any) => {
+      if(+status>=2){
+        this.connectionStatusChanged.next(true);
+      }else{
+        this.connectionStatusChanged.next(false);
+      }
+    });
+  }
 
   initConnection() {
     this.http
@@ -103,7 +112,7 @@ export class MqttHandlerService {
         (message: IMqttMessage) => {
           let topicData = message.topic.split("/");
           const topic = topicData[0] + "/" + topicData[1];
-          if(topic == "json/denm"){
+          if (topic == "json/denm") {
             this.handleDENM(message);
             return;
           }
@@ -152,21 +161,24 @@ export class MqttHandlerService {
     for (let event of this.events) {
       this.expiredEventId.next(event.id);
     }
-    this.eventsUpdated.next([]);
+    this.events = [];
+    this.eventsUpdated.next(this.events);
   }
   checkForExpiredEvents() {
     for (let event of this.events) {
       let eventTime = new Date(event.timestamp).getTime();
       let currentTime = new Date().getTime();
-      if (currentTime - eventTime > 60000) { //CAM EXPIRING TIME 60sec
+      if (currentTime - eventTime > 60000) {
+        //CAM EXPIRING TIME 60sec
         let index = this.events.indexOf(event);
         this.events.splice(index, 1);
         this.expiredEventId.next(event.id);
       }
-      if(event.type == "cam" && event.denms.length>0){
-        for(let denm of event.denms){
+      if (event.type == "cam" && event.denms.length > 0) {
+        for (let denm of event.denms) {
           let denmTime = denm.timestamp.getTime();
-          if(currentTime - denmTime > 30000){ //DENM EXPIRING TIME 30sec
+          if (currentTime - denmTime > 30000) {
+            //DENM EXPIRING TIME 30sec
             this.DENMExpired.next(denm);
           }
         }
@@ -177,14 +189,18 @@ export class MqttHandlerService {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
     this.newCustomMessage.next(customMessage);
   }
-  handleDENM(message: IMqttMessage){
+  handleDENM(message: IMqttMessage) {
     let payloadJSON = JSON.parse(message.payload.toString());
     let stationID = payloadJSON.denm.management.actionID.originatingStationID;
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
     let tempDescription = this.codeHandler.getDescriptionDetail(payloadJSON);
-    let description = this.codeHandler.getAdHocDescription(tempDescription, causeCode, subCauseCode);
+    let description = this.codeHandler.getAdHocDescription(
+      tempDescription,
+      causeCode,
+      subCauseCode
+    );
     let new_denm = new DENMMessage(
       stationID,
       causeCode,
