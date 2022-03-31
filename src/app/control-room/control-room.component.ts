@@ -9,7 +9,7 @@ import { MarkerBundle } from "../models/marker-bundle.model";
 import { CodeHandlerService } from "../services/code-handler.service";
 import { HttpHandlerService } from "../services/http-handler.service";
 import { MqttHandlerService } from "../services/mqtt-handler.service";
-import { OPEN_STREET_MAP } from "../utilities/maps";
+import { ESRI_WORLD_IMAGERY, GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
 import {
   CarIcon,
   DangerIcon,
@@ -175,6 +175,18 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       closePopupOnClick: false,
     });
     OPEN_STREET_MAP.addTo(this.map);
+    L.control
+      .layers(
+        {
+          Cartina: OPEN_STREET_MAP,
+          Satellitare: GOOGLE_TERRAIN,
+        },
+        undefined,
+        {
+          position: "bottomright",
+        }
+      )
+      .addTo(this.map);
     L.control
       .scale({ position: "topright", imperial: false, maxWidth: 200 })
       .addTo(this.map);
