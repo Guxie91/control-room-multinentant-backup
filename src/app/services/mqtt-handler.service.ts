@@ -39,9 +39,9 @@ export class MqttHandlerService {
     private codeHandler: CodeHandlerService
   ) {
     this._mqtt.state.subscribe((status: any) => {
-      if(+status>=2){
+      if (+status >= 2) {
         this.connectionStatusChanged.next(true);
-      }else{
+      } else {
         this.connectionStatusChanged.next(false);
       }
     });
@@ -112,17 +112,24 @@ export class MqttHandlerService {
         (message: IMqttMessage) => {
           let topicData = message.topic.split("/");
           const topic = topicData[0] + "/" + topicData[1];
-          if (topic == "json/denm") {
+          let payloadJSON = JSON.parse(message.payload.toString());
+          //identify message type
+          if (payloadJSON["denm"]) {
             this.handleDENM(message);
             return;
           }
-          if (topic == "dashboard/hud") {
+          if (payloadJSON["popup"]) {
             this.handleCustomMessage(message);
             return;
           } else {
             let etsiMessage: EtsiMessage = this.messageHandler.manageMessage(
               message
             );
+            if (etsiMessage.category == "error") {
+              console.log("Error: Unknown message type!");
+              console.log(etsiMessage);
+              return;
+            }
             let found = false;
             for (let event of this.events) {
               if (event.id == etsiMessage.id) {

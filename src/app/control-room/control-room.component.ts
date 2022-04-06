@@ -183,7 +183,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         undefined,
         {
-          position: "bottomright",
+          position: "bottomleft",
         }
       )
       .addTo(this.map);

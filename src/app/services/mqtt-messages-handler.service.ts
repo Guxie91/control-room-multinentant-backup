@@ -79,6 +79,14 @@ export class MqttMessagesHandlerService {
     let longitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.longitude;
     //longitude = longitude / 10000000;
+    if(+latitude>1000 || +longitude> 1000){
+      latitude = latitude / 10000000;
+      longitude = longitude / 10000000;
+    }
+    if(+latitude<-1000 || +longitude< -1000){
+      latitude = latitude / 10000000;
+      longitude = longitude / 10000000;
+    }
     let info =
       "messageID: " +
       payloadJSON.header.messageID +
