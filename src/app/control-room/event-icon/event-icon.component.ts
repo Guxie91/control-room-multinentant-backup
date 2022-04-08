@@ -52,9 +52,13 @@ export class EventIconComponent implements OnInit, OnDestroy {
       this.event.category != "traffic" &&
       this.event.category != "pedestrians" &&
       this.event.category != "cars" &&
-      this.event.category != "emergency"
+      this.event.category != "emergency" &&
+      this.event.category != "alert"
     ) {
       this.unknown = true;
+    }
+    if (this.event.highlight == true) {
+      this.red = true;
     }
   }
   ngOnDestroy(): void {

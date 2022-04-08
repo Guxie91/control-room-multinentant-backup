@@ -2,28 +2,19 @@ import { Injectable } from "@angular/core";
 import { LatLng } from "leaflet";
 import { IMqttMessage } from "ngx-mqtt";
 import { EtsiMessage } from "../models/etsi-message.model";
+import { CodeHandlerService } from "./code-handler.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class MqttMessagesHandlerService {
-  constructor() {}
+  constructor(private codeHandler: CodeHandlerService) {}
   manageMessage(message: IMqttMessage) {
-    //disassemble topic
-    let topicData = message.topic.split("/");
-    //collect quadkeys or other topic elements
-    let quadkey = "";
-    for (let i = 0; i < topicData.length; i++) {
-      if (i < 2) {
-        continue;
-      }
-      quadkey += topicData[i];
-    }
-    //reassemble topic assuming text/text/quadkey/quadkey/....
-    const topic = topicData[0] + "/" + topicData[1];
-    const quadkeyArr = [quadkey];
+    let decodedMessage = this.extractMessage(message);
+    let payloadJSON = decodedMessage.payloadJSON;
+    let quadkeyArr = decodedMessage.quadkeyArr;
+    let topic = decodedMessage.topic;
     let newEtsiMessage;
-    let payloadJSON = JSON.parse(message.payload.toString());
     //identify message type
     if (payloadJSON["ivi"]) {
       newEtsiMessage = this.createIVIMMessage(
@@ -79,11 +70,11 @@ export class MqttMessagesHandlerService {
     let longitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.longitude;
     //longitude = longitude / 10000000;
-    if(+latitude>1000 || +longitude> 1000){
+    if (+latitude > 1000 || +longitude > 1000) {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
     }
-    if(+latitude<-1000 || +longitude< -1000){
+    if (+latitude < -1000 || +longitude < -1000) {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
     }
@@ -139,5 +130,67 @@ export class MqttMessagesHandlerService {
       false
     );
     return newEtsiMessage;
+  }
+  createDENMMessage(message: IMqttMessage) {
+    let decodedMessage = this.extractMessage(message);
+    let causeCode = decodedMessage.payloadJSON.denm.situation.eventType.causeCode.toString();
+    let info;
+    switch (causeCode) {
+      case "12":
+        info = "Avviso da server centrale (Utenti Vulnerabili)";
+        break;
+      case "91":
+        info = "Avviso da server centrale (Veicoli)";
+        break;
+      case "95":
+        info = "Avviso da server centrale (Veicoli di Emergenza)";
+        break;
+      default:
+        console.log("causeCode " + causeCode + " non riconosciuto!");
+        info = this.codeHandler.getDescriptionDetail(decodedMessage.payloadJSON);
+    }
+    let latitude = decodedMessage.payloadJSON.denm.management.eventPosition.latitude;
+    let longitude = decodedMessage.payloadJSON.denm.management.eventPosition.longitude;
+    if (+latitude > 1000 || +longitude > 1000) {
+      latitude = latitude / 10000000;
+      longitude = longitude / 10000000;
+    }
+    if (+latitude < -1000 || +longitude < -1000) {
+      latitude = latitude / 10000000;
+      longitude = longitude / 10000000;
+    }
+    let id = decodedMessage.payloadJSON.denm.management.actionID.originatingStationID;
+    id += decodedMessage.payloadJSON.header.messageID;
+    let newMessage = new EtsiMessage(
+    "alert",
+    "denm",
+    id,
+    info,
+    decodedMessage.topic,
+    decodedMessage.quadkeyArr,
+    new LatLng(latitude, longitude),
+    new Date(),
+    false,
+    false,
+    [],
+    false);
+    return newMessage;
+  }
+  extractMessage(message: IMqttMessage) {
+    //disassemble topic
+    let topicData = message.topic.split("/");
+    //collect quadkeys or other topic elements
+    let quadkey = "";
+    for (let i = 0; i < topicData.length; i++) {
+      if (i < 2) {
+        continue;
+      }
+      quadkey += topicData[i];
+    }
+    //reassemble topic assuming text/text/quadkey/quadkey/....
+    const topic = topicData[0] + "/" + topicData[1];
+    const quadkeyArr = [quadkey];
+    let payloadJSON = JSON.parse(message.payload.toString());
+    return { topic: topic, quadkeyArr: quadkeyArr, payloadJSON: payloadJSON };
   }
 }

@@ -16,7 +16,7 @@ export class HttpHandlerService {
   }
   fetchTenants() {
     return this.http.get<{ tenants: Tenant[] }>(
-      "./assets/settings.json?t=" + new Date().getTime()
+      "./assets/tenants.json?t=" + new Date().getTime()
     );
   }
   fetchMqttOptions() {
@@ -35,12 +35,17 @@ export class HttpHandlerService {
   }
   fetchLabels() {
     return this.http.get<{ tenants: Tenant[] }>(
-      "./assets/settings.json?t=" + new Date().getTime()
+      "./assets/tenants.json?t=" + new Date().getTime()
     );
   }
   fetchSpecialVehicles(){
-    return this.http.get<any>(
+    return this.http.get<{special_ids:string[]}>(
       "./assets/special-vehicles/vehicles-list.json?t=" + new Date().getTime()
+    );
+  }
+  fetchServersIds(){
+    return this.http.get<{serversIDs:string[]}>(
+      "./assets/cv2x-servers.json?t=" + new Date().getTime()
     );
   }
 }

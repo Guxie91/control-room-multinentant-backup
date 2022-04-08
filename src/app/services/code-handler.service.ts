@@ -1,4 +1,4 @@
-import { RedCarIcon } from "./../utilities/marker-icons";
+import { DangerIcon, RedCarIcon } from "./../utilities/marker-icons";
 import { Injectable } from "@angular/core";
 import {
   CarIcon,
@@ -75,6 +75,10 @@ export class CodeHandlerService {
 
     if (category == "pedestrians") {
       return PedestrianIcon;
+    }
+
+    if (category == "alert") {
+      return DangerIcon;
     }
     return DefaultIcon;
   }

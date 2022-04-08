@@ -1,0 +1,12 @@
+{
+  "1.0.0": "Demo Navya 2021",
+  "2.0.0": "Versione multitenant 2022 con layout rivisto",
+  "2.1.0": "Aggiunta la funzione di ricerca",
+  "2.2.0": "Aggiunte le righe espandibili con info aggiuntive",
+  "2.3.0": "Aggiunte le opzioni: cambio broker e auto-tracking",
+  "2.4.0": "Aggiunta la possibilità di aggiungere dinamicamente veicoli speciali identificati tramite id",
+  "2.5.0": "Aggiunto il tracking dello stato della connessione",
+  "2.6.0": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente",
+  "2.6.1": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId",
+  "2.6.2": "versione corrente, fix di style in corso"
+}

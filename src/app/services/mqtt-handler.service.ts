@@ -30,6 +30,7 @@ export class MqttHandlerService {
   currentBroker!: MqttSettings;
   autoFocusChanged = new Subject<string>();
   connectionStatusChanged = new Subject<boolean>();
+  serversIds: string[] = [];
 
   constructor(
     private _mqtt: MqttService,
@@ -73,7 +74,13 @@ export class MqttHandlerService {
           .subscribe((data: any) => {
             this.brokers = data.mqtt_settings;
             this.readyToConnect = true;
-            this.connectToBroker();
+            this.http
+              .fetchServersIds()
+              .pipe(take(1))
+              .subscribe((ids) => {
+                this.serversIds = ids.serversIDs;
+                this.connectToBroker();
+              });
           });
       });
   }
@@ -110,11 +117,17 @@ export class MqttHandlerService {
       console.log("Subscribing to topic " + topic);
       topicSubscription = this._mqtt.observe(topic).subscribe(
         (message: IMqttMessage) => {
-          let topicData = message.topic.split("/");
-          const topic = topicData[0] + "/" + topicData[1];
           let payloadJSON = JSON.parse(message.payload.toString());
           //identify message type
           if (payloadJSON["denm"]) {
+            for (let id of this.serversIds) {
+              if (
+                payloadJSON.denm.management.actionID.originatingStationID == id
+              ) {
+                this.handleDENMFromServer(message);
+                return;
+              }
+            }
             this.handleDENM(message);
             return;
           }
@@ -130,19 +143,7 @@ export class MqttHandlerService {
               console.log(etsiMessage);
               return;
             }
-            let found = false;
-            for (let event of this.events) {
-              if (event.id == etsiMessage.id) {
-                event.timestamp = etsiMessage.timestamp;
-                event.coordinates = etsiMessage.coordinates;
-                found = true;
-              }
-            }
-            if (!found) {
-              this.events.push(etsiMessage);
-            }
-            this.checkForExpiredEvents();
-            this.eventsUpdated.next(this.events);
+            this.insertOrUpdateMessage(etsiMessage);
           }
         },
         (error) => {
@@ -196,9 +197,12 @@ export class MqttHandlerService {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
     this.newCustomMessage.next(customMessage);
   }
-  handleDENM(message: IMqttMessage) {
+  handleDENM(message: IMqttMessage, id?:string) {
     let payloadJSON = JSON.parse(message.payload.toString());
     let stationID = payloadJSON.denm.management.actionID.originatingStationID;
+    if(id!=undefined) {
+      stationID = id;
+    }
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode = payloadJSON.denm.situation.eventType.subCauseCode;
     let timestamp = new Date();
@@ -216,5 +220,25 @@ export class MqttHandlerService {
       timestamp
     );
     this.newDENMMessage.next(new_denm);
+  }
+  insertOrUpdateMessage(etsiMessage: EtsiMessage) {
+    let found = false;
+    for (let event of this.events) {
+      if (event.id == etsiMessage.id) {
+        event.timestamp = etsiMessage.timestamp;
+        event.coordinates = etsiMessage.coordinates;
+        found = true;
+      }
+    }
+    if (!found) {
+      this.events.push(etsiMessage);
+    }
+    this.checkForExpiredEvents();
+    this.eventsUpdated.next(this.events);
+  }
+  handleDENMFromServer(message: IMqttMessage) {
+    let newMessage = this.messageHandler.createDENMMessage(message);
+    this.insertOrUpdateMessage(newMessage);
+    this.handleDENM(message, newMessage.id);
   }
 }

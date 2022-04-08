@@ -72,7 +72,7 @@ export const EmergencyIcon = L.icon({
 
 export const DefaultIcon = L.icon({
   iconUrl: "./assets/img/help.png",
-  iconSize: [20, 30], // size of the icon
+  iconSize: [30, 30], // size of the icon
   iconAnchor: [10, 30], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
