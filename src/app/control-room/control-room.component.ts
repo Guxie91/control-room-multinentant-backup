@@ -72,20 +72,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       label: "VEICOLI",
       name: "cars",
       active: true,
-      url: "./assets/img/CarCat.png",
+      url: "./assets/img/VehicleCat.png",
     },
     {
       label: "UTENTI VULNERABILI",
       name: "pedestrians",
       active: true,
-      url: "./assets/img/PedestrianCat.png",
+      url: "./assets/img/VRUCat.png",
     },
 
     {
       label: "VEICOLI DI EMERGENZA",
       name: "emergency",
       active: true,
-      url: "./assets/img/AmbulanceCat.png",
+      url: "./assets/img/EmergencyCat.png",
     },
   ];
   subscriptions: Subscription[] = [];

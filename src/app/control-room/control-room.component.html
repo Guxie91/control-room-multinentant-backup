@@ -20,7 +20,7 @@
     </div>
     <div class="subButtonsControl" *ngIf="categories[1].active">
       <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img class="subFilterImg"
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img class="subFilterVehicleImg"
           [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
