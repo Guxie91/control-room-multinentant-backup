@@ -8,5 +8,7 @@
   "2.5.0": "Aggiunto il tracking dello stato della connessione",
   "2.6.0": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente",
   "2.6.1": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId",
-  "2.6.2": "versione corrente, fix di style in corso"
+  "2.6.2": "versione corrente, fix di style in corso",
+  "2.7.0": "revisione del codice in funzione dello standard etsi",
+  "2.8.0": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)"
 }
