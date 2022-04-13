@@ -44,7 +44,7 @@ export class HttpHandlerService {
     );
   }
   fetchServersIds(){
-    return this.http.get<{serversIDs:string[]}>(
+    return this.http.get<{serversIDs:number[]}>(
       "./assets/cv2x-servers.json?t=" + new Date().getTime()
     );
   }

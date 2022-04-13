@@ -30,7 +30,7 @@ export class MqttHandlerService {
   currentBroker!: MqttSettings;
   autoFocusChanged = new Subject<string>();
   connectionStatusChanged = new Subject<boolean>();
-  serversIds: string[] = [];
+  serversIds: number[] = [];
 
   constructor(
     private _mqtt: MqttService,

@@ -62,7 +62,8 @@ export class MqttMessagesHandlerService {
     return newEtsiMessage;
   }
   createCAMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
-    const stationType = payloadJSON.cam.camParameters.basicContainer.stationType.toString();
+    let stationType = payloadJSON.cam.camParameters.basicContainer.stationType;
+    let vehicleRole = payloadJSON.cam.camParameters.basicContainer.vehicleRole;
     let latitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.latitude;
     //latitude = latitude / 10000000;
@@ -87,15 +88,19 @@ export class MqttMessagesHandlerService {
     let category = "";
     let id = payloadJSON.header.stationID;
     switch (stationType) {
-      case "1":
+      case 1:
         info = "Pedone (ID: "+payloadJSON.header.stationID+")";
         category = "pedestrians";
         break;
-      case "5":
+      case 2:
+        info = "Ciclista (ID: "+payloadJSON.header.stationID+")";
+        category = "pedestrians";
+        break;
+      case 5:
         info = "Veicolo (ID: "+payloadJSON.header.stationID+")";
         category = "cars";
         break;
-      case "10":
+      case 10:
         info = "Veicolo di Emergenza (ID: "+payloadJSON.header.stationID+")";
         category = "emergency";
         break;
@@ -112,7 +117,13 @@ export class MqttMessagesHandlerService {
       topic,
       quadkeyArr,
       new LatLng(latitude, longitude),
-      new Date()
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      stationType,
+      vehicleRole
     );
     return newEtsiMessage;
   }
@@ -127,22 +138,27 @@ export class MqttMessagesHandlerService {
       new LatLng(0, 0),
       new Date(),
       false,
-      false
+      false,
+      [],
+      false,
+      0,
+      0
     );
     return newEtsiMessage;
   }
   createDENMMessage(message: IMqttMessage) {
     let decodedMessage = this.extractMessage(message);
-    let causeCode = decodedMessage.payloadJSON.denm.situation.eventType.causeCode.toString();
+    let causeCode = decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
+    let subCauseCode = decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
     let info;
     switch (causeCode) {
-      case "12":
+      case 12:
         info = "Avviso da server centrale (Utenti Vulnerabili)";
         break;
-      case "91":
+      case 91:
         info = "Avviso da server centrale (Veicoli)";
         break;
-      case "95":
+      case 95:
         info = "Avviso da server centrale (Veicoli di Emergenza)";
         break;
       default:
@@ -173,7 +189,9 @@ export class MqttMessagesHandlerService {
     false,
     false,
     [],
-    false);
+    false,
+    causeCode,
+    subCauseCode);
     return newMessage;
   }
   extractMessage(message: IMqttMessage) {

@@ -55,32 +55,32 @@ export class CodeHandlerService {
     }
     return description;
   }
-  getIconForDENM(causeCode: string, subCausdeCode: string, category: string) {
-    if (causeCode == "95" && subCausdeCode == "1" && category == "emergency") {
+  getIconForDENM(causeCode: string, subCausdeCode: string, stationType:number, vehicleRole:number) {
+    if (causeCode == "95" && subCausdeCode == "1" && stationType == 10) {
       return RedEmergencyIcon;
     }
-    if (causeCode == "91" && category == "cars") {
+    if (causeCode == "91" && stationType == 5) {
       return RedCarIcon;
     }
-    if (causeCode == "12" && category == "pedestrians") {
+    if (causeCode == "12" && stationType == 1) {
       return RedPedestrianIcon;
     }
-    if (category == "emergency") {
+    if (causeCode == "12" && stationType == 2) {
+      return RedPedestrianIcon;
+    }
+    if (stationType == 10) {
       return EmergencyIcon;
     }
-
-    if (category == "cars") {
+    if (stationType == 5) {
       return CarIcon;
     }
-
-    if (category == "pedestrians") {
+    if (stationType == 1) {
       return PedestrianIcon;
     }
-
-    if (category == "alert") {
-      return DangerIcon;
+    if (stationType == 2) {
+      return PedestrianIcon;
     }
-    return DefaultIcon;
+    return DangerIcon;
   }
   getPopupContent(popup: string) {
     switch (popup) {

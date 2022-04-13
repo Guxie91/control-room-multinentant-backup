@@ -11,6 +11,7 @@ import { HttpHandlerService } from "../services/http-handler.service";
 import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
 import {
+  BikeIcon,
   CarIcon,
   DangerIcon,
   DefaultIcon,
@@ -283,7 +284,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (etsiMessage.category == "pedestrians") {
       etsiMessage.hide = !this.subCategoriesVehicles[2].active;
-      dynamicIcon = PedestrianIcon;
+      if(etsiMessage.code == 1){
+        dynamicIcon = PedestrianIcon;
+      }
+      if(etsiMessage.code == 2){
+        dynamicIcon = BikeIcon;
+      }
     }
     if (etsiMessage.category == "cars") {
       etsiMessage.hide = !this.subCategoriesVehicles[0].active;
@@ -431,7 +437,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         let icon = this.codeHandler.getIconForDENM(
           message.causeCode,
           message.subCauseCode,
-          event.category
+          event.code,
+          event.subCode
         );
         for (let id of this.specialVehiclesIDs) {
           if (event.id == id) {

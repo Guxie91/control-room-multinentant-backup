@@ -14,7 +14,9 @@ export class EtsiMessage{
     public highlight = false,
     public hide = false,
     public denms:DENMMessage[] = [],
-    public special:boolean = false
+    public special:boolean = false,
+    public code:number = 0,
+    public subCode = 0
   ) {
 
   }

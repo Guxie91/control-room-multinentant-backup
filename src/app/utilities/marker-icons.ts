@@ -84,3 +84,10 @@ export const RedEmergencyIcon = L.icon({
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
 
+export const BikeIcon = L.icon({
+  iconUrl: "./assets/img/BikeCat.png",
+  iconSize: [34, 34], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
