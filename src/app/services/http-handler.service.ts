@@ -39,7 +39,7 @@ export class HttpHandlerService {
     );
   }
   fetchSpecialVehicles(){
-    return this.http.get<{special_ids:string[]}>(
+    return this.http.get<{special_ids:number[], names:string[]}>(
       "./assets/special-vehicles/vehicles-list.json?t=" + new Date().getTime()
     );
   }

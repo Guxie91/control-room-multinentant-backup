@@ -62,7 +62,6 @@ export class MqttMessagesHandlerService {
     return newEtsiMessage;
   }
   createCAMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
-    let id = payloadJSON.header.stationID;
     const stationType = payloadJSON.cam.camParameters.basicContainer.stationType.toString();
     let latitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.latitude;
@@ -86,17 +85,18 @@ export class MqttMessagesHandlerService {
       ", stationType: " +
       stationType;
     let category = "";
+    let id = payloadJSON.header.stationID;
     switch (stationType) {
       case "1":
-        info = payloadJSON.header.stationID;
+        info = "Pedone (ID: "+payloadJSON.header.stationID+")";
         category = "pedestrians";
         break;
       case "5":
-        info = payloadJSON.header.stationID;
+        info = "Veicolo (ID: "+payloadJSON.header.stationID+")";
         category = "cars";
         break;
       case "10":
-        info = payloadJSON.header.stationID;
+        info = "Veicolo di Emergenza (ID: "+payloadJSON.header.stationID+")";
         category = "emergency";
         break;
       default:
@@ -120,7 +120,7 @@ export class MqttMessagesHandlerService {
     let newEtsiMessage = new EtsiMessage(
       "error",
       "unknown",
-      "unknown",
+      -1,
       message,
       topic,
       quadkeyArr,

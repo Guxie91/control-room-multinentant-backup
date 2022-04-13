@@ -9,7 +9,7 @@ import { MarkerBundle } from "../models/marker-bundle.model";
 import { CodeHandlerService } from "../services/code-handler.service";
 import { HttpHandlerService } from "../services/http-handler.service";
 import { MqttHandlerService } from "../services/mqtt-handler.service";
-import { ESRI_WORLD_IMAGERY, GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
+import { GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
 import {
   CarIcon,
   DangerIcon,
@@ -90,10 +90,11 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
   subscriptions: Subscription[] = [];
   markers: MarkerBundle[] = [];
-  lastSelectedEvent = "-1";
+  lastSelectedEvent = -1;
   searchKey = "";
   autoFocus = "on";
-  specialVehicles: string[] = [];
+  specialVehiclesIDs: number[] = [];
+  specialVehiclesNames:string[]=[];
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
@@ -149,7 +150,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     let specialVehiclesSub = this.http
       .fetchSpecialVehicles()
       .subscribe((data) => {
-        this.specialVehicles = data.special_ids;
+        this.specialVehiclesIDs = data.special_ids;
+        this.specialVehiclesNames = data.names;
       });
     this.mqtt.connectToBroker();
     this.subscriptions.push(DENMExpiredSub);
@@ -292,6 +294,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       dynamicIcon = EmergencyIcon;
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
+    etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
       { icon: dynamicIcon, riseOnHover: true }
@@ -311,9 +314,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       this.hideMarker(etsiMessage.id);
     }
   }
-  onFocus(id: string) {
+  onFocus(id: number) {
     if (this.lastSelectedEvent == id) {
-      this.lastSelectedEvent = "-1";
+      this.lastSelectedEvent = -1;
       return;
     } else {
       for (let mark of this.markers) {
@@ -325,9 +328,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  hideMarker(id: string) {
+  hideMarker(id: number) {
     if (this.lastSelectedEvent == id) {
-      this.lastSelectedEvent = "-1";
+      this.lastSelectedEvent = -1;
     }
     for (let mark of this.markers) {
       if (mark.messageId == id) {
@@ -336,7 +339,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  showMarker(id: string) {
+  showMarker(id: number) {
     for (let mark of this.markers) {
       if (mark.messageId == id) {
         mark.marker.addTo(this.map);
@@ -344,14 +347,14 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  onMarkerClicked(id: string) {
+  onMarkerClicked(id: number) {
     if (this.lastSelectedEvent == id) {
-      this.lastSelectedEvent = "-1";
+      this.lastSelectedEvent = -1;
     } else {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
           this.lastSelectedEvent = id;
-          let elem = document.getElementById(mark.messageId);
+          let elem = document.getElementById(mark.messageId.toString());
           elem?.scrollIntoView({ behavior: "smooth" });
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
           break;
@@ -430,7 +433,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           message.subCauseCode,
           event.category
         );
-        for (let id of this.specialVehicles) {
+        for (let id of this.specialVehiclesIDs) {
           if (event.id == id) {
             icon = this.createRedSpecialIcon(event.id);
           }
@@ -458,7 +461,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             event.denms.splice(index, 1);
             for (let mark of this.markers) {
               if (mark.messageId == event.id) {
-                for (let id of this.specialVehicles) {
+                for (let id of this.specialVehiclesIDs) {
                   if (event.id == id) {
                     let customIcon = this.createSpecialIcon(event.id);
                     mark.marker.setIcon(customIcon);
@@ -484,7 +487,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   getSpecialMarkerIcon(previousIcon: L.Icon, etsiMessage: EtsiMessage) {
-    for (let id of this.specialVehicles) {
+    for (let id of this.specialVehiclesIDs) {
       if (etsiMessage.id == id) {
         let customIcon = this.createSpecialIcon(etsiMessage.id);
         for(let event of this.events) {
@@ -498,7 +501,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return previousIcon;
   }
-  createSpecialIcon(id:string){
+  createSpecialIcon(id:number){
     return L.icon({
       iconUrl: "./assets/special-vehicles/" + id + "/default.png",
       iconSize: [44, 44], // size of the icon
@@ -506,12 +509,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
     });
   }
-  createRedSpecialIcon(id:string){
+  createRedSpecialIcon(id:number){
     return L.icon({
       iconUrl: "./assets/special-vehicles/" + id + "/red.png",
       iconSize: [44, 44], // size of the icon
       iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
     });
+  }
+  getSpecialName(id:number, info:string){
+    for(let vehicleID of this.specialVehiclesIDs){
+      if(id == vehicleID){
+        return this.specialVehiclesNames[this.specialVehiclesIDs.indexOf(vehicleID)];
+      }
+    }
+    return info;
   }
 }

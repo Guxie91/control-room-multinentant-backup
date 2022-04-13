@@ -21,7 +21,7 @@ export class MqttHandlerService {
   subscriptions: Subscription[] = [];
   events: EtsiMessage[] = [];
   eventsUpdated = new Subject<EtsiMessage[]>();
-  expiredEventId = new Subject<string>();
+  expiredEventId = new Subject<number>();
   newCustomMessage = new Subject<CustomMessage>();
   newDENMMessage = new Subject<DENMMessage>();
   DENMExpired = new Subject<DENMMessage>();
@@ -197,7 +197,7 @@ export class MqttHandlerService {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
     this.newCustomMessage.next(customMessage);
   }
-  handleDENM(message: IMqttMessage, id?:string) {
+  handleDENM(message: IMqttMessage, id?:number) {
     let payloadJSON = JSON.parse(message.payload.toString());
     let stationID = payloadJSON.denm.management.actionID.originatingStationID;
     if(id!=undefined) {

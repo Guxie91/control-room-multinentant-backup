@@ -5,7 +5,7 @@ export class EtsiMessage{
   constructor(
     public category:string,
     public type:string,
-    public id:string,
+    public id:number,
     public info:string,
     public topic:string,
     public quadkeys:string[],
