@@ -95,7 +95,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   searchKey = "";
   autoFocus = "on";
   specialVehiclesIDs: number[] = [];
-  specialVehiclesNames:string[]=[];
+  specialVehiclesNames: string[] = [];
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
@@ -284,10 +284,10 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (etsiMessage.category == "pedestrians") {
       etsiMessage.hide = !this.subCategoriesVehicles[2].active;
-      if(etsiMessage.code == 1){
+      if (etsiMessage.code == 1) {
         dynamicIcon = PedestrianIcon;
       }
-      if(etsiMessage.code == 2){
+      if (etsiMessage.code == 2) {
         dynamicIcon = BikeIcon;
       }
     }
@@ -475,14 +475,17 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
                     return;
                   }
                 }
-                switch (event.category) {
-                  case "emergency":
+                switch (event.code) {
+                  case 10:
                     mark.marker.setIcon(EmergencyIcon);
                     break;
-                  case "pedestrians":
+                  case 1:
                     mark.marker.setIcon(PedestrianIcon);
                     break;
-                  case "cars":
+                  case 2:
+                    mark.marker.setIcon(BikeIcon);
+                    break;
+                  case 5:
                     mark.marker.setIcon(CarIcon);
                     break;
                 }
@@ -497,8 +500,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let id of this.specialVehiclesIDs) {
       if (etsiMessage.id == id) {
         let customIcon = this.createSpecialIcon(etsiMessage.id);
-        for(let event of this.events) {
-          if(event.id == etsiMessage.id){
+        for (let event of this.events) {
+          if (event.id == etsiMessage.id) {
             event.special = true;
             break;
           }
@@ -508,7 +511,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return previousIcon;
   }
-  createSpecialIcon(id:number){
+  createSpecialIcon(id: number) {
     return L.icon({
       iconUrl: "./assets/special-vehicles/" + id + "/default.png",
       iconSize: [44, 44], // size of the icon
@@ -516,7 +519,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
     });
   }
-  createRedSpecialIcon(id:number){
+  createRedSpecialIcon(id: number) {
     return L.icon({
       iconUrl: "./assets/special-vehicles/" + id + "/red.png",
       iconSize: [44, 44], // size of the icon
@@ -524,10 +527,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
     });
   }
-  getSpecialName(id:number, info:string){
-    for(let vehicleID of this.specialVehiclesIDs){
-      if(id == vehicleID){
-        return this.specialVehiclesNames[this.specialVehiclesIDs.indexOf(vehicleID)];
+  getSpecialName(id: number, info: string) {
+    for (let vehicleID of this.specialVehiclesIDs) {
+      if (id == vehicleID) {
+        return this.specialVehiclesNames[
+          this.specialVehiclesIDs.indexOf(vehicleID)
+        ];
       }
     }
     return info;

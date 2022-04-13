@@ -1,4 +1,4 @@
-import { DangerIcon, RedCarIcon } from "./../utilities/marker-icons";
+import { BikeIcon, DangerIcon, RedBikeIcon, RedCarIcon } from "./../utilities/marker-icons";
 import { Injectable } from "@angular/core";
 import {
   CarIcon,
@@ -59,14 +59,14 @@ export class CodeHandlerService {
     if (causeCode == "95" && subCausdeCode == "1" && stationType == 10) {
       return RedEmergencyIcon;
     }
-    if (causeCode == "91" && stationType == 5) {
+    if (causeCode == "91" && stationType == 5 && stationType == 5) {
       return RedCarIcon;
     }
     if (causeCode == "12" && stationType == 1) {
       return RedPedestrianIcon;
     }
     if (causeCode == "12" && stationType == 2) {
-      return RedPedestrianIcon;
+      return RedBikeIcon;
     }
     if (stationType == 10) {
       return EmergencyIcon;
@@ -78,7 +78,7 @@ export class CodeHandlerService {
       return PedestrianIcon;
     }
     if (stationType == 2) {
-      return PedestrianIcon;
+      return BikeIcon;
     }
     return DangerIcon;
   }

@@ -5,9 +5,14 @@
 <img class="CatImg" src="./assets/img/AlertCat.png" alt="event-icon" *ngIf="event.category=='alert'" />
 
 <img class="CatImg" src="./assets/img/PedestrianCat.png" alt="event-icon"
-  *ngIf="event.category=='pedestrians' && !red && !event.special" />
+  *ngIf="event.category=='pedestrians' && event.code == 1 && !red && !event.special" />
 <img class="CatImg" src="./assets/img/RedPedestrian.png" alt="event-icon"
-  *ngIf="event.category=='pedestrians' && red && !event.special" />
+  *ngIf="event.category=='pedestrians' && event.code == 1 && red && !event.special" />
+
+  <img class="CatImg" src="./assets/img/BikeCat.png" alt="event-icon"
+  *ngIf="event.category=='pedestrians' && event.code == 2 && !red && !event.special" />
+<img class="CatImg" src="./assets/img/RedBikeCat.png" alt="event-icon"
+  *ngIf="event.category=='pedestrians' && event.code == 2 && red && !event.special" />
 
 <img class="CatImg" src="./assets/img/CarCat.png" alt="event-icon"
   *ngIf="event.category=='cars' && !red && !event.special" />
