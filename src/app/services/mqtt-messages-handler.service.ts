@@ -48,7 +48,7 @@ export class MqttMessagesHandlerService {
     let longitude = +payloadJSON.ivi.optional[0].glc.referencePosition
       .longitude;
     longitude = longitude / 10000000;
-    const category = topic.split("/")[1];
+    let category = topic.split("/")[1];
     let newEtsiMessage = new EtsiMessage(
       category,
       "ivim",
@@ -88,26 +88,64 @@ export class MqttMessagesHandlerService {
     let category = "";
     let id = payloadJSON.header.stationID;
     switch (stationType) {
+      case 0:
+        info = "Sconosciuto (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
       case 1:
-        info = "Pedone (ID: "+payloadJSON.header.stationID+")";
+        info = "Pedone (ID: " + payloadJSON.header.stationID + ")";
         category = "pedestrians";
         break;
       case 2:
-        info = "Ciclista (ID: "+payloadJSON.header.stationID+")";
+        info = "Ciclista (ID: " + payloadJSON.header.stationID + ")";
         category = "pedestrians";
         break;
+      case 3:
+        info = "Monopattino (ID: " + payloadJSON.header.stationID + ")";
+        category = "pedestrians";
+        break;
+      case 4:
+        info = "Motociclo (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
       case 5:
-        info = "Veicolo (ID: "+payloadJSON.header.stationID+")";
+        info = "Veicolo (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
+      case 6:
+        info = "Bus (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
+      case 7:
+        info = "Camion (leggero) (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
+      case 8:
+        info = "Camion (pesante) (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
+      case 9:
+        info = "Rimorchio (ID: " + payloadJSON.header.stationID + ")";
         category = "cars";
         break;
       case 10:
-        info = "Veicolo di Emergenza (ID: "+payloadJSON.header.stationID+")";
+        info =
+          "Veicolo di Emergenza (ID: " + payloadJSON.header.stationID + ")";
         category = "emergency";
+        break;
+      case 11:
+        info = "Tram (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
+      case 12:
+        info = "Unità Stradale (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
         break;
       default:
         console.log("stationType " + stationType + " non riconosciuto!");
-        info = "stationType non riconosciuto";
-        category = "";
+        info = "Sconosciuto (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
+        break;
     }
     let newEtsiMessage = new EtsiMessage(
       category,
@@ -148,25 +186,31 @@ export class MqttMessagesHandlerService {
   }
   createDENMMessage(message: IMqttMessage) {
     let decodedMessage = this.extractMessage(message);
-    let causeCode = decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
-    let subCauseCode = decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
+    let causeCode =
+      decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
+    let subCauseCode =
+      decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
     let info;
     switch (causeCode) {
       case 12:
-        info = "Avviso da server centrale (Utenti Vulnerabili)";
+        info = "Avviso (Vulnerable Road User)";
         break;
       case 91:
-        info = "Avviso da server centrale (Veicoli)";
+        info = "Avviso (Vehicle Breakdown)";
         break;
       case 95:
-        info = "Avviso da server centrale (Veicoli di Emergenza)";
+        info = "Avviso (Emergency Vehicle Approaching)";
         break;
       default:
         console.log("causeCode " + causeCode + " non riconosciuto!");
-        info = this.codeHandler.getDescriptionDetail(decodedMessage.payloadJSON);
+        info = this.codeHandler.getDescriptionDetail(
+          decodedMessage.payloadJSON
+        );
     }
-    let latitude = decodedMessage.payloadJSON.denm.management.eventPosition.latitude;
-    let longitude = decodedMessage.payloadJSON.denm.management.eventPosition.longitude;
+    let latitude =
+      decodedMessage.payloadJSON.denm.management.eventPosition.latitude;
+    let longitude =
+      decodedMessage.payloadJSON.denm.management.eventPosition.longitude;
     if (+latitude > 1000 || +longitude > 1000) {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
@@ -175,23 +219,24 @@ export class MqttMessagesHandlerService {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
     }
-    let id = decodedMessage.payloadJSON.denm.management.actionID.originatingStationID;
-    id += decodedMessage.payloadJSON.header.messageID;
+    let id =
+      decodedMessage.payloadJSON.denm.management.actionID.originatingStationID;
     let newMessage = new EtsiMessage(
-    "alert",
-    "denm",
-    id,
-    info,
-    decodedMessage.topic,
-    decodedMessage.quadkeyArr,
-    new LatLng(latitude, longitude),
-    new Date(),
-    false,
-    false,
-    [],
-    false,
-    causeCode,
-    subCauseCode);
+      "alert",
+      "denm",
+      id,
+      info,
+      decodedMessage.topic,
+      decodedMessage.quadkeyArr,
+      new LatLng(latitude, longitude),
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      causeCode,
+      subCauseCode
+    );
     return newMessage;
   }
   extractMessage(message: IMqttMessage) {

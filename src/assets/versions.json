@@ -10,5 +10,6 @@
   "2.6.1": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId",
   "2.6.2": "fix di style, nuove icone",
   "2.7.0": "revisione del codice in funzione dello standard etsi",
-  "2.8.0": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)"
+  "2.8.0": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)",
+  "2.8.1": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info"
 }

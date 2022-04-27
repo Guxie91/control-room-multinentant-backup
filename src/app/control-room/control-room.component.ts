@@ -244,7 +244,11 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   createOrUpdateMarker(etsiMessage: EtsiMessage) {
     //if marker for that id exists, check for update
     for (let mark of this.markers) {
-      if (etsiMessage.id == mark.messageId) {
+      if (
+        etsiMessage.id == mark.messageId &&
+        etsiMessage.type == mark.type &&
+        etsiMessage.topic == mark.topic
+      ) {
         //update coordinates
         mark.marker.setLatLng({
           lat: etsiMessage.coordinates.lat,
@@ -252,7 +256,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (
           mark.messageId == this.lastSelectedEvent &&
-          mark.type == "cam" &&
+          (mark.type == "cam" || mark.type == "denm") &&
           this.autoFocus == "on"
         ) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
@@ -282,21 +286,24 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
       dynamicIcon = DangerIcon;
     }
-    if (etsiMessage.category == "pedestrians") {
+    if (etsiMessage.code == 1 && etsiMessage.type == "cam") {
       etsiMessage.hide = !this.subCategoriesVehicles[2].active;
-      if (etsiMessage.code == 1) {
-        dynamicIcon = PedestrianIcon;
-      }
-      if (etsiMessage.code == 2) {
-        dynamicIcon = BikeIcon;
-      }
+      //check vehicleRole
+      dynamicIcon = PedestrianIcon;
     }
-    if (etsiMessage.category == "cars") {
+    if (etsiMessage.code == 2 && etsiMessage.type == "cam") {
+      etsiMessage.hide = !this.subCategoriesVehicles[2].active;
+      //check vehicleRole
+      dynamicIcon = BikeIcon;
+    }
+    if (etsiMessage.code == 5 && etsiMessage.type == "cam") {
       etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+      //check vehicleRole
       dynamicIcon = CarIcon;
     }
-    if (etsiMessage.category == "emergency") {
+    if (etsiMessage.code == 10 && etsiMessage.type == "cam") {
       etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+      //check vehicleRole
       dynamicIcon = EmergencyIcon;
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
