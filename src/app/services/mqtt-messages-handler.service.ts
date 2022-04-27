@@ -101,8 +101,8 @@ export class MqttMessagesHandlerService {
         category = "pedestrians";
         break;
       case 3:
-        info = "Monopattino (ID: " + payloadJSON.header.stationID + ")";
-        category = "pedestrians";
+        info = "Ciclomotore (ID: " + payloadJSON.header.stationID + ")";
+        category = "cars";
         break;
       case 4:
         info = "Motociclo (ID: " + payloadJSON.header.stationID + ")";
