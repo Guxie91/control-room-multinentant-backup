@@ -129,8 +129,18 @@ export class MqttMessagesHandlerService {
         category = "cars";
         break;
       case 10:
-        info =
-          "Veicolo di Emergenza (ID: " + payloadJSON.header.stationID + ")";
+        switch (vehicleRole) {
+          case 5:
+            info = "Pompieri (ID: " + payloadJSON.header.stationID + ")";
+            break;
+          case 6:
+            info = "Ambulanza (ID: " + payloadJSON.header.stationID + ")";
+            break;
+          default:
+            info =
+              "Veicolo di Emergenza (ID: " + payloadJSON.header.stationID + ")";
+            break;
+        }
         category = "emergency";
         break;
       case 11:

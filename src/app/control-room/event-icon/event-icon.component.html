@@ -9,22 +9,32 @@
 <img class="CatImg" src="./assets/img/RedPedestrian.png" alt="event-icon"
   *ngIf="event.category=='pedestrians' && event.code == 1 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/BikeCat.png" alt="event-icon"
+<img class="CatImg" src="./assets/img/BikeCat.png" alt="event-icon"
   *ngIf="event.category=='pedestrians' && event.code == 2 && !red && !event.special" />
 <img class="CatImg" src="./assets/img/RedBikeCat.png" alt="event-icon"
   *ngIf="event.category=='pedestrians' && event.code == 2 && red && !event.special" />
 
 <img class="CatImg" src="./assets/img/CarCat.png" alt="event-icon"
-  *ngIf="event.category=='cars' && !red && !event.special" />
+  *ngIf="event.code==5 && !red && !event.special" />
 <img class="CatImg" src="./assets/img/RedCarCat.png" alt="event-icon"
-  *ngIf="event.category=='cars' && red && !event.special" />
+  *ngIf="event.code==5 && red && !event.special" />
+
+  <img class="CatImg" src="./assets/img/BusCat.png" alt="event-icon"
+  *ngIf="event.code==6 && !red && !event.special" />
+<img class="CatImg" src="./assets/img/RedBusCat.png" alt="event-icon"
+  *ngIf="event.code==6 && red && !event.special" />
 
 <img class="CatImg" src="./assets/img/help.png" alt="event-icon" *ngIf="unknown" />
 
 <img class="CatImg" src="./assets/img/AmbulanceCat.png" alt="event-icon"
-  *ngIf="event.category=='emergency' && !red && !event.special " />
+  *ngIf="event.code==10 && event.subCode==6 && !red && !event.special " />
 <img class="CatImg" src="./assets/img/RedAmbulanceCat.png" alt="event-icon"
-  *ngIf="event.category=='emergency' && red && !event.special" />
+  *ngIf="event.code==10 && event.subCode==6 && red && !event.special" />
+
+<img class="CatImg" src="./assets/img/FireTruckCat.png" alt="event-icon"
+  *ngIf="event.code==10 && event.subCode==5 && !red && !event.special " />
+<img class="CatImg" src="./assets/img/RedFireTruckCat.png" alt="event-icon"
+  *ngIf="event.code==10 && event.subCode==5 && red && !event.special" />
 
 <img class="CatImg" [src]="'./assets/special-vehicles/'+event.id+'/default.png'" alt="event-icon"
   *ngIf="!red && event.special" />

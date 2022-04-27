@@ -1,4 +1,13 @@
-import { BikeIcon, DangerIcon, RedBikeIcon, RedCarIcon } from "./../utilities/marker-icons";
+import {
+  BikeIcon,
+  BusIcon,
+  DangerIcon,
+  FireTruckIcon,
+  RedBikeIcon,
+  RedBusIcon,
+  RedCarIcon,
+  RedFireTruckIcon,
+} from "./../utilities/marker-icons";
 import { Injectable } from "@angular/core";
 import {
   CarIcon,
@@ -25,7 +34,6 @@ declare var denm: any;
   providedIn: "root",
 })
 export class CodeHandlerService {
-
   constructor() {}
 
   getDescriptionDetail(message: any) {
@@ -55,12 +63,25 @@ export class CodeHandlerService {
     }
     return description;
   }
-  getIconForDENM(causeCode: string, subCausdeCode: string, stationType:number, vehicleRole:number) {
+  getIconForDENM(
+    causeCode: string,
+    subCausdeCode: string,
+    stationType: number,
+    vehicleRole: number
+  ) {
     if (causeCode == "95" && subCausdeCode == "1" && stationType == 10) {
-      return RedEmergencyIcon;
+      if (vehicleRole == 6) {
+        return RedEmergencyIcon;
+      }
+      if (vehicleRole == 5) {
+        return RedFireTruckIcon;
+      }
     }
-    if (causeCode == "91" && stationType == 5 && stationType == 5) {
+    if (causeCode == "91" && stationType == 5) {
       return RedCarIcon;
+    }
+    if (causeCode == "91" && stationType == 6) {
+      return RedBusIcon;
     }
     if (causeCode == "12" && stationType == 1) {
       return RedPedestrianIcon;
@@ -69,10 +90,18 @@ export class CodeHandlerService {
       return RedBikeIcon;
     }
     if (stationType == 10) {
-      return EmergencyIcon;
+      if (vehicleRole == 5) {
+        return FireTruckIcon;
+      }
+      if (vehicleRole == 6) {
+        return EmergencyIcon;
+      }
     }
     if (stationType == 5) {
       return CarIcon;
+    }
+    if (stationType == 6) {
+      return BusIcon;
     }
     if (stationType == 1) {
       return PedestrianIcon;

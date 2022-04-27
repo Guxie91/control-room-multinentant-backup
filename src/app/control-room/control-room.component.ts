@@ -12,10 +12,12 @@ import { MqttHandlerService } from "../services/mqtt-handler.service";
 import { GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
 import {
   BikeIcon,
+  BusIcon,
   CarIcon,
   DangerIcon,
   DefaultIcon,
   EmergencyIcon,
+  FireTruckIcon,
   InfoIcon,
   PedestrianIcon,
   RoadworksIcon,
@@ -287,12 +289,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       dynamicIcon = DangerIcon;
     }
     if (etsiMessage.code == 1 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[2].active;
+      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
       //check vehicleRole
       dynamicIcon = PedestrianIcon;
     }
     if (etsiMessage.code == 2 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[2].active;
+      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
       //check vehicleRole
       dynamicIcon = BikeIcon;
     }
@@ -301,10 +303,25 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       //check vehicleRole
       dynamicIcon = CarIcon;
     }
+    if (etsiMessage.code == 6 && etsiMessage.type == "cam") {
+      etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+      //check vehicleRole
+      dynamicIcon = BusIcon;
+    }
     if (etsiMessage.code == 10 && etsiMessage.type == "cam") {
       etsiMessage.hide = !this.subCategoriesVehicles[1].active;
       //check vehicleRole
-      dynamicIcon = EmergencyIcon;
+      switch (etsiMessage.subCode) {
+        case 5:
+          dynamicIcon = FireTruckIcon;
+          break;
+        case 6:
+          dynamicIcon = EmergencyIcon;
+          break;
+        default:
+          dynamicIcon = EmergencyIcon;
+          break;
+      }
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
@@ -484,7 +501,17 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 switch (event.code) {
                   case 10:
-                    mark.marker.setIcon(EmergencyIcon);
+                    switch (event.subCode) {
+                      case 5:
+                        mark.marker.setIcon(FireTruckIcon);
+                        break;
+                      case 6:
+                        mark.marker.setIcon(EmergencyIcon);
+                        break;
+                      default:
+                        mark.marker.setIcon(EmergencyIcon);
+                        break;
+                    }
                     break;
                   case 1:
                     mark.marker.setIcon(PedestrianIcon);
@@ -494,6 +521,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
                     break;
                   case 5:
                     mark.marker.setIcon(CarIcon);
+                    break;
+                  case 6:
+                    mark.marker.setIcon(BusIcon);
                     break;
                 }
               }

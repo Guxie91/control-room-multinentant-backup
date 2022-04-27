@@ -63,9 +63,37 @@ export const RedCarIcon = L.icon({
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
 
+export const BusIcon = L.icon({
+  iconUrl: "./assets/img/BusCat.png",
+  iconSize: [34, 34], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
+export const RedBusIcon = L.icon({
+  iconUrl: "./assets/img/RedBusCat.png",
+  iconSize: [34, 34], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
 export const EmergencyIcon = L.icon({
   iconUrl: "./assets/img/AmbulanceCat.png",
   iconSize: [44, 44], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
+export const FireTruckIcon = L.icon({
+  iconUrl: "./assets/img/FireTruckCat.png",
+  iconSize: [60, 30], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
+export const RedFireTruckIcon = L.icon({
+  iconUrl: "./assets/img/RedFireTruckCat.png",
+  iconSize: [60, 30], // size of the icon
   iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
