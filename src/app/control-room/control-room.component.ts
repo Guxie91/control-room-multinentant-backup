@@ -258,7 +258,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (
           mark.messageId == this.lastSelectedEvent &&
-          (mark.type == "cam") &&
+          mark.type == "cam" &&
           this.autoFocus == "on"
         ) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
@@ -267,7 +267,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     //else create new marker for that id
-    let dynamicIcon = DefaultIcon;
+    let dynamicIcon = DangerIcon;
+    //ITS EVENTS SECTION
     if (etsiMessage.category == "roadworks") {
       dynamicIcon = RoadworksIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[0].active;
@@ -288,42 +289,61 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
       dynamicIcon = DangerIcon;
     }
-    if (etsiMessage.code == 1 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
-      //check vehicleRole
-      dynamicIcon = PedestrianIcon;
-    }
-    if (etsiMessage.code == 2 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
-      //check vehicleRole
-      dynamicIcon = BikeIcon;
-    }
-    if (etsiMessage.code == 5 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[0].active;
-      //check vehicleRole
+    //VEHICLES SECTION
+    if (etsiMessage.type == "cam") {
       dynamicIcon = CarIcon;
-    }
-    if (etsiMessage.code == 6 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[0].active;
-      //check vehicleRole
-      dynamicIcon = BusIcon;
-    }
-    if (etsiMessage.code == 10 && etsiMessage.type == "cam") {
-      etsiMessage.hide = !this.subCategoriesVehicles[1].active;
-      //check vehicleRole
-      switch (etsiMessage.subCode) {
-        case 0:
-          dynamicIcon = EmergencyIcon;
-          break;
-        case 5:
-          dynamicIcon = FireTruckIcon;
-          break;
-        case 6:
-          dynamicIcon = EmergencyIcon;
-          break;
-        default:
-          dynamicIcon = EmergencyIcon;
-          break;
+      if (etsiMessage.code == 0) {
+        //stationType 'unknown'
+        etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+        dynamicIcon = DefaultIcon;
+      }
+      if (etsiMessage.code == 1) {
+        etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+        //stationType 'pedestrian'
+        dynamicIcon = PedestrianIcon;
+      }
+      if (etsiMessage.code == 2) {
+        etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+        //stationType 'cyclist'
+        dynamicIcon = BikeIcon;
+      }
+      if (etsiMessage.code == 3) {
+        etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+        //stationType 'moped'
+        dynamicIcon = BikeIcon;
+      }
+      if (etsiMessage.code == 4) {
+        etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+        //stationType 'motorcycle'
+        dynamicIcon = BikeIcon;
+      }
+      if (etsiMessage.code == 5) {
+        etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+        //stationType 'passengerCar'
+        dynamicIcon = CarIcon;
+      }
+      if (etsiMessage.code == 6) {
+        etsiMessage.hide = !this.subCategoriesVehicles[0].active;
+        //stationType 'bus'
+        dynamicIcon = BusIcon;
+      }
+      if (etsiMessage.code == 10) {
+        etsiMessage.hide = !this.subCategoriesVehicles[1].active;
+        //stationType 'emergency'
+        switch (etsiMessage.subCode) {
+          case 0:
+            dynamicIcon = EmergencyIcon;
+            break;
+          case 5:
+            dynamicIcon = FireTruckIcon;
+            break;
+          case 6:
+            dynamicIcon = EmergencyIcon;
+            break;
+          default:
+            dynamicIcon = EmergencyIcon;
+            break;
+        }
       }
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);

@@ -66,7 +66,8 @@ export class CodeHandlerService {
     stationType: number,
     vehicleRole: number
   ) {
-    if (causeCode == "95" && stationType == 10) {
+    //elenco di use-case implementati, ritorna icona rossa
+    if (causeCode == "95" && subCauseCode == "1" && stationType == 10) {
       switch (vehicleRole) {
         case 0:
           return RedEmergencyIcon;
@@ -78,17 +79,28 @@ export class CodeHandlerService {
           return RedEmergencyIcon;
       }
     }
-    if (causeCode == "91" && stationType == 5) {
-      return RedCarIcon;
+    if (causeCode == "91" && subCauseCode == "0") {
+      switch (stationType) {
+        case 3:
+        case 4:
+          return RedBikeIcon;
+        case 5:
+          return RedCarIcon;
+        case 6:
+          return RedBusIcon;
+        default:
+          return RedCarIcon;
+      }
     }
-    if (causeCode == "91" && stationType == 6) {
-      return RedBusIcon;
-    }
-    if (causeCode == "12" && stationType == 1) {
-      return RedPedestrianIcon;
-    }
-    if (causeCode == "12" && stationType == 2) {
-      return RedBikeIcon;
+    if (causeCode == "12" && subCauseCode == "0") {
+      switch (stationType) {
+        case 1:
+          return RedPedestrianIcon;
+        case 2:
+          return RedBikeIcon;
+        default:
+          return RedPedestrianIcon;
+      }
     }
     //use-case non riconosciuto, ritorna icona nera
     if (stationType == 1) {
@@ -97,11 +109,26 @@ export class CodeHandlerService {
     if (stationType == 2) {
       return BikeIcon;
     }
+    if (stationType == 3) {
+      return BikeIcon;
+    }
+    if (stationType == 4) {
+      return BikeIcon;
+    }
     if (stationType == 5) {
       return CarIcon;
     }
     if (stationType == 6) {
-      return BusIcon;
+      return CarIcon;
+    }
+    if (stationType == 7) {
+      return CarIcon;
+    }
+    if (stationType == 8) {
+      return CarIcon;
+    }
+    if (stationType == 9) {
+      return CarIcon;
     }
     if (stationType == 10) {
       switch (vehicleRole) {
@@ -118,6 +145,7 @@ export class CodeHandlerService {
     return DangerIcon;
   }
   getPopupContent(popup: string) {
+    //metodo che ritorna il contenuto html del popup
     switch (popup) {
       case "RWW":
         return roadworksPopup;

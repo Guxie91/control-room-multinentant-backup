@@ -1,4 +1,3 @@
-import { ThisReceiver } from "@angular/compiler";
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DENMMessage } from "src/app/models/DENMMessage.model";
@@ -55,6 +54,9 @@ export class EventIconComponent implements OnInit, OnDestroy {
       this.event.category != "emergency" &&
       this.event.category != "alert"
     ) {
+      this.unknown = true;
+    }
+    if(this.event.code>12 || this.event.subCode>12){
       this.unknown = true;
     }
     if (this.event.highlight == true) {

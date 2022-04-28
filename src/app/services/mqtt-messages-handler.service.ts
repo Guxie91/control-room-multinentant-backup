@@ -57,7 +57,13 @@ export class MqttMessagesHandlerService {
       topic,
       quadkeyArr,
       new LatLng(latitude, longitude),
-      new Date()
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      -1,
+      -1
     );
     return newEtsiMessage;
   }
