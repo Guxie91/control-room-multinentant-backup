@@ -130,6 +130,9 @@ export class MqttMessagesHandlerService {
         break;
       case 10:
         switch (vehicleRole) {
+          case 0:
+            info = "Ambulanza (ID: " + payloadJSON.header.stationID + ")";
+            break;
           case 5:
             info = "Pompieri (ID: " + payloadJSON.header.stationID + ")";
             break;

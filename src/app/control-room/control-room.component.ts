@@ -258,7 +258,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (
           mark.messageId == this.lastSelectedEvent &&
-          (mark.type == "cam" || mark.type == "denm") &&
+          (mark.type == "cam") &&
           this.autoFocus == "on"
         ) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
@@ -312,6 +312,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       etsiMessage.hide = !this.subCategoriesVehicles[1].active;
       //check vehicleRole
       switch (etsiMessage.subCode) {
+        case 0:
+          dynamicIcon = EmergencyIcon;
+          break;
         case 5:
           dynamicIcon = FireTruckIcon;
           break;
@@ -479,7 +482,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     console.log("ERROR: DENM stationID " + message.stationID + " not found!");
   }
-  //test2
   handleExpiredDENM(message: DENMMessage) {
     for (let event of this.events) {
       if (message.stationID == event.id) {

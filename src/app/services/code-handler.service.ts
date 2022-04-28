@@ -11,7 +11,6 @@ import {
 import { Injectable } from "@angular/core";
 import {
   CarIcon,
-  DefaultIcon,
   EmergencyIcon,
   PedestrianIcon,
   RedEmergencyIcon,
@@ -26,8 +25,6 @@ import {
   trafficPopup,
   weatherPopup,
 } from "../utilities/popup-ballon";
-import { EtsiMessage } from "../models/etsi-message.model";
-import { HttpHandlerService } from "./http-handler.service";
 declare var denm: any;
 
 @Injectable({
@@ -65,16 +62,20 @@ export class CodeHandlerService {
   }
   getIconForDENM(
     causeCode: string,
-    subCausdeCode: string,
+    subCauseCode: string,
     stationType: number,
     vehicleRole: number
   ) {
-    if (causeCode == "95" && subCausdeCode == "1" && stationType == 10) {
-      if (vehicleRole == 6) {
-        return RedEmergencyIcon;
-      }
-      if (vehicleRole == 5) {
-        return RedFireTruckIcon;
+    if (causeCode == "95" && stationType == 10) {
+      switch (vehicleRole) {
+        case 0:
+          return RedEmergencyIcon;
+        case 5:
+          return RedFireTruckIcon;
+        case 6:
+          return RedEmergencyIcon;
+        default:
+          return RedEmergencyIcon;
       }
     }
     if (causeCode == "91" && stationType == 5) {
@@ -89,13 +90,12 @@ export class CodeHandlerService {
     if (causeCode == "12" && stationType == 2) {
       return RedBikeIcon;
     }
-    if (stationType == 10) {
-      if (vehicleRole == 5) {
-        return FireTruckIcon;
-      }
-      if (vehicleRole == 6) {
-        return EmergencyIcon;
-      }
+    //use-case non riconosciuto, ritorna icona nera
+    if (stationType == 1) {
+      return PedestrianIcon;
+    }
+    if (stationType == 2) {
+      return BikeIcon;
     }
     if (stationType == 5) {
       return CarIcon;
@@ -103,11 +103,17 @@ export class CodeHandlerService {
     if (stationType == 6) {
       return BusIcon;
     }
-    if (stationType == 1) {
-      return PedestrianIcon;
-    }
-    if (stationType == 2) {
-      return BikeIcon;
+    if (stationType == 10) {
+      switch (vehicleRole) {
+        case 0:
+          return EmergencyIcon;
+        case 5:
+          return FireTruckIcon;
+        case 6:
+          return EmergencyIcon;
+        default:
+          return EmergencyIcon;
+      }
     }
     return DangerIcon;
   }
