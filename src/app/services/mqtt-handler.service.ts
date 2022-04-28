@@ -234,6 +234,9 @@ export class MqttHandlerService {
       this.events.push(etsiMessage);
     }
     this.checkForExpiredEvents();
+    this.events.sort((a, b) => {
+      return a.category >= b.category ? 1 : -1;
+    });
     this.eventsUpdated.next(this.events);
   }
   handleDENMFromServer(message: IMqttMessage) {

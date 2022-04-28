@@ -589,9 +589,14 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   getSpecialName(id: number, info: string) {
     for (let vehicleID of this.specialVehiclesIDs) {
       if (id == vehicleID) {
-        return this.specialVehiclesNames[
-          this.specialVehiclesIDs.indexOf(vehicleID)
-        ];
+        return (
+          this.specialVehiclesNames[
+            this.specialVehiclesIDs.indexOf(vehicleID)
+          ] +
+          " (ID: " +
+          id +
+          ")"
+        );
       }
     }
     return info;
