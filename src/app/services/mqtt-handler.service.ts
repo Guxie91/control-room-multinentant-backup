@@ -118,18 +118,17 @@ export class MqttHandlerService {
       topicSubscription = this._mqtt.observe(topic).subscribe(
         (message: IMqttMessage) => {
           let payloadJSON = JSON.parse(message.payload.toString());
+          //check blocklist
+          for (let id of this.serversIds) {
+            if (
+              payloadJSON.header.stationId == id
+            ) {
+              // con questa modifica gli utenti registrati vengono ignorati
+              return;
+            }
+          }
           //identify message type
           if (payloadJSON["denm"]) {
-            for (let id of this.serversIds) {
-              if (
-                payloadJSON.denm.management.actionID.originatingStationID == id
-              ) {
-                // con questa modifica gli utenti registrati vengono ignorati
-                //this.handleDENMFromServer(message);
-                return;
-              }
-            }
-            //test
             for (let event of this.events) {
               if (
                 payloadJSON.denm.management.actionID.originatingStationID ==
@@ -145,9 +144,6 @@ export class MqttHandlerService {
               }
             }
             this.handleDENMFromServer(message);
-            return;
-            //end test
-            this.handleDENM(message);
             return;
           }
           if (payloadJSON["popup"]) {
