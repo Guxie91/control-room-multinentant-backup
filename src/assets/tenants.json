@@ -10,7 +10,7 @@
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
       "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
-      "topics": ["its/#","dashboard/hud", "json/#"]
+      "topics": ["its/#","dashboard/#", "json/#"]
     },
     {
       "id": "2",
@@ -23,7 +23,7 @@
       "footerText": "",
       "color": "rgb(146, 27, 43)",
       "categories": ["Ordinanze", "Pannelli a messaggio variabile", "Sensori Meteo", "Sensori Traffico", "Pericoli"],
-      "topics": ["its/#","dashboard/hud", "json/#"]
+      "topics": ["its/#","dashboard/#", "json/#"]
     },
     {
       "id": "4",
@@ -36,7 +36,7 @@
       "footerText": "©2021 Service Innovation",
       "color": "#0033a1",
       "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
-      "topics": ["its/+/120232221103/#","dashboard/hud", "json/#"]
+      "topics": ["its/+/120232221103/#","dashboard/#", "json/#"]
     }
   ]
 }
