@@ -346,6 +346,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+    if (etsiMessage.type == "denm") {
+      dynamicIcon = DangerIcon;
+    }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
     var newMarker = L.marker(
@@ -477,6 +480,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             denm.subCauseCode == message.subCauseCode
           ) {
             denm.timestamp = message.timestamp;
+            denm.description = message.description;
             return;
           }
         }
@@ -484,8 +488,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         let icon = this.codeHandler.getIconForDENM(
           message.causeCode,
           message.subCauseCode,
-          event.code,
-          event.subCode
+          event
         );
         for (let id of this.specialVehiclesIDs) {
           if (event.id == id) {

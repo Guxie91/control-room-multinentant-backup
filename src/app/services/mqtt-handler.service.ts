@@ -128,6 +128,24 @@ export class MqttHandlerService {
                 return;
               }
             }
+            //test
+            for (let event of this.events) {
+              if (
+                payloadJSON.denm.management.actionID.originatingStationID ==
+                event.id
+              ) {
+                if (event.type == "denm") {
+                  this.handleDENMFromServer(message);
+                  return;
+                } else {
+                  this.handleDENM(message);
+                  return;
+                }
+              }
+            }
+            this.handleDENMFromServer(message);
+            return;
+            //end test
             this.handleDENM(message);
             return;
           }
@@ -197,10 +215,10 @@ export class MqttHandlerService {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
     this.newCustomMessage.next(customMessage);
   }
-  handleDENM(message: IMqttMessage, id?:number) {
+  handleDENM(message: IMqttMessage, id?: number) {
     let payloadJSON = JSON.parse(message.payload.toString());
     let stationID = payloadJSON.denm.management.actionID.originatingStationID;
-    if(id!=undefined) {
+    if (id != undefined) {
       stationID = id;
     }
     let causeCode = payloadJSON.denm.situation.eventType.causeCode;

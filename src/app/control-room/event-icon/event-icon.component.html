@@ -5,48 +5,52 @@
   <img class="CatImg" src="./assets/img/TrafficCat.png" *ngIf="event.category=='traffic'" />
   <img class="CatImg" src="./assets/img/AlertCat.png" *ngIf="event.category=='alert'" />
 
-  <img class="CatImg" src="./assets/img/PedestrianCat.png" *ngIf="event.code == 1 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedPedestrian.png" *ngIf="event.code == 1 && red && !event.special" />
+  <div *ngIf="event.category == 'pedestrians'">
+    <img class="CatImg" src="./assets/img/PedestrianCat.png" *ngIf="event.code == 1 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedPedestrian.png" *ngIf="event.code == 1 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 2 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 2 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 2 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 2 && red && !event.special" />
+  </div>
 
-  <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 3 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 3 && red && !event.special" />
+  <div *ngIf="event.category == 'cars'">
+    <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 3 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 3 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 4 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 4 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/BikeCat.png" *ngIf="event.code == 4 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedBikeCat.png" *ngIf="event.code == 4 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==5 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==5 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==5 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==5 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/BusCat.png" *ngIf="event.code==6 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedBusCat.png" *ngIf="event.code==6 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/BusCat.png" *ngIf="event.code==6 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedBusCat.png" *ngIf="event.code==6 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==7 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==7 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==7 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==7 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==8 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==8 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==8 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==8 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==9 && !red && !event.special" />
-  <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==9 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/CarCat.png" *ngIf="event.code==9 && !red && !event.special" />
+    <img class="CatImg" src="./assets/img/RedCarCat.png" *ngIf="event.code==9 && red && !event.special" />
+  </div>
+  <div *ngIf="event.category == 'emergency'">
+    <img class="CatImg" src="./assets/img/AmbulanceCat.png"
+      *ngIf="event.code==10 && event.subCode==0 && !red && !event.special " />
+    <img class="CatImg" src="./assets/img/RedAmbulanceCat.png"
+      *ngIf="event.code==10 && event.subCode==0 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/AmbulanceCat.png"
-    *ngIf="event.code==10 && event.subCode==0 && !red && !event.special " />
-  <img class="CatImg" src="./assets/img/RedAmbulanceCat.png"
-    *ngIf="event.code==10 && event.subCode==0 && red && !event.special" />
+    <img class="CatImg" src="./assets/img/FireTruckCat.png"
+      *ngIf="event.code==10 && event.subCode==5 && !red && !event.special " />
+    <img class="CatImg" src="./assets/img/RedFireTruckCat.png"
+      *ngIf="event.code==10 && event.subCode==5 && red && !event.special" />
 
-  <img class="CatImg" src="./assets/img/FireTruckCat.png"
-    *ngIf="event.code==10 && event.subCode==5 && !red && !event.special " />
-  <img class="CatImg" src="./assets/img/RedFireTruckCat.png"
-    *ngIf="event.code==10 && event.subCode==5 && red && !event.special" />
-
-  <img class="CatImg" src="./assets/img/AmbulanceCat.png"
-    *ngIf="event.code==10 && event.subCode==6 && !red && !event.special " />
-  <img class="CatImg" src="./assets/img/RedAmbulanceCat.png"
-    *ngIf="event.code==10 && event.subCode==6 && red && !event.special" />
-
+    <img class="CatImg" src="./assets/img/AmbulanceCat.png"
+      *ngIf="event.code==10 && event.subCode==6 && !red && !event.special " />
+    <img class="CatImg" src="./assets/img/RedAmbulanceCat.png"
+      *ngIf="event.code==10 && event.subCode==6 && red && !event.special" />
+  </div>
   <img class="CatImg" [src]="'./assets/special-vehicles/'+event.id+'/default.png'" *ngIf="!red && event.special" />
   <img class="CatImg" [src]="'./assets/special-vehicles/'+event.id+'/red.png'" *ngIf="red && event.special" />
 </div>

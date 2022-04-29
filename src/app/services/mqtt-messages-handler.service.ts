@@ -209,16 +209,22 @@ export class MqttMessagesHandlerService {
       decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode =
       decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
-    let info;
+    let info = "Avviso (causeCode: " + causeCode + ", subCauseCode: " + subCauseCode + ")";
     switch (causeCode) {
       case 12:
-        info = "Avviso (Vulnerable Road User)";
+        if (subCauseCode == 0) {
+          info = "Avviso (Vulnerable Road User)";
+        }
         break;
       case 91:
-        info = "Avviso (Vehicle Breakdown)";
+        if (subCauseCode == 0) {
+          info = "Avviso (Vehicle Breakdown)";
+        }
         break;
       case 95:
-        info = "Avviso (Emergency Vehicle Approaching)";
+        if (subCauseCode == 1) {
+          info = "Avviso (Emergency Vehicle Approaching)";
+        }
         break;
       default:
         console.log("causeCode " + causeCode + " non riconosciuto!");

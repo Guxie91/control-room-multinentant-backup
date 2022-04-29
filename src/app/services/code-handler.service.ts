@@ -25,6 +25,7 @@ import {
   trafficPopup,
   weatherPopup,
 } from "../utilities/popup-ballon";
+import { EtsiMessage } from "../models/etsi-message.model";
 declare var denm: any;
 
 @Injectable({
@@ -63,9 +64,13 @@ export class CodeHandlerService {
   getIconForDENM(
     causeCode: string,
     subCauseCode: string,
-    stationType: number,
-    vehicleRole: number
+    event: EtsiMessage
   ) {
+    let stationType = event.code;
+    let vehicleRole = event.subCode;
+    if(event.type == "denm"){
+      return DangerIcon;
+    }
     //elenco di use-case implementati, ritorna icona rossa
     if (causeCode == "95" && subCauseCode == "1" && stationType == 10) {
       switch (vehicleRole) {
