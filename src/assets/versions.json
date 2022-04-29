@@ -13,5 +13,5 @@
   "2.8.0": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)",
   "2.8.1": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info",
   "2.8.2": "implementate le icone di pompieri e bus, con tutti i meccanismi relativi",
-  "2.8.3": "vari bugfix sulla implementazione precedente"
+  "2.8.3": "vari bugfix sulla implementazione precedente, aggiunti altri stationType"
 }
