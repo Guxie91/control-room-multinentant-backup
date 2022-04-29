@@ -124,7 +124,8 @@ export class MqttHandlerService {
               if (
                 payloadJSON.denm.management.actionID.originatingStationID == id
               ) {
-                this.handleDENMFromServer(message);
+                // con questa modifica gli utenti registrati vengono ignorati
+                //this.handleDENMFromServer(message);
                 return;
               }
             }

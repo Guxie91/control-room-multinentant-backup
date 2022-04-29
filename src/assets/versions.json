@@ -1,17 +1,64 @@
 {
-  "1.0.0": "Demo Navya 2021",
-  "2.0.0": "Versione multitenant 2022 con layout rivisto",
-  "2.1.0": "Aggiunta la funzione di ricerca",
-  "2.2.0": "Aggiunte le righe espandibili con info aggiuntive",
-  "2.3.0": "Aggiunte le opzioni: cambio broker e auto-tracking",
-  "2.4.0": "Aggiunta la possibilità di aggiungere dinamicamente veicoli speciali identificati tramite id",
-  "2.5.0": "Aggiunto il tracking dello stato della connessione",
-  "2.6.0": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente",
-  "2.6.1": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId",
-  "2.6.2": "fix di style, nuove icone",
-  "2.7.0": "revisione del codice in funzione dello standard etsi",
-  "2.8.0": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)",
-  "2.8.1": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info",
-  "2.8.2": "implementate le icone di pompieri e bus, con tutti i meccanismi relativi",
-  "2.8.3": "vari bugfix sulla implementazione precedente, aggiunti altri stationType"
+  "versions": [
+    { "number": "1.0.0", "description": "Demo Navya 2021" },
+    {
+      "number": "2.0.0",
+      "description": "Versione multitenant 2022 con layout rivisto"
+    },
+    { "number": "2.1.0", "description": "Aggiunta la funzione di ricerca" },
+    {
+      "number": "2.2.0",
+      "description": "Aggiunte le righe espandibili con info aggiuntive"
+    },
+    {
+      "number": "2.3.0",
+      "description": "Aggiunte le opzioni: cambio broker e auto-tracking"
+    },
+    {
+      "number": "2.4.0",
+      "description": "Aggiunta la possibilità di aggiungere dinamicamente veicoli speciali identificati tramite id"
+    },
+    {
+      "number": "2.5.0",
+      "description": "Aggiunto il tracking dello stato della connessione"
+    },
+    {
+      "number": "2.6.0",
+      "description": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente"
+    },
+    {
+      "number": "2.6.1",
+      "description": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId"
+    },
+    { "number": "2.6.2", "description": "fix di style, nuove icone" },
+    {
+      "number": "2.7.0",
+      "description": "revisione del codice in funzione dello standard etsi"
+    },
+    {
+      "number": "2.8.0",
+      "description": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)"
+    },
+    {
+      "number": "2.8.1",
+      "description": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info"
+    },
+    {
+      "number": "2.8.2",
+      "description": "implementate le icone di pompieri e bus, con tutti i meccanismi relativi"
+    },
+    {
+      "number": "2.8.3",
+      "description": "vari bugfix sulla implementazione precedente, aggiunti altri stationType"
+    },
+    {
+      "number": "2.8.4",
+      "description": "altri bugfix, modifica gestione DENM"
+    },
+    { "number": "", "description": "" },
+    { "number": "", "description": "" },
+    { "number": "", "description": "" },
+    { "number": "", "description": "" },
+    { "number": "", "description": "" }
+  ]
 }
