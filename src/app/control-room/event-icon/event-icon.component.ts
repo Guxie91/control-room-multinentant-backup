@@ -56,9 +56,6 @@ export class EventIconComponent implements OnInit, OnDestroy {
     ) {
       this.unknown = true;
     }
-    if(this.event.code>12 || this.event.subCode>12){
-      this.unknown = true;
-    }
     if (this.event.highlight == true) {
       this.red = true;
     }
