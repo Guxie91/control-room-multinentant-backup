@@ -19,6 +19,7 @@ import {
   EmergencyIcon,
   FireTruckIcon,
   InfoIcon,
+  MotorBikeIcon,
   PedestrianIcon,
   RoadworksIcon,
   TrafficIcon,
@@ -310,12 +311,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       if (etsiMessage.code == 3) {
         etsiMessage.hide = !this.subCategoriesVehicles[1].active;
         //stationType 'moped'
-        dynamicIcon = BikeIcon;
+        dynamicIcon = MotorBikeIcon;
       }
       if (etsiMessage.code == 4) {
         etsiMessage.hide = !this.subCategoriesVehicles[1].active;
         //stationType 'motorcycle'
-        dynamicIcon = BikeIcon;
+        dynamicIcon = MotorBikeIcon;
       }
       if (etsiMessage.code == 5) {
         etsiMessage.hide = !this.subCategoriesVehicles[0].active;
@@ -544,11 +545,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
                   case 2:
                     mark.marker.setIcon(BikeIcon);
                     break;
+                  case 3:
+                    mark.marker.setIcon(MotorBikeIcon);
+                    break;
+                  case 4:
+                    mark.marker.setIcon(MotorBikeIcon);
+                    break;
                   case 5:
                     mark.marker.setIcon(CarIcon);
                     break;
                   case 6:
                     mark.marker.setIcon(BusIcon);
+                    break;
+                  default:
+                    mark.marker.setIcon(CarIcon);
                     break;
                 }
               }

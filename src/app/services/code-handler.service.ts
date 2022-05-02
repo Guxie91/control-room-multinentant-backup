@@ -7,6 +7,7 @@ import {
   RedBusIcon,
   RedCarIcon,
   RedFireTruckIcon,
+  RedMotorBikeIcon,
 } from "./../utilities/marker-icons";
 import { Injectable } from "@angular/core";
 import {
@@ -88,7 +89,7 @@ export class CodeHandlerService {
       switch (stationType) {
         case 3:
         case 4:
-          return RedBikeIcon;
+          return RedMotorBikeIcon;
         case 5:
           return RedCarIcon;
         case 6:

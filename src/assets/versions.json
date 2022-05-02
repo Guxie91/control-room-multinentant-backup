@@ -58,6 +58,10 @@
     {
       "version": "2.8.5",
       "description": "display della versione corrente nella pagina di login"
+    },
+    {
+      "version": "2.8.6",
+      "description": "cambio icona categoria veicola, aggiunta icona per motocicli e ciclomotori"
     }
   ]
 }
