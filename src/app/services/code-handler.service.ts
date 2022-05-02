@@ -18,6 +18,7 @@ import {
   RedPedestrianIcon,
 } from "../utilities/marker-icons";
 import {
+  collisionRiskWarning,
   defaultPopup,
   emergencyVehicleApproachingPopup,
   pedestrianWalkingPopup,
@@ -62,14 +63,10 @@ export class CodeHandlerService {
     }
     return description;
   }
-  getIconForDENM(
-    causeCode: string,
-    subCauseCode: string,
-    event: EtsiMessage
-  ) {
+  getIconForDENM(causeCode: string, subCauseCode: string, event: EtsiMessage) {
     let stationType = event.code;
     let vehicleRole = event.subCode;
-    if(event.type == "denm"){
+    if (event.type == "denm") {
       return DangerIcon;
     }
     //elenco di use-case implementati, ritorna icona rossa
@@ -165,6 +162,8 @@ export class CodeHandlerService {
         return emergencyVehicleApproachingPopup;
       case "SVW":
         return stationaryVehicleWarning;
+      case "CCRW":
+        return collisionRiskWarning;
       default:
         return (
           defaultPopup +

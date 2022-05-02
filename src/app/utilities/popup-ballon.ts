@@ -13,6 +13,11 @@ export const stationaryVehicleWarning =
   '<img src="./assets/img/WhiteCarCat.png" class="alertImg popupImg" />' +
   '<br/><span class="alertLabel whiteText">Stationary Vehicle</span></div>';
 
+export const collisionRiskWarning =
+  '<div style="text-align:center;">' +
+  '<img src="./assets/img/WhiteCarCat.png" class="alertImg popupImg" style="margin-top:0 !important" />' +
+  '<br/><span class="alertLabel whiteText">Crossing Collision Risk</span></div>';
+
 export const roadworksPopup =
   '<div style="text-align:center;">' +
   '<img src="./assets/img/WhiteRoadworksCat.png" class="alertImg popupImg" />' +

@@ -448,6 +448,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         marker.marker.unbindPopup();
         let popup = L.popup({
           autoClose: false,
+          autoPan: false,
           closeButton: false,
           closeOnClick: false,
           closeOnEscapeKey: false,
