@@ -1,64 +1,59 @@
 {
   "versions": [
-    { "number": "1.0.0", "description": "Demo Navya 2021" },
+    { "version": "1.0.0", "description": "Demo Navya 2021" },
     {
-      "number": "2.0.0",
+      "version": "2.0.0",
       "description": "Versione multitenant 2022 con layout rivisto"
     },
-    { "number": "2.1.0", "description": "Aggiunta la funzione di ricerca" },
+    { "version": "2.1.0", "description": "Aggiunta la funzione di ricerca" },
     {
-      "number": "2.2.0",
+      "version": "2.2.0",
       "description": "Aggiunte le righe espandibili con info aggiuntive"
     },
     {
-      "number": "2.3.0",
+      "version": "2.3.0",
       "description": "Aggiunte le opzioni: cambio broker e auto-tracking"
     },
     {
-      "number": "2.4.0",
+      "version": "2.4.0",
       "description": "Aggiunta la possibilità di aggiungere dinamicamente veicoli speciali identificati tramite id"
     },
     {
-      "number": "2.5.0",
+      "version": "2.5.0",
       "description": "Aggiunto il tracking dello stato della connessione"
     },
     {
-      "number": "2.6.0",
+      "version": "2.6.0",
       "description": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente"
     },
     {
-      "number": "2.6.1",
+      "version": "2.6.1",
       "description": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId"
     },
-    { "number": "2.6.2", "description": "fix di style, nuove icone" },
+    { "version": "2.6.2", "description": "fix di style, nuove icone" },
     {
-      "number": "2.7.0",
+      "version": "2.7.0",
       "description": "revisione del codice in funzione dello standard etsi"
     },
     {
-      "number": "2.8.0",
+      "version": "2.8.0",
       "description": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)"
     },
     {
-      "number": "2.8.1",
+      "version": "2.8.1",
       "description": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info"
     },
     {
-      "number": "2.8.2",
+      "version": "2.8.2",
       "description": "implementate le icone di pompieri e bus, con tutti i meccanismi relativi"
     },
     {
-      "number": "2.8.3",
+      "version": "2.8.3",
       "description": "vari bugfix sulla implementazione precedente, aggiunti altri stationType"
     },
     {
-      "number": "2.8.4",
+      "version": "2.8.4",
       "description": "altri bugfix, modifica gestione DENM"
-    },
-    { "number": "", "description": "" },
-    { "number": "", "description": "" },
-    { "number": "", "description": "" },
-    { "number": "", "description": "" },
-    { "number": "", "description": "" }
+    }
   ]
 }

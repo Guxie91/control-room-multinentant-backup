@@ -48,4 +48,9 @@ export class HttpHandlerService {
       "./assets/cv2x-servers.json?t=" + new Date().getTime()
     );
   }
+  fetchVersions() {
+    return this.http.get<{
+      versions: { version: string; description: string }[];
+    }>("./assets/versions.json?t=" + new Date().getTime());
+  }
 }

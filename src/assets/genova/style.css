@@ -71,7 +71,7 @@ td {
   bottom: 0;
 }
 
-.footerHud{
+.footerHud {
   margin-left: 190px !important;
   margin-top: 5px;
 }
@@ -115,7 +115,7 @@ td {
 }
 
 .alertLabel {
-	font-family:"Oswald" !important;
+  font-family: "Oswald" !important;
 }
 
 .headerLabel {
