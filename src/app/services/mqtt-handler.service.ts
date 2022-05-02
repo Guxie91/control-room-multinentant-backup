@@ -242,6 +242,7 @@ export class MqttHandlerService {
       if (event.id == etsiMessage.id) {
         event.timestamp = etsiMessage.timestamp;
         event.coordinates = etsiMessage.coordinates;
+        event.info = etsiMessage.info;
         found = true;
       }
     }
