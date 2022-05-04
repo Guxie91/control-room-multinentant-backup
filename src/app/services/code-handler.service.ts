@@ -39,6 +39,17 @@ export class CodeHandlerService {
   getDescriptionDetail(message: any) {
     let causeCodeDesc = denm.getCauseCode(message);
     let subCauseCodeDesc = denm.getSubCauseCode(message);
+    //convert from Camel Case to String Case
+    causeCodeDesc = causeCodeDesc
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str: string) => {
+        return str.toUpperCase();
+      });
+    subCauseCodeDesc = subCauseCodeDesc
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str: string) => {
+        return str.toUpperCase();
+      });
     if (subCauseCodeDesc.length > 3 && causeCodeDesc.length > 3) {
       return causeCodeDesc + ": " + subCauseCodeDesc;
     } else {
