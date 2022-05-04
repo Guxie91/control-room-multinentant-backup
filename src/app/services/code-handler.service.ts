@@ -37,8 +37,8 @@ export class CodeHandlerService {
   constructor() {}
 
   getDescriptionDetail(message: any) {
-    let causeCodeDesc = denm.getCauseCode(message);
-    let subCauseCodeDesc = denm.getSubCauseCode(message);
+    let causeCodeDesc = denm.getCauseCode(message).toString();
+    let subCauseCodeDesc = denm.getSubCauseCode(message).toString();
     //convert from Camel Case to String Case
     causeCodeDesc = causeCodeDesc
       .replace(/([A-Z])/g, " $1")
