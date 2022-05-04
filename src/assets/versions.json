@@ -66,6 +66,10 @@
     {
       "version": "2.8.7",
       "description": "autopan fix, nuovo usecase: CCRW per HMI"
+    },
+    {
+      "version": "2.8.8",
+      "description": "nuovo tenant: C-Roads; preparativi per cambio gestione topic con tenant id"
     }
   ]
 }
