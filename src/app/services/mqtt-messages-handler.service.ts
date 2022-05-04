@@ -48,6 +48,7 @@ export class MqttMessagesHandlerService {
     let longitude = +payloadJSON.ivi.optional[0].glc.referencePosition
       .longitude;
     longitude = longitude / 10000000;
+    //topic switch +1
     let category = topic.split("/")[1];
     let newEtsiMessage = new EtsiMessage(
       category,
@@ -209,7 +210,12 @@ export class MqttMessagesHandlerService {
       decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
     let subCauseCode =
       decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
-    let info = "Avviso (causeCode: " + causeCode + ", subCauseCode: " + subCauseCode + ")";
+    let info =
+      "Avviso (causeCode: " +
+      causeCode +
+      ", subCauseCode: " +
+      subCauseCode +
+      ")";
     switch (causeCode) {
       case 12:
         if (subCauseCode == 0) {
@@ -244,8 +250,11 @@ export class MqttMessagesHandlerService {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
     }
+    //critical
     let id =
-      decodedMessage.payloadJSON.denm.management.actionID.originatingStationID;
+      decodedMessage.payloadJSON.denm.management.actionID.originatingStationID +
+      latitude +
+      longitude;
     let newMessage = new EtsiMessage(
       "alert",
       "denm",

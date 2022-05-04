@@ -2,7 +2,6 @@ export class Tenant {
   constructor(
     public id: string = "",
     public name: string = "default",
-    public write: boolean = false,
     public api_key: string = "",
     public coordinates: number[] = [0, 0],
     public zoom:number = 0,

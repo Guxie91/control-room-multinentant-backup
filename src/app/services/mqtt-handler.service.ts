@@ -191,8 +191,8 @@ export class MqttHandlerService {
     for (let event of this.events) {
       let eventTime = new Date(event.timestamp).getTime();
       let currentTime = new Date().getTime();
-      if (currentTime - eventTime > 30000) {
-        //CAM EXPIRING TIME 30sec
+      if (currentTime - eventTime > 11000) {
+        //CAM - IVIM - DENM EXPIRING TIME 11sec
         let index = this.events.indexOf(event);
         this.events.splice(index, 1);
         this.expiredEventId.next(event.id);
@@ -201,7 +201,7 @@ export class MqttHandlerService {
         for (let denm of event.denms) {
           let denmTime = denm.timestamp.getTime();
           if (currentTime - denmTime > 10000) {
-            //DENM EXPIRING TIME 10sec
+            //DENM STATUS EXPIRING TIME 10sec
             this.DENMExpired.next(denm);
           }
         }

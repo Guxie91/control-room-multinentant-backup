@@ -2,7 +2,6 @@
   "tenants": [{
       "id": "1",
       "name": "tim",
-      "write": true,
       "api_key": "bc77b7a056186e0b804d359c45b90b6f:e0a46d9efb822ce6b9027991c3a83a5d",
       "coordinates": [45.06865987316147, 7.686697920766666],
       "zoom": 10,
@@ -15,7 +14,6 @@
     {
       "id": "2",
       "name": "genova",
-      "write": false,
       "api_key": "4fa9fb05c7aafdfbd315eca23074d929:c41d5443e860087e8484bb4ac356cd98",
       "coordinates": [44.40233147421894, 8.946791963838923],
       "zoom": 10,
@@ -28,7 +26,6 @@
     {
       "id": "4",
       "name": "navya",
-      "write": true,
       "api_key": "789",
       "coordinates": [41.96197018263711, 12.46440905663906],
       "zoom": 17,
@@ -37,6 +34,18 @@
       "color": "#0033a1",
       "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
       "topics": ["its/+/120232221103/#","dashboard/#", "json/#"]
+    },
+    {
+      "id": "5",
+      "name": "c-roads",
+      "api_key": "",
+      "coordinates": [41.96197018263711, 12.46440905663906],
+      "zoom": 3,
+      "title": "Control Room C-V2X",
+      "footerText": "©2021 Service Innovation",
+      "color": "#50737f",
+      "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
+      "topics": ["its/#","dashboard/#", "json/#"]
     }
   ]
 }
