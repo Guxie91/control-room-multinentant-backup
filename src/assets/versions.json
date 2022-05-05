@@ -74,6 +74,10 @@
     {
       "version": "2.8.9",
       "description": "correzione icone categoria 'alert'; correzioni css; inserita conversione camelcase -> stringcase per use-case non pervenuti"
+    },
+    {
+      "version": "2.8.10",
+      "description": "bugfix etichetta veicoli speciali in tabella"
     }
   ]
 }
