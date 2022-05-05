@@ -120,9 +120,7 @@ export class MqttHandlerService {
           let payloadJSON = JSON.parse(message.payload.toString());
           //check blocklist
           for (let id of this.serversIds) {
-            if (
-              payloadJSON.header.stationId == id
-            ) {
+            if (payloadJSON.header.stationId == id) {
               // con questa modifica gli utenti registrati vengono ignorati
               return;
             }
@@ -242,7 +240,9 @@ export class MqttHandlerService {
       if (event.id == etsiMessage.id) {
         event.timestamp = etsiMessage.timestamp;
         event.coordinates = etsiMessage.coordinates;
-        event.info = etsiMessage.info;
+        if (event.type != "cam") {
+          event.info = etsiMessage.info;
+        }
         found = true;
       }
     }
