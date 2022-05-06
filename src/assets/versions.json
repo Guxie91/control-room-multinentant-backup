@@ -78,6 +78,10 @@
     {
       "version": "2.8.10",
       "description": "bugfix etichetta veicoli speciali in tabella"
+    },
+    {
+      "version": "2.8.11",
+      "description": "durata eventi modificata in base al tipo, eliminato doppia riga in tabella denm marker"
     }
   ]
 }

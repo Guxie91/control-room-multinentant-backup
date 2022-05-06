@@ -189,11 +189,40 @@ export class MqttHandlerService {
     for (let event of this.events) {
       let eventTime = new Date(event.timestamp).getTime();
       let currentTime = new Date().getTime();
-      if (currentTime - eventTime > 11000) {
-        //CAM - IVIM - DENM EXPIRING TIME 11sec
-        let index = this.events.indexOf(event);
-        this.events.splice(index, 1);
-        this.expiredEventId.next(event.id);
+      //DISCRIMINARE PER TIPO
+      switch (event.type) {
+        case "ivim":
+          if (currentTime - eventTime > 15000) {
+            //IVIM EXPIRING TIME 15sec
+            let index = this.events.indexOf(event);
+            this.events.splice(index, 1);
+            this.expiredEventId.next(event.id);
+          }
+          break;
+        case "cam":
+          if (currentTime - eventTime > 5000) {
+            //CAM EXPIRING TIME 5sec
+            let index = this.events.indexOf(event);
+            this.events.splice(index, 1);
+            this.expiredEventId.next(event.id);
+          }
+          break;
+        case "denm":
+          if (currentTime - eventTime > 2000) {
+            //CAM - IVIM - DENM EXPIRING TIME 2sec
+            let index = this.events.indexOf(event);
+            this.events.splice(index, 1);
+            this.expiredEventId.next(event.id);
+          }
+          break;
+        default:
+          if (currentTime - eventTime > 10000) {
+            //EXPIRING TIME 10sec
+            let index = this.events.indexOf(event);
+            this.events.splice(index, 1);
+            this.expiredEventId.next(event.id);
+          }
+          break;
       }
       if (event.type == "cam" && event.denms.length > 0) {
         for (let denm of event.denms) {
@@ -258,6 +287,6 @@ export class MqttHandlerService {
   handleDENMFromServer(message: IMqttMessage) {
     let newMessage = this.messageHandler.createDENMMessage(message);
     this.insertOrUpdateMessage(newMessage);
-    this.handleDENM(message, newMessage.id);
+    //this.handleDENM(message, newMessage.id);
   }
 }

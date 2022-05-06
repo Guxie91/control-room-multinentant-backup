@@ -175,6 +175,14 @@ export class CodeHandlerService {
         return stationaryVehicleWarning;
       case "CCRW":
         return collisionRiskWarning;
+      case "": {
+        return (
+          defaultPopup +
+          '<div style="text-align:center;min-width: 100px;"><span class="alertLabel whiteText">' +
+          "Sconosciuto" +
+          "</span></div>"
+        );
+      }
       default:
         return (
           defaultPopup +
