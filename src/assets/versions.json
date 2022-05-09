@@ -82,6 +82,10 @@
     {
       "version": "2.8.11",
       "description": "durata eventi modificata in base al tipo, eliminato doppia riga in tabella denm marker"
+    },
+    {
+      "version": "2.8.12",
+      "description": "aggiustamenti durata e identificazione denm, modifica credenziali login tenant tim, nuove icone per denm, piccoli fix"
     }
   ]
 }

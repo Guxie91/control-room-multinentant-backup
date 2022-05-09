@@ -233,7 +233,6 @@ export class MqttMessagesHandlerService {
         }
         break;
       default:
-        console.log("causeCode " + causeCode + " non riconosciuto!");
         info = this.codeHandler.getDescriptionDetail(
           decodedMessage.payloadJSON
         );
@@ -250,7 +249,7 @@ export class MqttMessagesHandlerService {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
     }
-    //critical
+    //critical id problem
     let id =
       decodedMessage.payloadJSON.denm.management.actionID.originatingStationID +
       latitude +

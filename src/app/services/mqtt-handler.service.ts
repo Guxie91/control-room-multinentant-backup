@@ -117,6 +117,7 @@ export class MqttHandlerService {
       console.log("Subscribing to topic " + topic);
       topicSubscription = this._mqtt.observe(topic).subscribe(
         (message: IMqttMessage) => {
+          this.checkForExpiredEvents();
           let payloadJSON = JSON.parse(message.payload.toString());
           //check blocklist
           for (let id of this.serversIds) {
@@ -208,8 +209,8 @@ export class MqttHandlerService {
           }
           break;
         case "denm":
-          if (currentTime - eventTime > 2000) {
-            //CAM - IVIM - DENM EXPIRING TIME 2sec
+          if (currentTime - eventTime > 500) {
+            //DENM EXPIRING TIME 1sec
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
             this.expiredEventId.next(event.id);
@@ -237,6 +238,9 @@ export class MqttHandlerService {
   }
   handleCustomMessage(message: IMqttMessage) {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
+    if(customMessage.popup == ""){
+      customMessage.popup = "unknown";
+    }
     this.newCustomMessage.next(customMessage);
   }
   handleDENM(message: IMqttMessage, id?: number) {
@@ -287,6 +291,5 @@ export class MqttHandlerService {
   handleDENMFromServer(message: IMqttMessage) {
     let newMessage = this.messageHandler.createDENMMessage(message);
     this.insertOrUpdateMessage(newMessage);
-    //this.handleDENM(message, newMessage.id);
   }
 }

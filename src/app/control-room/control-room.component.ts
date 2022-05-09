@@ -21,6 +21,9 @@ import {
   InfoIcon,
   MotorBikeIcon,
   PedestrianIcon,
+  RedCarIcon,
+  RedPedestrianIcon,
+  RedRoadworksIcon,
   RoadworksIcon,
   TrafficIcon,
   WeatherIcon,
@@ -288,7 +291,20 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (etsiMessage.category == "alert") {
       etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
-      dynamicIcon = DangerIcon;
+      switch (etsiMessage.code) {
+        case 3:
+          dynamicIcon = RedRoadworksIcon;
+          break;
+        case 12:
+          dynamicIcon = RedPedestrianIcon;
+          break;
+        case 97:
+          dynamicIcon = RedCarIcon;
+          break;
+        default:
+          dynamicIcon = DangerIcon;
+          break;
+      }
     }
     //VEHICLES SECTION
     if (etsiMessage.type == "cam") {
@@ -346,9 +362,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
             break;
         }
       }
-    }
-    if (etsiMessage.type == "denm") {
-      dynamicIcon = DangerIcon;
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
@@ -444,6 +457,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         message.status == "on" &&
         marker.type == "cam"
       ) {
+        if (marker.marker.isPopupOpen()) {
+          return;
+        }
         marker.marker.closePopup();
         marker.marker.unbindPopup();
         let popup = L.popup({

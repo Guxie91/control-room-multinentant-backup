@@ -1,6 +1,6 @@
 {
   "tenants": [{
-      "id": "1",
+      "id": "0",
       "name": "tim",
       "api_key": "bc77b7a056186e0b804d359c45b90b6f:e0a46d9efb822ce6b9027991c3a83a5d",
       "coordinates": [45.06865987316147, 7.686697920766666],
