@@ -90,6 +90,10 @@
     {
       "version": "2.8.13",
       "description": "fix icone rosse denm"
+    },
+    {
+      "version": "2.8.14",
+      "description": "filtro popup su selezione in tabella"
     }
   ]
 }

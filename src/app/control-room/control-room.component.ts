@@ -396,13 +396,19 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   onFocus(id: number) {
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = -1;
+      for (let mark of this.markers) {
+        if (!mark.marker.isPopupOpen()) {
+          mark.marker.openPopup();
+        }
+      }
       return;
     } else {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
           this.lastSelectedEvent = id;
-          break;
+        } else {
+          mark.marker.closePopup();
         }
       }
     }
@@ -482,7 +488,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         let content = this.codeHandler.getPopupContent(message.popup);
         popup.setContent(content);
         marker.marker.bindPopup(popup);
-        marker.marker.openPopup();
+        if (
+          message.stationId == this.lastSelectedEvent ||
+          this.lastSelectedEvent == -1
+        ) {
+          marker.marker.openPopup();
+        }
         return;
       }
       if (
