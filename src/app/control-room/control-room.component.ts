@@ -295,11 +295,19 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         case 3:
           dynamicIcon = RedRoadworksIcon;
           break;
-        case 12:
-          dynamicIcon = RedPedestrianIcon;
-          break;
         case 97:
-          dynamicIcon = RedCarIcon;
+          switch (etsiMessage.subCode) {
+            case 2:
+              dynamicIcon = RedCarIcon;
+              break;
+            case 4:
+              dynamicIcon = RedPedestrianIcon;
+              break;
+            default:
+              dynamicIcon = RedCarIcon;
+              break;
+          }
+
           break;
         default:
           dynamicIcon = DangerIcon;
@@ -365,9 +373,10 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
+    let zIndex = etsiMessage.type == "denm" ? 1000 : 0;
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
-      { icon: dynamicIcon, riseOnHover: true }
+      { icon: dynamicIcon, riseOnHover: true, zIndexOffset: zIndex }
     );
     newMarker.on("click", () => {
       this.onMarkerClicked(etsiMessage.id);

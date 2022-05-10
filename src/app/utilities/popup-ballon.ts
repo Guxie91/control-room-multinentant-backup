@@ -1,6 +1,6 @@
 export const pedestrianWalkingPopup =
   '<div style="text-align:center;">' +
-  '<img src="./assets/img/WhitePedestrianCat.png" class="alertImg" style="margin-top: 5px;"/>' +
+  '<img src="./assets/img/RedPedestrianCat.png" class="alertImg" style="margin-top: 5px;"/>' +
   '<br/><span class="alertLabel whiteText" style="margin-top: 10px;">Vulnerable Road User</span></div>';
 
 export const emergencyVehicleApproachingPopup =
@@ -15,7 +15,7 @@ export const stationaryVehicleWarning =
 
 export const collisionRiskWarning =
   '<div style="text-align:center;">' +
-  '<img src="./assets/img/WhiteCarCat.png" class="alertImg popupImg" style="margin-top:0 !important" />' +
+  '<img src="./assets/img/RedCarCat.png" class="alertImg popupImg" style="margin-top:0 !important" />' +
   '<br/><span class="alertLabel whiteText">Crossing Collision Risk</span></div>';
 
 export const roadworksPopup =

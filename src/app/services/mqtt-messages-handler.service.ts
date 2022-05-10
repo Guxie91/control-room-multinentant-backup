@@ -274,6 +274,7 @@ export class MqttMessagesHandlerService {
   }
   extractMessage(message: IMqttMessage) {
     //disassemble topic
+    //topic switch +1
     let topicData = message.topic.split("/");
     //collect quadkeys or other topic elements
     let quadkey = "";

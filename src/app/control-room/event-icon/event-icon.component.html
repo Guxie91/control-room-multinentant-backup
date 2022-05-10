@@ -4,10 +4,16 @@
   <img class="CatImg" src="./assets/img/InfoCat.png" *ngIf="event.category=='info'" />
   <img class="CatImg" src="./assets/img/TrafficCat.png" *ngIf="event.category=='traffic'" />
   <div *ngIf="event.category=='alert'" [ngSwitch]="event.code">
-    <img *ngSwitchCase="event.code == 3" class="CatImg" src="./assets/img/RedRoadworksCat.png" />
-    <img *ngSwitchCase="event.code == 12" class="CatImg" src="./assets/img/RedPedestrianCat.png" />
-    <img *ngSwitchCase="event.code == 97" class="CatImg" src="./assets/img/RedCarCat.png" />
-    <img *ngSwitchDefault class="CatImg" src="./assets/img/RedAlertCat.png" />
+    <div *ngSwitchCase="3">
+      <img class="CatImg" src="./assets/img/RedRoadworksCat.png" />
+    </div>
+    <div *ngSwitchCase="97">
+      <img *ngIf="event.subCode == 4" class="CatImg" src="./assets/img/RedPedestrianCat.png" />
+      <img *ngIf="event.subCode == 2" class="CatImg" src="./assets/img/RedCarCat.png" />
+    </div>
+    <div *ngSwitchDefault>
+      <img class="CatImg" src="./assets/img/RedAlertCat.png" />
+    </div>
   </div>
 
   <div *ngIf="event.category == 'pedestrians'">
