@@ -8,15 +8,15 @@ import {
   RedCarIcon,
   RedFireTruckIcon,
   RedMotorBikeIcon,
-} from "./../utilities/marker-icons";
-import { Injectable } from "@angular/core";
+} from './../utilities/marker-icons';
+import { Injectable } from '@angular/core';
 import {
   CarIcon,
   EmergencyIcon,
   PedestrianIcon,
   RedEmergencyIcon,
   RedPedestrianIcon,
-} from "../utilities/marker-icons";
+} from '../utilities/marker-icons';
 import {
   collisionRiskWarning,
   defaultPopup,
@@ -26,12 +26,12 @@ import {
   stationaryVehicleWarning,
   trafficPopup,
   weatherPopup,
-} from "../utilities/popup-ballon";
-import { EtsiMessage } from "../models/etsi-message.model";
+} from '../utilities/popup-ballon';
+import { EtsiMessage } from '../models/etsi-message.model';
 declare var denm: any;
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CodeHandlerService {
   constructor() {}
@@ -41,47 +41,49 @@ export class CodeHandlerService {
     let subCauseCodeDesc = denm.getSubCauseCode(message).toString();
     //convert from Camel Case to String Case
     causeCodeDesc = causeCodeDesc
-      .replace(/([A-Z])/g, " $1")
+      .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (str: string) => {
         return str.toUpperCase();
       });
     subCauseCodeDesc = subCauseCodeDesc
-      .replace(/([A-Z])/g, " $1")
+      .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (str: string) => {
         return str.toUpperCase();
       });
     if (subCauseCodeDesc.length > 3 && causeCodeDesc.length > 3) {
-      return causeCodeDesc + ": " + subCauseCodeDesc;
-    } else {
-      return (
-        "causeCode: " + causeCodeDesc + ", subCauseCode: " + subCauseCodeDesc
-      );
+      return causeCodeDesc + ': ' + subCauseCodeDesc;
     }
+    if (causeCodeDesc.length > 3 && subCauseCodeDesc.length < 3) {
+      return causeCodeDesc;
+    }
+    return (
+      'Evento ITS (CC: ' + causeCodeDesc + ', SCC: ' + subCauseCodeDesc + ')'
+    );
   }
   getAdHocDescription(
     description: string,
     causeCode: string,
     subCauseCode: string
   ) {
-    if (causeCode == "95" && subCauseCode == "1") {
-      return "Emergency Vehicle Approaching";
+    if (causeCode == '95' && subCauseCode == '1') {
+      return 'Emergency Vehicle Approaching';
     }
-    if (causeCode == "12" && subCauseCode == "0") {
-      return "Vulnerable Road User";
+    if (causeCode == '12' && subCauseCode == '0') {
+      return 'Vulnerable Road User';
     }
-    if (causeCode == "91" && subCauseCode == "0") {
-      return "Vehicle Breakdown";
+    if (causeCode == '91' && subCauseCode == '0') {
+      return 'Vehicle Breakdown';
     }
     return description;
   }
   getIconForDENM(causeCode: string, subCauseCode: string, event: EtsiMessage) {
     let stationType = event.code;
     let vehicleRole = event.subCode;
-    if (event.type == "denm") {
+    if (event.type == 'denm') {
       return DangerIcon;
     }
     //elenco di use-case implementati, ritorna icona rossa
-    if (causeCode == "95" && subCauseCode == "1" && stationType == 10) {
+    if (causeCode == '95' && subCauseCode == '1' && stationType == 10) {
       switch (vehicleRole) {
         case 0:
           return RedEmergencyIcon;
@@ -93,7 +95,7 @@ export class CodeHandlerService {
           return RedEmergencyIcon;
       }
     }
-    if (causeCode == "91" && subCauseCode == "0") {
+    if (causeCode == '91' && subCauseCode == '0') {
       switch (stationType) {
         case 3:
         case 4:
@@ -106,7 +108,7 @@ export class CodeHandlerService {
           return RedCarIcon;
       }
     }
-    if (causeCode == "12" && subCauseCode == "0") {
+    if (causeCode == '12' && subCauseCode == '0') {
       switch (stationType) {
         case 1:
           return RedPedestrianIcon;
@@ -161,26 +163,26 @@ export class CodeHandlerService {
   getPopupContent(popup: string) {
     //metodo che ritorna il contenuto html del popup
     switch (popup) {
-      case "RWW":
+      case 'RWW':
         return roadworksPopup;
-      case "WCW":
+      case 'WCW':
         return weatherPopup;
-      case "TCW":
+      case 'TCW':
         return trafficPopup;
-      case "VRUW":
+      case 'VRUW':
         return pedestrianWalkingPopup;
-      case "EVW":
+      case 'EVW':
         return emergencyVehicleApproachingPopup;
-      case "SVW":
+      case 'SVW':
         return stationaryVehicleWarning;
-      case "CCRW":
+      case 'CCRW':
         return collisionRiskWarning;
-      case "": {
+      case '': {
         return (
           defaultPopup +
           '<div style="text-align:center;min-width: 100px;"><span class="alertLabel whiteText">' +
-          "Sconosciuto" +
-          "</span></div>"
+          'Sconosciuto' +
+          '</span></div>'
         );
       }
       default:
@@ -188,7 +190,7 @@ export class CodeHandlerService {
           defaultPopup +
           '<div style="text-align:center;min-width: 100px;"><span class="alertLabel whiteText">' +
           popup +
-          "</span></div>"
+          '</span></div>'
         );
     }
   }

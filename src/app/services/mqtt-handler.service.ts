@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { IMqttMessage, MqttService } from "ngx-mqtt";
-import { Subject, Subscription } from "rxjs";
-import { take } from "rxjs/operators";
-import { CustomMessage } from "../models/custom-message.model";
-import { DENMMessage } from "../models/DENMMessage.model";
-import { EtsiMessage } from "../models/etsi-message.model";
-import { MqttSettings } from "../models/mqtt-settings";
-import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
-import { CodeHandlerService } from "./code-handler.service";
-import { HttpHandlerService } from "./http-handler.service";
-import { MqttMessagesHandlerService } from "./mqtt-messages-handler.service";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { IMqttMessage, MqttService } from 'ngx-mqtt';
+import { Subject, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { CustomMessage } from '../models/custom-message.model';
+import { DENMMessage } from '../models/DENMMessage.model';
+import { EtsiMessage } from '../models/etsi-message.model';
+import { MqttSettings } from '../models/mqtt-settings';
+import { MQTT_SERVICE_OPTIONS } from '../utilities/mqtt-service-options';
+import { CodeHandlerService } from './code-handler.service';
+import { HttpHandlerService } from './http-handler.service';
+import { MqttMessagesHandlerService } from './mqtt-messages-handler.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class MqttHandlerService {
   topics: string[] = [];
@@ -53,10 +53,10 @@ export class MqttHandlerService {
       .fetchTenants()
       .pipe(take(1))
       .subscribe((data) => {
-        let currentTenant = localStorage.getItem("tenant");
+        let currentTenant = localStorage.getItem('tenant');
         if (!currentTenant) {
-          console.log("Failed to detect tenant!");
-          this.router.navigate(["/", "redirect"]);
+          console.log('Failed to detect tenant!');
+          this.router.navigate(['/', 'redirect']);
         }
         let tenants = data.tenants;
         for (let tenant of tenants) {
@@ -65,8 +65,8 @@ export class MqttHandlerService {
           }
         }
         if (this.topics == []) {
-          console.log("Tenant was not recognized!");
-          this.router.navigate(["/", currentTenant, "login"]);
+          console.log('Tenant was not recognized!');
+          this.router.navigate(['/', currentTenant, 'login']);
         }
         this.http
           .fetchMqttOptions()
@@ -96,16 +96,16 @@ export class MqttHandlerService {
     if (this.connectedToBroker) {
       return;
     }
-    if (MQTT_SERVICE_OPTIONS.url == "" || !options) {
+    if (MQTT_SERVICE_OPTIONS.url == '' || !options) {
       MQTT_SERVICE_OPTIONS.url = this.brokers[0].url;
-      console.log("Connecting to default broker: " + this.brokers[0].name);
+      console.log('Connecting to default broker: ' + this.brokers[0].name);
       options = this.brokers[0].options;
     }
     this._mqtt.connect(options);
     for (let opt of this.brokers) {
       if (MQTT_SERVICE_OPTIONS.url == opt.url && options) {
         console.log(
-          "Connected to " + opt.name + " with username: " + options.username
+          'Connected to ' + opt.name + ' with username: ' + options.username
         );
         this.currentBroker = opt;
         break;
@@ -114,7 +114,7 @@ export class MqttHandlerService {
     this.connectedToBroker = true;
     let topicSubscription;
     for (let topic of this.topics) {
-      console.log("Subscribing to topic " + topic);
+      console.log('Subscribing to topic ' + topic);
       topicSubscription = this._mqtt.observe(topic).subscribe(
         (message: IMqttMessage) => {
           this.checkForExpiredEvents();
@@ -127,13 +127,13 @@ export class MqttHandlerService {
             }
           }
           //identify message type
-          if (payloadJSON["denm"]) {
+          if (payloadJSON['denm']) {
             for (let event of this.events) {
               if (
                 payloadJSON.denm.management.actionID.originatingStationID ==
                 event.id
               ) {
-                if (event.type == "denm") {
+                if (event.type == 'denm') {
                   this.handleDENMFromServer(message);
                   return;
                 } else {
@@ -145,15 +145,15 @@ export class MqttHandlerService {
             this.handleDENMFromServer(message);
             return;
           }
-          if (payloadJSON["popup"]) {
+          if (payloadJSON['popup']) {
             this.handleCustomMessage(message);
             return;
           } else {
             let etsiMessage: EtsiMessage = this.messageHandler.manageMessage(
               message
             );
-            if (etsiMessage.category == "error") {
-              console.log("Error: Unknown message type!");
+            if (etsiMessage.category == 'error') {
+              console.log('Error: Unknown message type!');
               console.log(etsiMessage);
               return;
             }
@@ -161,7 +161,7 @@ export class MqttHandlerService {
           }
         },
         (error) => {
-          console.log("ERROR ON TOPIC: " + this.topics[0]);
+          console.log('ERROR ON TOPIC: ' + this.topics[0]);
           console.log(error);
         }
       );
@@ -173,9 +173,9 @@ export class MqttHandlerService {
       return;
     }
     this._mqtt.disconnect();
-    console.log("Disconnected from " + this.currentBroker.name);
-    this.currentBroker.name = "";
-    MQTT_SERVICE_OPTIONS.url == "";
+    console.log('Disconnected from ' + this.currentBroker.name);
+    this.currentBroker.name = '';
+    MQTT_SERVICE_OPTIONS.url == '';
     for (let sub of this.subscriptions) {
       sub.unsubscribe();
     }
@@ -192,15 +192,15 @@ export class MqttHandlerService {
       let currentTime = new Date().getTime();
       //DISCRIMINARE PER TIPO
       switch (event.type) {
-        case "ivim":
-          if (currentTime - eventTime > 15000) {
-            //IVIM EXPIRING TIME 15sec
+        case 'ivim':
+          if (currentTime - eventTime > 60000) {
+            //IVIM EXPIRING TIME 60sec
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
             this.expiredEventId.next(event.id);
           }
           break;
-        case "cam":
+        case 'cam':
           if (currentTime - eventTime > 5000) {
             //CAM EXPIRING TIME 5sec
             let index = this.events.indexOf(event);
@@ -208,13 +208,32 @@ export class MqttHandlerService {
             this.expiredEventId.next(event.id);
           }
           break;
-        case "denm":
-          if (currentTime - eventTime > 500) {
-            //DENM EXPIRING TIME 1sec
-            let index = this.events.indexOf(event);
-            this.events.splice(index, 1);
-            this.expiredEventId.next(event.id);
+        case 'denm':
+          switch (event.category) {
+            case 'alert':
+              let time = 500;
+              if(event.topic.includes("json")){
+                time = 500;
+              }else{
+                time = 120000;
+              }
+              if (currentTime - eventTime > time) {
+                //DENM EXPIRING TIME 1sec FOR CV2X DENMS
+                let index = this.events.indexOf(event);
+                this.events.splice(index, 1);
+                this.expiredEventId.next(event.id);
+              }
+              break;
+            default:
+              if (currentTime - eventTime > 120000) {
+                //DENM EXPIRING TIME 60sec FOR ITS DENMS
+                let index = this.events.indexOf(event);
+                this.events.splice(index, 1);
+                this.expiredEventId.next(event.id);
+              }
+              break;
           }
+
           break;
         default:
           if (currentTime - eventTime > 10000) {
@@ -225,7 +244,7 @@ export class MqttHandlerService {
           }
           break;
       }
-      if (event.type == "cam" && event.denms.length > 0) {
+      if (event.type == 'cam' && event.denms.length > 0) {
         for (let denm of event.denms) {
           let denmTime = denm.timestamp.getTime();
           if (currentTime - denmTime > 10000) {
@@ -238,8 +257,8 @@ export class MqttHandlerService {
   }
   handleCustomMessage(message: IMqttMessage) {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
-    if(customMessage.popup == ""){
-      customMessage.popup = "unknown";
+    if (customMessage.popup == '') {
+      customMessage.popup = 'unknown';
     }
     this.newCustomMessage.next(customMessage);
   }
@@ -273,7 +292,7 @@ export class MqttHandlerService {
       if (event.id == etsiMessage.id) {
         event.timestamp = etsiMessage.timestamp;
         event.coordinates = etsiMessage.coordinates;
-        if (event.type != "cam") {
+        if (event.type != 'cam') {
           event.info = etsiMessage.info;
         }
         found = true;

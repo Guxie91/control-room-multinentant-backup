@@ -94,6 +94,14 @@
     {
       "version": "2.8.14",
       "description": "filtro popup su selezione in tabella"
+    },
+    {
+      "version": "2.8.15",
+      "description": "modifica gestione DENM con filtro basato su topic, implemetazione sperimentale adapter c-roads"
+    },
+    {
+      "version": "2.9.0",
+      "description": "inserita funzionalità di inserimento MAPEM SPATEM"
     }
   ]
 }

@@ -45,7 +45,7 @@
       "footerText": "©2021 Service Innovation",
       "color": "#50737f",
       "categories": ["Lavori in corso", "Avvisi", "Meteo", "Traffico", "Pericoli"],
-      "topics": ["its/#","dashboard/#", "json/#"]
+      "topics": ["test_its/#","dashboard/#", "json/#", "its/#"]
     }
   ]
 }

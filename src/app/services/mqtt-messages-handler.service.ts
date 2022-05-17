@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { LatLng } from "leaflet";
-import { IMqttMessage } from "ngx-mqtt";
-import { EtsiMessage } from "../models/etsi-message.model";
-import { CodeHandlerService } from "./code-handler.service";
+import { Injectable } from '@angular/core';
+import { LatLng } from 'leaflet';
+import { IMqttMessage } from 'ngx-mqtt';
+import { EtsiMessage } from '../models/etsi-message.model';
+import { CodeHandlerService } from './code-handler.service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class MqttMessagesHandlerService {
   constructor(private codeHandler: CodeHandlerService) {}
@@ -16,32 +16,44 @@ export class MqttMessagesHandlerService {
     let topic = decodedMessage.topic;
     let newEtsiMessage;
     //identify message type
-    if (payloadJSON["ivi"]) {
+    if (
+      payloadJSON['messageType'] == 'SPATEM' ||
+      payloadJSON['messageType'] == 'MAPEM'
+    ) {
+      newEtsiMessage = this.createSPATEMMAPEMMessage(
+        message.topic,
+        payloadJSON
+      );
+      return newEtsiMessage;
+    }
+    if (payloadJSON['ivi']) {
       newEtsiMessage = this.createIVIMMessage(
         message.topic,
         quadkeyArr,
         payloadJSON
       );
-    } else if (payloadJSON["cam"]) {
+      return newEtsiMessage;
+    }
+    if (payloadJSON['cam']) {
       newEtsiMessage = this.createCAMMessage(
         message.topic,
         quadkeyArr,
         payloadJSON
       );
-    } else {
-      //if the type is unknown, create dummy log
-      console.log("error: unknown message type!");
-      newEtsiMessage = this.createErrorMessage(
-        topic,
-        quadkeyArr,
-        message.payload.toString()
-      );
+      return newEtsiMessage;
     }
+    //if the type is unknown, create dummy log
+    console.log('error: unknown message type!');
+    newEtsiMessage = this.createErrorMessage(
+      topic,
+      quadkeyArr,
+      message.payload.toString()
+    );
     return newEtsiMessage;
   }
   createIVIMMessage(topic: string, quadkeyArr: string[], payloadJSON: any) {
     let id = payloadJSON.ivi.mandatory.iviIdentificationNumber;
-    let info = "";
+    let info = '';
     info += payloadJSON.ivi.optional[1].giv[0].extraText[0].textContent;
     let latitude = +payloadJSON.ivi.optional[0].glc.referencePosition.latitude;
     latitude = latitude / 10000000;
@@ -49,10 +61,10 @@ export class MqttMessagesHandlerService {
       .longitude;
     longitude = longitude / 10000000;
     //topic switch +1
-    let category = topic.split("/")[1];
+    let category = topic.split('/')[1];
     let newEtsiMessage = new EtsiMessage(
       category,
-      "ivim",
+      'ivim',
       id,
       info,
       topic,
@@ -86,90 +98,90 @@ export class MqttMessagesHandlerService {
       longitude = longitude / 10000000;
     }
     let info =
-      "messageID: " +
+      'messageID: ' +
       payloadJSON.header.messageID +
-      ", stationID: " +
+      ', stationID: ' +
       payloadJSON.header.stationID +
-      ", stationType: " +
+      ', stationType: ' +
       stationType;
-    let category = "";
+    let category = '';
     let id = payloadJSON.header.stationID;
     switch (stationType) {
       case 0:
-        info = "Sconosciuto (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Sconosciuto (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 1:
-        info = "Pedone (ID: " + payloadJSON.header.stationID + ")";
-        category = "pedestrians";
+        info = 'Pedone (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'pedestrians';
         break;
       case 2:
-        info = "Ciclista (ID: " + payloadJSON.header.stationID + ")";
-        category = "pedestrians";
+        info = 'Ciclista (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'pedestrians';
         break;
       case 3:
-        info = "Ciclomotore (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Ciclomotore (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 4:
-        info = "Motociclo (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Motociclo (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 5:
-        info = "Veicolo (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Veicolo (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 6:
-        info = "Bus (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Bus (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 7:
-        info = "Camion (leggero) (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Camion (leggero) (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 8:
-        info = "Camion (pesante) (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Camion (pesante) (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 9:
-        info = "Rimorchio (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Rimorchio (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 10:
         switch (vehicleRole) {
           case 0:
-            info = "Ambulanza (ID: " + payloadJSON.header.stationID + ")";
+            info = 'Ambulanza (ID: ' + payloadJSON.header.stationID + ')';
             break;
           case 5:
-            info = "Pompieri (ID: " + payloadJSON.header.stationID + ")";
+            info = 'Pompieri (ID: ' + payloadJSON.header.stationID + ')';
             break;
           case 6:
-            info = "Ambulanza (ID: " + payloadJSON.header.stationID + ")";
+            info = 'Ambulanza (ID: ' + payloadJSON.header.stationID + ')';
             break;
           default:
             info =
-              "Veicolo di Emergenza (ID: " + payloadJSON.header.stationID + ")";
+              'Veicolo di Emergenza (ID: ' + payloadJSON.header.stationID + ')';
             break;
         }
-        category = "emergency";
+        category = 'emergency';
         break;
       case 11:
-        info = "Tram (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Tram (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       case 12:
-        info = "Unità Stradale (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        info = 'Unità Stradale (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
       default:
-        console.log("stationType " + stationType + " non riconosciuto!");
-        info = "Sconosciuto (ID: " + payloadJSON.header.stationID + ")";
-        category = "cars";
+        console.log('stationType ' + stationType + ' non riconosciuto!');
+        info = 'Sconosciuto (ID: ' + payloadJSON.header.stationID + ')';
+        category = 'cars';
         break;
     }
     let newEtsiMessage = new EtsiMessage(
       category,
-      "cam",
+      'cam',
       id,
       info,
       topic,
@@ -187,8 +199,8 @@ export class MqttMessagesHandlerService {
   }
   createErrorMessage(topic: string, quadkeyArr: string[], message: string) {
     let newEtsiMessage = new EtsiMessage(
-      "error",
-      "unknown",
+      'error',
+      'unknown',
       -1,
       message,
       topic,
@@ -211,25 +223,25 @@ export class MqttMessagesHandlerService {
     let subCauseCode =
       decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
     let info =
-      "Avviso (causeCode: " +
+      'Avviso (causeCode: ' +
       causeCode +
-      ", subCauseCode: " +
+      ', subCauseCode: ' +
       subCauseCode +
-      ")";
+      ')';
     switch (causeCode) {
       case 12:
         if (subCauseCode == 0) {
-          info = "Avviso (Vulnerable Road User)";
+          info = 'Avviso (Vulnerable Road User)';
         }
         break;
       case 91:
         if (subCauseCode == 0) {
-          info = "Avviso (Vehicle Breakdown)";
+          info = 'Avviso (Vehicle Breakdown)';
         }
         break;
       case 95:
         if (subCauseCode == 1) {
-          info = "Avviso (Emergency Vehicle Approaching)";
+          info = 'Avviso (Emergency Vehicle Approaching)';
         }
         break;
       default:
@@ -254,9 +266,15 @@ export class MqttMessagesHandlerService {
       decodedMessage.payloadJSON.denm.management.actionID.originatingStationID +
       latitude +
       longitude;
+    let category = 'alert';
+    if (decodedMessage.topic.includes('json')) {
+      category = 'alert';
+    } else {
+      category = decodedMessage.topic.split('/')[1];
+    }
     let newMessage = new EtsiMessage(
-      "alert",
-      "denm",
+      category,
+      'denm',
       id,
       info,
       decodedMessage.topic,
@@ -272,12 +290,40 @@ export class MqttMessagesHandlerService {
     );
     return newMessage;
   }
+  createSPATEMMAPEMMessage(topic: string, payload: any) {
+    let latitude = +payload['latitude'];
+    let longitude = +payload['longitude'];
+    let id = payload['id'].toString();
+    let info =
+      payload['name'] +
+      ', ' +
+      payload['publisherId'] +
+      ' (' +
+      payload['originatingCountry'] +
+      ')';
+    return new EtsiMessage(
+      'info',
+      payload['messageType'],
+      id,
+      info,
+      topic,
+      [],
+      new LatLng(latitude, longitude),
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      0,
+      0
+    );
+  }
   extractMessage(message: IMqttMessage) {
     //disassemble topic
     //topic switch +1
-    let topicData = message.topic.split("/");
+    let topicData = message.topic.split('/');
     //collect quadkeys or other topic elements
-    let quadkey = "";
+    let quadkey = '';
     for (let i = 0; i < topicData.length; i++) {
       if (i < 2) {
         continue;
@@ -285,7 +331,7 @@ export class MqttMessagesHandlerService {
       quadkey += topicData[i];
     }
     //reassemble topic assuming text/text/quadkey/quadkey/....
-    const topic = topicData[0] + "/" + topicData[1];
+    const topic = topicData[0] + '/' + topicData[1] + '/' + topicData[2];
     const quadkeyArr = [quadkey];
     let payloadJSON = JSON.parse(message.payload.toString());
     return { topic: topic, quadkeyArr: quadkeyArr, payloadJSON: payloadJSON };
