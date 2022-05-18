@@ -373,7 +373,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
-    let zIndex = etsiMessage.type == "denm" ? 1000 : 0;
+    let zIndex = etsiMessage.type == "denm" ? 1000 : 0; //denms must be on top
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
       { icon: dynamicIcon, riseOnHover: true, zIndexOffset: zIndex }
@@ -436,9 +436,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = -1;
     } else {
+      this.lastSelectedEvent = id;
       for (let mark of this.markers) {
         if (mark.messageId == id) {
-          this.lastSelectedEvent = id;
           let elem = document.getElementById(mark.messageId.toString());
           elem?.scrollIntoView({ behavior: "smooth" });
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());

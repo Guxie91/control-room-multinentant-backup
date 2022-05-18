@@ -20,7 +20,7 @@ export class MqttMessagesHandlerService {
       payloadJSON['messageType'] == 'SPATEM' ||
       payloadJSON['messageType'] == 'MAPEM'
     ) {
-      newEtsiMessage = this.createSPATEMMAPEMMessage(
+      newEtsiMessage = this.createSPATEM_MAPEMMessage(
         message.topic,
         payloadJSON
       );
@@ -218,17 +218,16 @@ export class MqttMessagesHandlerService {
   }
   createDENMMessage(message: IMqttMessage) {
     let decodedMessage = this.extractMessage(message);
-    let causeCode =
-      decodedMessage.payloadJSON.denm.situation.eventType.causeCode;
-    let subCauseCode =
-      decodedMessage.payloadJSON.denm.situation.eventType.subCauseCode;
-    let info =
-      'Avviso (causeCode: ' +
-      causeCode +
-      ', subCauseCode: ' +
-      subCauseCode +
-      ')';
+    if (decodedMessage.topic.includes('test_its')) {
+      console.log(decodedMessage.payloadJSON);
+    }
+    let causeCode = +decodedMessage.payloadJSON.denm.situation.eventType
+      .causeCode;
+    let subCauseCode = +decodedMessage.payloadJSON.denm.situation.eventType
+      .subCauseCode;
+    let info = '';
     switch (causeCode) {
+      /*
       case 12:
         if (subCauseCode == 0) {
           info = 'Avviso (Vulnerable Road User)';
@@ -244,15 +243,16 @@ export class MqttMessagesHandlerService {
           info = 'Avviso (Emergency Vehicle Approaching)';
         }
         break;
+      */
       default:
         info = this.codeHandler.getDescriptionDetail(
           decodedMessage.payloadJSON
         );
     }
-    let latitude =
-      decodedMessage.payloadJSON.denm.management.eventPosition.latitude;
-    let longitude =
-      decodedMessage.payloadJSON.denm.management.eventPosition.longitude;
+    let latitude = +decodedMessage.payloadJSON.denm.management.eventPosition
+      .latitude;
+    let longitude = +decodedMessage.payloadJSON.denm.management.eventPosition
+      .longitude;
     if (+latitude > 1000 || +longitude > 1000) {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
@@ -262,10 +262,7 @@ export class MqttMessagesHandlerService {
       longitude = longitude / 10000000;
     }
     //critical id problem
-    let id =
-      decodedMessage.payloadJSON.denm.management.actionID.originatingStationID +
-      latitude +
-      longitude;
+    let id = latitude + longitude;
     let category = 'alert';
     if (decodedMessage.topic.includes('json')) {
       category = 'alert';
@@ -290,18 +287,22 @@ export class MqttMessagesHandlerService {
     );
     return newMessage;
   }
-  createSPATEMMAPEMMessage(topic: string, payload: any) {
+  createSPATEM_MAPEMMessage(topic: string, payload: any) {
     let latitude = +payload['latitude'];
     let longitude = +payload['longitude'];
-    let id = payload['id'].toString();
-    let info =
-      payload['name'] +
-      ', ' +
-      payload['publisherId'] +
-      ' (' +
-      payload['originatingCountry'] +
-      ')';
-    return new EtsiMessage(
+    let id = +(latitude + longitude).toString().replace('.', '');
+    let name = payload['name'];
+    let publisherId = payload['publisherId'];
+    let originatingCountry = payload['originatingCountry'];
+    let protocolVersion = payload['protocolVersion'];
+    let info = '';
+    if (name && publisherId && originatingCountry) {
+      info = name + ', ' + publisherId + ' (' + originatingCountry + ')';
+    } else {
+      info =
+        protocolVersion + ', '  + publisherId + ' (' + originatingCountry + ')';
+    }
+    let newMessage = new EtsiMessage(
       'info',
       payload['messageType'],
       id,
@@ -317,6 +318,7 @@ export class MqttMessagesHandlerService {
       0,
       0
     );
+    return newMessage;
   }
   extractMessage(message: IMqttMessage) {
     //disassemble topic

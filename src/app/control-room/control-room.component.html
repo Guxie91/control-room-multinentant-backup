@@ -20,8 +20,8 @@
     </div>
     <div class="subButtonsControl" *ngIf="categories[1].active">
       <button *ngFor="let sub of subCategoriesVehicles" class="filterButton" (click)="onSubFilterVehicles(sub.name)"
-        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img class="subFilterVehicleImg"
-          [src]="sub.url" [alt]="sub.name" /></button>
+        [ngClass]="{'filteredOut': !sub.active}" placement="top" [ngbTooltip]="sub.label"><img
+          class="subFilterVehicleImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
       <app-loading-spinner></app-loading-spinner>
@@ -63,11 +63,8 @@
                 </span>
               </td>
               <td nowrap>
-                <span class="eventLabel" *ngIf="event.type == 'ivim'">
-                  [ID: {{event.id}}]
-                </span>
-                <span class="eventLabel" *ngIf="event.type != 'ivim'">
-                  [{{event.category}}]
+                <span class="eventLabel" style="text-overflow: ellipsis;">
+                  [ID: {{event.id.toString().length>7?event.id.toString().substring(0,7)+"...":event.id}}]
                 </span>
               </td>
             </tr>

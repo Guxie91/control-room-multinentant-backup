@@ -1,5 +1,9 @@
 {
   "jshint.options": {
     "asi": true
-  }
+  },
+  "cSpell.words": [
+    "MAPEM",
+    "SPATEM"
+  ]
 }
