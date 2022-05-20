@@ -74,7 +74,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     const password = form.value.password;
     this.auth.login(username, password).subscribe(
       (response: AuthResponse) => {
-        console.log(response);
         if (response.success) {
           if (response.id_org != this.tenantService.getTenantId()) {
             console.log("Organization id mismatch:");

@@ -218,9 +218,6 @@ export class MqttMessagesHandlerService {
   }
   createDENMMessage(message: IMqttMessage) {
     let decodedMessage = this.extractMessage(message);
-    if (decodedMessage.topic.includes('test_its')) {
-      console.log(decodedMessage.payloadJSON);
-    }
     let causeCode = +decodedMessage.payloadJSON.denm.situation.eventType
       .causeCode;
     let subCauseCode = +decodedMessage.payloadJSON.denm.situation.eventType
