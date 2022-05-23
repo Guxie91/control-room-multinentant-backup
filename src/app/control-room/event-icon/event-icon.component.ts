@@ -47,6 +47,7 @@ export class EventIconComponent implements OnInit, OnDestroy {
     if (
       this.event.category != "roadworks" &&
       this.event.category != "weather" &&
+      this.event.category != "traffic_lights" &&
       this.event.category != "info" &&
       this.event.category != "traffic" &&
       this.event.category != "pedestrians" &&

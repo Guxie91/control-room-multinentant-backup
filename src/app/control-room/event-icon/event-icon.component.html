@@ -1,4 +1,5 @@
 <div *ngIf="!unknown">
+  <img class="CatImg" src="./assets/img/TrafficLight.png" *ngIf="event.category=='traffic_lights'" />
   <img class="CatImg" src="./assets/img/RoadworksCat.png" *ngIf="event.category=='roadworks'" />
   <img class="CatImg" src="./assets/img/WeatherCat.png" *ngIf="event.category=='weather'" />
   <img class="CatImg" src="./assets/img/InfoCat.png" *ngIf="event.category=='info'" />

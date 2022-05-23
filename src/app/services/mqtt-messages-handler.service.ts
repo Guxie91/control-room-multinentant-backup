@@ -85,10 +85,8 @@ export class MqttMessagesHandlerService {
     let vehicleRole = payloadJSON.cam.camParameters.basicContainer.vehicleRole;
     let latitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.latitude;
-    //latitude = latitude / 10000000;
     let longitude =
       payloadJSON.cam.camParameters.basicContainer.referencePosition.longitude;
-    //longitude = longitude / 10000000;
     if (+latitude > 1000 || +longitude > 1000) {
       latitude = latitude / 10000000;
       longitude = longitude / 10000000;
@@ -288,19 +286,13 @@ export class MqttMessagesHandlerService {
     let latitude = +payload['latitude'];
     let longitude = +payload['longitude'];
     let id = +(latitude + longitude).toString().replace('.', '');
-    let name = payload['name'];
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
-    let protocolVersion = payload['protocolVersion'];
     let info = '';
-    if (name && publisherId && originatingCountry) {
-      info = name + ', ' + publisherId + ' (' + originatingCountry + ')';
-    } else {
-      info =
-        protocolVersion + ', '  + publisherId + ' (' + originatingCountry + ')';
-    }
+    info =
+      publisherId + ' (' + originatingCountry + ')';
     let newMessage = new EtsiMessage(
-      'info',
+      'traffic_lights',
       payload['messageType'],
       id,
       info,

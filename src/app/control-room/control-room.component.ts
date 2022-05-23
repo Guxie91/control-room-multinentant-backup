@@ -1,15 +1,15 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
-import * as L from "leaflet";
-import { Subscription } from "rxjs";
-import { take } from "rxjs/operators";
-import { CustomMessage } from "../models/custom-message.model";
-import { DENMMessage } from "../models/DENMMessage.model";
-import { EtsiMessage } from "../models/etsi-message.model";
-import { MarkerBundle } from "../models/marker-bundle.model";
-import { CodeHandlerService } from "../services/code-handler.service";
-import { HttpHandlerService } from "../services/http-handler.service";
-import { MqttHandlerService } from "../services/mqtt-handler.service";
-import { GOOGLE_TERRAIN, OPEN_STREET_MAP } from "../utilities/maps";
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import * as L from 'leaflet';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { CustomMessage } from '../models/custom-message.model';
+import { DENMMessage } from '../models/DENMMessage.model';
+import { EtsiMessage } from '../models/etsi-message.model';
+import { MarkerBundle } from '../models/marker-bundle.model';
+import { CodeHandlerService } from '../services/code-handler.service';
+import { HttpHandlerService } from '../services/http-handler.service';
+import { MqttHandlerService } from '../services/mqtt-handler.service';
+import { GOOGLE_TERRAIN, OPEN_STREET_MAP } from '../utilities/maps';
 import {
   BikeIcon,
   BusIcon,
@@ -26,80 +26,87 @@ import {
   RedRoadworksIcon,
   RoadworksIcon,
   TrafficIcon,
+  TrafficLightsIcon,
   WeatherIcon,
-} from "../utilities/marker-icons";
+} from '../utilities/marker-icons';
 
 @Component({
-  selector: "app-control-room",
-  templateUrl: "./control-room.component.html",
-  styleUrls: ["./control-room.component.css"],
+  selector: 'app-control-room',
+  templateUrl: './control-room.component.html',
+  styleUrls: ['./control-room.component.css'],
   animations: [],
 })
 export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   private map!: L.Map;
   events: EtsiMessage[] = [];
   categories = [
-    { name: "itsEvents", active: true, url: "" },
-    { name: "vehicles", active: false, url: "" },
+    { name: 'itsEvents', active: true, url: '' },
+    { name: 'vehicles', active: false, url: '' },
   ];
   subCategoriesItsEvents = [
     {
-      label: "LAVORI IN CORSO",
-      name: "roadworks",
+      label: 'LAVORI IN CORSO',
+      name: 'roadworks',
       active: true,
-      url: "./assets/img/RoadworksCat.png",
+      url: './assets/img/RoadworksCat.png',
     },
     {
-      label: "INFO",
-      name: "info",
+      label: 'INFO',
+      name: 'info',
       active: true,
-      url: "./assets/img/InfoCat.png",
+      url: './assets/img/InfoCat.png',
     },
     {
-      label: "METEO",
-      name: "weather",
+      label: 'TRAFFIC LIGHTS',
+      name: 'traffic_lights',
       active: true,
-      url: "./assets/img/WeatherCat.png",
+      url: './assets/img/TrafficLight.png',
     },
     {
-      label: "TRAFFICO",
-      name: "traffic",
+      label: 'METEO',
+      name: 'weather',
       active: true,
-      url: "./assets/img/TrafficCat.png",
+      url: './assets/img/WeatherCat.png',
     },
     {
-      label: "AVVISI",
-      name: "alert",
+      label: 'TRAFFICO',
+      name: 'traffic',
       active: true,
-      url: "./assets/img/AlertCat.png",
+      url: './assets/img/TrafficCat.png',
+    },
+    {
+      label: 'AVVISI',
+      name: 'alert',
+      active: true,
+      url: './assets/img/AlertCat.png',
     },
   ];
   subCategoriesVehicles = [
     {
-      label: "VEICOLI",
-      name: "cars",
+      label: 'VEICOLI',
+      name: 'cars',
       active: true,
-      url: "./assets/img/VehicleCat.png",
+      url: './assets/img/VehicleCat.png',
     },
     {
-      label: "UTENTI VULNERABILI",
-      name: "pedestrians",
+      label: 'UTENTI VULNERABILI',
+      name: 'pedestrians',
       active: true,
-      url: "./assets/img/VRUCat.png",
+      url: './assets/img/VRUCat.png',
     },
 
     {
-      label: "VEICOLI DI EMERGENZA",
-      name: "emergency",
+      label: 'VEICOLI DI EMERGENZA',
+      name: 'emergency',
       active: true,
-      url: "./assets/img/EmergencyCat.png",
+      url: './assets/img/EmergencyCat.png',
     },
   ];
   subscriptions: Subscription[] = [];
   markers: MarkerBundle[] = [];
   lastSelectedEvent = -1;
-  searchKey = "";
-  autoFocus = "on";
+  searchKey = '';
+  autoFocus = 'on';
   specialVehiclesIDs: number[] = [];
   specialVehiclesNames: string[] = [];
   /* ************************************** */
@@ -170,15 +177,15 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions.push(specialVehiclesSub);
   }
   private initMap(): void {
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let zoom = localStorage.getItem("zoom");
+    let lat = localStorage.getItem('lat');
+    let lng = localStorage.getItem('lng');
+    let zoom = localStorage.getItem('zoom');
     if (!lat || !lng || !zoom) {
-      lat = "44.40233147421894";
-      lng = "8.946791963838923";
-      zoom = "10";
+      lat = '44.40233147421894';
+      lng = '8.946791963838923';
+      zoom = '10';
     }
-    this.map = L.map("map", {
+    this.map = L.map('map', {
       center: [+lat, +lng],
       zoom: +zoom,
       closePopupOnClick: false,
@@ -192,14 +199,14 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         undefined,
         {
-          position: "bottomleft",
+          position: 'bottomleft',
         }
       )
       .addTo(this.map);
     L.control
-      .scale({ position: "topright", imperial: false, maxWidth: 200 })
+      .scale({ position: 'topright', imperial: false, maxWidth: 200 })
       .addTo(this.map);
-    let autoFocus = localStorage.getItem("autoFocus");
+    let autoFocus = localStorage.getItem('autoFocus');
     if (autoFocus != null) {
       this.autoFocus = autoFocus;
     }
@@ -262,8 +269,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         if (
           mark.messageId == this.lastSelectedEvent &&
-          mark.type == "cam" &&
-          this.autoFocus == "on"
+          mark.type == 'cam' &&
+          this.autoFocus == 'on'
         ) {
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
         }
@@ -273,24 +280,28 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     //else create new marker for that id
     let dynamicIcon = DangerIcon;
     //ITS EVENTS SECTION
-    if (etsiMessage.category == "roadworks") {
+    if (etsiMessage.category == 'roadworks') {
       dynamicIcon = RoadworksIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[0].active;
     }
-    if (etsiMessage.category == "info") {
+    if (etsiMessage.category == 'info') {
       dynamicIcon = InfoIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[1].active;
     }
-    if (etsiMessage.category == "weather") {
-      dynamicIcon = WeatherIcon;
+    if (etsiMessage.category == 'traffic_lights') {
+      dynamicIcon = TrafficLightsIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[2].active;
     }
-    if (etsiMessage.category == "traffic") {
+    if (etsiMessage.category == 'weather') {
+      dynamicIcon = WeatherIcon;
       etsiMessage.hide = !this.subCategoriesItsEvents[3].active;
+    }
+    if (etsiMessage.category == 'traffic') {
+      etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
       dynamicIcon = TrafficIcon;
     }
-    if (etsiMessage.category == "alert") {
-      etsiMessage.hide = !this.subCategoriesItsEvents[4].active;
+    if (etsiMessage.category == 'alert') {
+      etsiMessage.hide = !this.subCategoriesItsEvents[5].active;
       switch (etsiMessage.code) {
         case 3:
           dynamicIcon = RedRoadworksIcon;
@@ -315,7 +326,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     //VEHICLES SECTION
-    if (etsiMessage.type == "cam") {
+    if (etsiMessage.type == 'cam') {
       dynamicIcon = CarIcon;
       if (etsiMessage.code == 0) {
         //stationType 'unknown'
@@ -373,12 +384,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     dynamicIcon = this.getSpecialMarkerIcon(dynamicIcon, etsiMessage);
     etsiMessage.info = this.getSpecialName(etsiMessage.id, etsiMessage.info);
-    let zIndex = etsiMessage.type == "denm" ? 1000 : 0; //denms must be on top
+    let zIndex = etsiMessage.type == 'denm' ? 1000 : 0; //denms must be on top
     var newMarker = L.marker(
       [etsiMessage.coordinates.lat, etsiMessage.coordinates.lng],
       { icon: dynamicIcon, riseOnHover: true, zIndexOffset: zIndex }
     );
-    newMarker.on("click", () => {
+    newMarker.on('click', () => {
       this.onMarkerClicked(etsiMessage.id);
     });
     let mark = new MarkerBundle(
@@ -440,7 +451,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       for (let mark of this.markers) {
         if (mark.messageId == id) {
           let elem = document.getElementById(mark.messageId.toString());
-          elem?.scrollIntoView({ behavior: "smooth" });
+          elem?.scrollIntoView({ behavior: 'smooth' });
           this.map.setView(mark.marker.getLatLng(), this.map.getZoom());
           break;
         }
@@ -448,7 +459,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   getCategories() {
-    let currentTenantName = localStorage.getItem("tenant");
+    let currentTenantName = localStorage.getItem('tenant');
     this.http
       .fetchLabels()
       .pipe(take(1))
@@ -469,8 +480,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let marker of this.markers) {
       if (
         marker.messageId == message.stationId &&
-        message.status == "on" &&
-        marker.type == "cam"
+        message.status == 'on' &&
+        marker.type == 'cam'
       ) {
         if (marker.marker.isPopupOpen()) {
           return;
@@ -483,7 +494,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           closeButton: false,
           closeOnClick: false,
           closeOnEscapeKey: false,
-          className: "popupBackground",
+          className: 'popupBackground',
         });
         let content = this.codeHandler.getPopupContent(message.popup);
         popup.setContent(content);
@@ -498,16 +509,16 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       if (
         marker.messageId == message.stationId &&
-        message.status == "off" &&
-        marker.type == "cam"
+        message.status == 'off' &&
+        marker.type == 'cam'
       ) {
         marker.marker.closePopup();
         marker.marker.unbindPopup();
         return;
       }
     }
-    console.log("ATTENZIONE: errore su messaggio da dashboard/hud!");
-    console.log("stationID " + message.stationId + " non trovato!");
+    console.log('ATTENZIONE: errore su messaggio da dashboard/hud!');
+    console.log('stationID ' + message.stationId + ' non trovato!');
   }
   handleDENM(message: DENMMessage) {
     for (let event of this.events) {
@@ -541,7 +552,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
-    console.log("ERROR: DENM stationID " + message.stationID + " not found!");
+    console.log('ERROR: DENM stationID ' + message.stationID + ' not found!');
   }
   handleExpiredDENM(message: DENMMessage) {
     for (let event of this.events) {
@@ -622,7 +633,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   createSpecialIcon(id: number) {
     return L.icon({
-      iconUrl: "./assets/special-vehicles/" + id + "/default.png",
+      iconUrl: './assets/special-vehicles/' + id + '/default.png',
       iconSize: [44, 44], // size of the icon
       iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
@@ -630,7 +641,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   createRedSpecialIcon(id: number) {
     return L.icon({
-      iconUrl: "./assets/special-vehicles/" + id + "/red.png",
+      iconUrl: './assets/special-vehicles/' + id + '/red.png',
       iconSize: [44, 44], // size of the icon
       iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
       popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
@@ -643,9 +654,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           this.specialVehiclesNames[
             this.specialVehiclesIDs.indexOf(vehicleID)
           ] +
-          " (ID: " +
+          ' (ID: ' +
           id +
-          ")"
+          ')'
         );
       }
     }

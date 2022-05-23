@@ -14,6 +14,13 @@ export const InfoIcon = L.icon({
   popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
 });
 
+export const TrafficLightsIcon = L.icon({
+  iconUrl: "./assets/img/TrafficLight.png",
+  iconSize: [34, 30], // size of the icon
+  iconAnchor: [17, 30], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+});
+
 export const WeatherIcon = L.icon({
   iconUrl: "./assets/img/OrangeWeather.png",
   iconSize: [34, 30], // size of the icon
