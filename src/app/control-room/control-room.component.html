@@ -24,9 +24,8 @@
           class="subFilterVehicleImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
+      <br/>
       <app-loading-spinner></app-loading-spinner>
-      <br />
-      <span class="loadingTip">In attesa del broker...</span>
     </div>
     <div class="eventsTable">
       <table class="table">

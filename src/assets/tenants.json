@@ -17,7 +17,7 @@
         "Traffico",
         "Pericoli"
       ],
-      "topics": ["test_its/#", "its/#", "dashboard/#", "json/#"]
+      "topics": ["its/#", "dashboard/#", "json/#"]
     },
     {
       "id": "2",
@@ -36,7 +36,7 @@
         "Sensori Traffico",
         "Pericoli"
       ],
-      "topics": ["its/#", "dashboard/#", "json/#"]
+      "topics": ["dashboard/#", "json/#", "its/2/#"]
     },
     {
       "id": "4",
@@ -55,7 +55,7 @@
         "Traffico",
         "Pericoli"
       ],
-      "topics": ["its/+/120232221103/#", "dashboard/#", "json/#"]
+      "topics": ["dashboard/#", "json/#", "its/4/#"]
     },
     {
       "id": "5",
@@ -74,7 +74,7 @@
         "Traffico",
         "Pericoli"
       ],
-      "topics": ["test_its/#", "dashboard/#", "json/#", "its/#"]
+      "topics": ["dashboard/#", "json/#", "its/5/#"]
     }
   ]
 }

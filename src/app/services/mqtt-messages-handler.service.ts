@@ -62,6 +62,9 @@ export class MqttMessagesHandlerService {
     longitude = longitude / 10000000;
     //topic switch +1
     let category = topic.split('/')[1];
+    if(category.length == 1){
+      category = topic.split('/')[2];
+    }
     let newEtsiMessage = new EtsiMessage(
       category,
       'ivim',
@@ -262,7 +265,8 @@ export class MqttMessagesHandlerService {
     if (decodedMessage.topic.includes('json')) {
       category = 'alert';
     } else {
-      category = decodedMessage.topic.split('/')[1];
+      //tenant id
+      category = decodedMessage.topic.split('/')[2];
     }
     let newMessage = new EtsiMessage(
       category,

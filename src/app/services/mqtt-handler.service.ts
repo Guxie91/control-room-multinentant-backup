@@ -145,7 +145,10 @@ export class MqttHandlerService {
             this.handleDENMFromServer(message);
             return;
           }
-          if (payloadJSON['popup']) {
+          if (
+            payloadJSON['popup'] ||
+            (payloadJSON['status'] && payloadJSON['statusId'])
+          ) {
             this.handleCustomMessage(message);
             return;
           } else {
@@ -212,9 +215,9 @@ export class MqttHandlerService {
           switch (event.category) {
             case 'alert':
               let time = 500;
-              if(event.topic.includes("json")){
+              if (event.topic.includes('json')) {
                 time = 500;
-              }else{
+              } else {
                 time = 120000;
               }
               if (currentTime - eventTime > time) {
