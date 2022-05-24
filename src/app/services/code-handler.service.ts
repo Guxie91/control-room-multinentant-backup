@@ -57,7 +57,7 @@ export class CodeHandlerService {
       return causeCodeDesc;
     }
     return (
-      'Evento ITS (CC: ' + causeCodeDesc + ', SCC: ' + subCauseCodeDesc + ')'
+      'CauseCode: ' + causeCodeDesc + ', SubCauseCode: ' + subCauseCodeDesc
     );
   }
   getAdHocDescription(

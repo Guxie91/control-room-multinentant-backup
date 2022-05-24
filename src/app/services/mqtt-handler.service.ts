@@ -196,7 +196,7 @@ export class MqttHandlerService {
       //DISCRIMINARE PER TIPO
       switch (event.type) {
         case 'ivim':
-          if (currentTime - eventTime > 60000) {
+          if (currentTime - eventTime > 11000) {
             //IVIM EXPIRING TIME 60sec
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
@@ -218,7 +218,7 @@ export class MqttHandlerService {
               if (event.topic.includes('json')) {
                 time = 500;
               } else {
-                time = 120000;
+                time = 11000;
               }
               if (currentTime - eventTime > time) {
                 //DENM EXPIRING TIME 1sec FOR CV2X DENMS
@@ -228,7 +228,7 @@ export class MqttHandlerService {
               }
               break;
             default:
-              if (currentTime - eventTime > 120000) {
+              if (currentTime - eventTime > 11000) {
                 //DENM EXPIRING TIME 60sec FOR ITS DENMS
                 let index = this.events.indexOf(event);
                 this.events.splice(index, 1);
@@ -236,10 +236,10 @@ export class MqttHandlerService {
               }
               break;
           }
-
           break;
+          //SPATEM MAPEM
         default:
-          if (currentTime - eventTime > 10000) {
+          if (currentTime - eventTime > 11000) {
             //EXPIRING TIME 10sec
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
@@ -250,7 +250,7 @@ export class MqttHandlerService {
       if (event.type == 'cam' && event.denms.length > 0) {
         for (let denm of event.denms) {
           let denmTime = denm.timestamp.getTime();
-          if (currentTime - denmTime > 10000) {
+          if (currentTime - denmTime > 11000) {
             //DENM STATUS EXPIRING TIME 10sec
             this.DENMExpired.next(denm);
           }

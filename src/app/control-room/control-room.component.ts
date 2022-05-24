@@ -306,6 +306,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         case 3:
           dynamicIcon = RedRoadworksIcon;
           break;
+        case 12:
+          dynamicIcon = RedPedestrianIcon;
+          break;
+        case 94:
+          dynamicIcon = RedCarIcon;
+          break;
         case 97:
           switch (etsiMessage.subCode) {
             case 2:
@@ -318,7 +324,6 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
               dynamicIcon = RedCarIcon;
               break;
           }
-
           break;
         default:
           dynamicIcon = DangerIcon;

@@ -62,7 +62,7 @@ export class MqttMessagesHandlerService {
     longitude = longitude / 10000000;
     //topic switch +1
     let category = topic.split('/')[1];
-    if(category.length == 1){
+    if (category.length == 1) {
       category = topic.split('/')[2];
     }
     let newEtsiMessage = new EtsiMessage(
@@ -292,9 +292,8 @@ export class MqttMessagesHandlerService {
     let id = +(latitude + longitude).toString().replace('.', '');
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
-    let info = '';
-    info =
-      publisherId + ' (' + originatingCountry + ')';
+    let info =
+      payload['messageType'] + ' - ' + publisherId + ' (' + originatingCountry + ')';
     let newMessage = new EtsiMessage(
       'traffic_lights',
       payload['messageType'],
@@ -319,16 +318,15 @@ export class MqttMessagesHandlerService {
     let topicData = message.topic.split('/');
     //collect quadkeys or other topic elements
     let quadkey = '';
-    for (let i = 0; i < topicData.length; i++) {
-      if (i < 2) {
-        continue;
-      }
+    for (let i = 2; i < topicData.length; i++) {
       quadkey += topicData[i];
     }
-    //reassemble topic assuming text/text/quadkey/quadkey/....
-    const topic = topicData[0] + '/' + topicData[1] + '/' + topicData[2];
     const quadkeyArr = [quadkey];
     let payloadJSON = JSON.parse(message.payload.toString());
-    return { topic: topic, quadkeyArr: quadkeyArr, payloadJSON: payloadJSON };
+    return {
+      topic: message.topic,
+      quadkeyArr: quadkeyArr,
+      payloadJSON: payloadJSON,
+    };
   }
 }
