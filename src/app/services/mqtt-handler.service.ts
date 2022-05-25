@@ -196,8 +196,8 @@ export class MqttHandlerService {
       //DISCRIMINARE PER TIPO
       switch (event.type) {
         case 'ivim':
-          if (currentTime - eventTime > 11000) {
-            //IVIM EXPIRING TIME 60sec
+          if (currentTime - eventTime > 300000) {
+            //IVIM EXPIRING TIME 5 min
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
             this.expiredEventId.next(event.id);
@@ -216,20 +216,18 @@ export class MqttHandlerService {
             case 'alert':
               let time = 500;
               if (event.topic.includes('json')) {
-                time = 500;
+                time = 500;//DENM EXPIRING TIME 0.5sec FOR CV2X DENMS
               } else {
-                time = 11000;
+                time = 300000;//DENM EXPIRING TIME 0.5sec FOR ITS DENMS
               }
               if (currentTime - eventTime > time) {
-                //DENM EXPIRING TIME 1sec FOR CV2X DENMS
                 let index = this.events.indexOf(event);
                 this.events.splice(index, 1);
                 this.expiredEventId.next(event.id);
               }
               break;
             default:
-              if (currentTime - eventTime > 11000) {
-                //DENM EXPIRING TIME 60sec FOR ITS DENMS
+              if (currentTime - eventTime > 300000) {
                 let index = this.events.indexOf(event);
                 this.events.splice(index, 1);
                 this.expiredEventId.next(event.id);
@@ -237,10 +235,10 @@ export class MqttHandlerService {
               break;
           }
           break;
-          //SPATEM MAPEM
         default:
-          if (currentTime - eventTime > 11000) {
-            //EXPIRING TIME 10sec
+          //SPATEM MAPEM
+          if (currentTime - eventTime > 300000) {
+            //EXPIRING TIME 5 min
             let index = this.events.indexOf(event);
             this.events.splice(index, 1);
             this.expiredEventId.next(event.id);
@@ -250,7 +248,7 @@ export class MqttHandlerService {
       if (event.type == 'cam' && event.denms.length > 0) {
         for (let denm of event.denms) {
           let denmTime = denm.timestamp.getTime();
-          if (currentTime - denmTime > 11000) {
+          if (currentTime - denmTime > 10000) {
             //DENM STATUS EXPIRING TIME 10sec
             this.DENMExpired.next(denm);
           }

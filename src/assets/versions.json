@@ -114,7 +114,11 @@
     },
     {
       "version": "2.10.1",
-      "description": "corretta gestione DENM Trento, correzione id Navetta Navya"
+      "description": "patch gestione DENM Almaviva, correzione id Navetta Navya"
+    },
+    {
+      "version": "2.10.2",
+      "description": "update tempo di vita messaggi"
     }
   ]
 }
