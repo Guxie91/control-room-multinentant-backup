@@ -330,7 +330,7 @@ export class MqttMessagesHandlerService {
     let publisherId = payloadJSON['publisherId'];
     let originatingCountry = payloadJSON['originatingCountry'];
     let causeCode = payloadJSON['causeCode'];
-    let subCauseCode = payloadJSON['subCauseCode'] ? payloadJSON['subCause'] : 0;
+    let subCauseCode = payloadJSON['subCauseCode'] ? payloadJSON['subCauseCode'] : 0;
     let info =
       payloadJSON['messageType'].toUpperCase() +
       causeCode +
