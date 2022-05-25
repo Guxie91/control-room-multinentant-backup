@@ -16,9 +16,15 @@ export class MqttMessagesHandlerService {
     let topic = decodedMessage.topic;
     let newEtsiMessage;
     //identify message type
+    if (payloadJSON['messageType'] == 'denm') {
+      newEtsiMessage = this.createHLNDENM(message.topic, payloadJSON);
+      return newEtsiMessage;
+    }
     if (
       payloadJSON['messageType'] == 'SPATEM' ||
-      payloadJSON['messageType'] == 'MAPEM'
+      payloadJSON['messageType'] == 'MAPEM' ||
+      payloadJSON['messageType'] == 'mapem' ||
+      payloadJSON['messageType'] == 'spatem'
     ) {
       newEtsiMessage = this.createSPATEM_MAPEMMessage(
         message.topic,
@@ -293,10 +299,15 @@ export class MqttMessagesHandlerService {
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
     let info =
-      payload['messageType'] + ' - ' + publisherId + ' (' + originatingCountry + ')';
+      payload['messageType'].toUpperCase() +
+      ' - ' +
+      publisherId +
+      ' (' +
+      originatingCountry +
+      ')';
     let newMessage = new EtsiMessage(
       'traffic_lights',
-      payload['messageType'],
+      payload['messageType'].toUpperCase(),
       id,
       info,
       topic,
@@ -309,6 +320,42 @@ export class MqttMessagesHandlerService {
       false,
       0,
       0
+    );
+    return newMessage;
+  }
+  createHLNDENM(topic: string, payloadJSON: any) {
+    let latitude = +payloadJSON.latitude;
+    let longitude = +payloadJSON.longitude;
+    let id = latitude + longitude;
+    let publisherId = payloadJSON['publisherId'];
+    let originatingCountry = payloadJSON['originatingCountry'];
+    let causeCode = payloadJSON['causeCode'];
+    let subCauseCode = payloadJSON['subCause'] ? payloadJSON['subCause'] : 0;
+    let info =
+      payloadJSON['messageType'].toUpperCase() +
+      causeCode +
+      subCauseCode +
+      ' - ' +
+      publisherId +
+      ' (' +
+      originatingCountry +
+      ')';
+    info = this.codeHandler.getAdHocDescription(info, causeCode, subCauseCode);
+    let newMessage = new EtsiMessage(
+      'alert',
+      'denm',
+      id,
+      info,
+      topic,
+      [payloadJSON.quadTree],
+      new LatLng(latitude, longitude),
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      causeCode,
+      subCauseCode
     );
     return newMessage;
   }

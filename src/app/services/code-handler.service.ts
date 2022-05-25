@@ -69,10 +69,10 @@ export class CodeHandlerService {
       return 'Emergency Vehicle Approaching';
     }
     if (causeCode == '12' && subCauseCode == '0') {
-      return 'Vulnerable Road User';
+      return 'Human Presence On The Road';
     }
     if (causeCode == '91' && subCauseCode == '0') {
-      return 'Vehicle Breakdown';
+      return 'Stationary Vehicle';
     }
     return description;
   }
