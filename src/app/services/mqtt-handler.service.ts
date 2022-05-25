@@ -147,7 +147,7 @@ export class MqttHandlerService {
           }
           if (
             payloadJSON['popup'] ||
-            (payloadJSON['status'] && payloadJSON['statusId'])
+            (payloadJSON['status'] && payloadJSON['stationId'])
           ) {
             this.handleCustomMessage(message);
             return;
@@ -260,7 +260,7 @@ export class MqttHandlerService {
   }
   handleCustomMessage(message: IMqttMessage) {
     let customMessage: CustomMessage = JSON.parse(message.payload.toString());
-    if (customMessage.popup == '') {
+    if (customMessage.popup == '' || customMessage.popup == undefined) {
       customMessage.popup = 'unknown';
     }
     this.newCustomMessage.next(customMessage);
