@@ -33,6 +33,11 @@ export const trafficPopup =
   '<img src="./assets/img/WhiteTrafficCat.png" class="alertImg popupImg" />' +
   '<br/><span class="alertLabel whiteText">Traffic Condition</span></div>';
 
+export const infoPopup =
+  '<div style="text-align:center;">' +
+  '<img src="./assets/img/WhiteInfoCat.png" class="alertImg popupImg" />' +
+  '<br/><span class="alertLabel whiteText">Info</span></div>';
+
 export const defaultPopup =
   '<div style="text-align:center;">' +
   '<img src="./assets/img/RedAlertCat.png" class="alertImg popupImg" />' +

@@ -119,6 +119,10 @@
     {
       "version": "2.10.2",
       "description": "update tempo di vita messaggi"
+    },
+    {
+      "version": "2.10.3",
+      "description": "update popup INF"
     }
   ]
 }

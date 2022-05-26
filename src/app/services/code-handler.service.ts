@@ -21,6 +21,7 @@ import {
   collisionRiskWarning,
   defaultPopup,
   emergencyVehicleApproachingPopup,
+  infoPopup,
   pedestrianWalkingPopup,
   roadworksPopup,
   stationaryVehicleWarning,
@@ -177,6 +178,8 @@ export class CodeHandlerService {
         return stationaryVehicleWarning;
       case 'CCRW':
         return collisionRiskWarning;
+      case 'INF':
+        return infoPopup;
       case '': {
         return (
           defaultPopup +
