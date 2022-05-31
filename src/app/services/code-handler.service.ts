@@ -163,6 +163,18 @@ export class CodeHandlerService {
   }
   getPopupContent(popup: string) {
     //metodo che ritorna il contenuto html del popup
+    /*
+    if (popup.includes('INF')) {
+      let text = popup.split('-')[1];
+      return (
+        '<div style="text-align:center;">' +
+        '<img src="./assets/img/WhiteInfoCat.png" class="alertImg popupImg" />' +
+        '<br/><span class="alertLabel whiteText">' +
+        text +
+        '</span></div>'
+      );
+    }
+    */
     switch (popup) {
       case 'RWW':
         return roadworksPopup;
