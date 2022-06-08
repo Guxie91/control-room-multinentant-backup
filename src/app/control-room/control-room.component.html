@@ -58,12 +58,15 @@
                   Cooperative Awareness Message
                 </span>
                 <span class="eventLabel" *ngIf="event.type!='cam'">
-                  {{event.topic}}
+                    {{event.topic}}
                 </span>
               </td>
               <td nowrap>
                 <span class="eventLabel" style="text-overflow: ellipsis;">
+                  <!--
                   [ID: {{event.id.toString().length>7?event.id.toString().substring(0,7)+"...":event.id}}]
+                  -->
+                  [{{event.category}}]
                 </span>
               </td>
             </tr>

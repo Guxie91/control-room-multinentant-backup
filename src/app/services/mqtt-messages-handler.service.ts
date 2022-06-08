@@ -17,7 +17,7 @@ export class MqttMessagesHandlerService {
     let newEtsiMessage;
     //identify message type
     if (payloadJSON['messageType'] == 'denm') {
-      newEtsiMessage = this.createHLNDENM(message.topic, payloadJSON);
+      newEtsiMessage = this.createCustomDENM(message.topic, payloadJSON);
       return newEtsiMessage;
     }
     if (
@@ -298,16 +298,12 @@ export class MqttMessagesHandlerService {
     let id = +(latitude + longitude).toString().replace('.', '');
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
+    let messageType = payload['messageType'].toUpperCase();
     let info =
-      payload['messageType'].toUpperCase() +
-      ' - ' +
-      publisherId +
-      ' (' +
-      originatingCountry +
-      ')';
+      messageType + ' - ' + publisherId + ' (' + originatingCountry + ')';
     let newMessage = new EtsiMessage(
       'traffic_lights',
-      payload['messageType'].toUpperCase(),
+      messageType,
       id,
       info,
       topic,
@@ -323,14 +319,16 @@ export class MqttMessagesHandlerService {
     );
     return newMessage;
   }
-  createHLNDENM(topic: string, payloadJSON: any) {
+  createCustomDENM(topic: string, payloadJSON: any) {
     let latitude = +payloadJSON.latitude;
     let longitude = +payloadJSON.longitude;
     let id = latitude + longitude;
     let publisherId = payloadJSON['publisherId'];
     let originatingCountry = payloadJSON['originatingCountry'];
     let causeCode = payloadJSON['causeCode'];
-    let subCauseCode = payloadJSON['subCauseCode'] ? payloadJSON['subCauseCode'] : 0;
+    let subCauseCode = payloadJSON['subCauseCode']
+      ? payloadJSON['subCauseCode']
+      : 0;
     let info =
       payloadJSON['messageType'].toUpperCase() +
       causeCode +

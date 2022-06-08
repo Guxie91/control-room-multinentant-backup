@@ -216,9 +216,9 @@ export class MqttHandlerService {
             case 'alert':
               let time = 500;
               if (event.topic.includes('json')) {
-                time = 500;//DENM EXPIRING TIME 0.5sec FOR CV2X DENMS
+                time = 500; //DENM EXPIRING TIME 0.5sec FOR CV2X DENMS
               } else {
-                time = 300000;//DENM EXPIRING TIME 0.5sec FOR ITS DENMS
+                time = 300000; //DENM EXPIRING TIME 0.5sec FOR ITS DENMS
               }
               if (currentTime - eventTime > time) {
                 let index = this.events.indexOf(event);
@@ -293,8 +293,12 @@ export class MqttHandlerService {
       if (event.id == etsiMessage.id) {
         event.timestamp = etsiMessage.timestamp;
         event.coordinates = etsiMessage.coordinates;
+
         if (event.type != 'cam') {
           event.info = etsiMessage.info;
+          if (etsiMessage.type == 'SPATEM' || etsiMessage.type == 'MAPEM') {
+            event.type = etsiMessage.type;
+          }
         }
         found = true;
       }

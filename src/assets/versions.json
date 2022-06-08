@@ -123,6 +123,10 @@
     {
       "version": "2.10.3",
       "description": "update popup INF"
+    },
+    {
+      "version": "2.10.4",
+      "description": "update icona alert 'vehicle breakdown', fix inconsistenza aggiornamento mapem/spatem, cambio riga tabella id->categoria"
     }
   ]
 }

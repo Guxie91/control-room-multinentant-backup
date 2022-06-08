@@ -309,6 +309,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         case 12:
           dynamicIcon = RedPedestrianIcon;
           break;
+        case 91:
         case 94:
           dynamicIcon = RedCarIcon;
           break;
