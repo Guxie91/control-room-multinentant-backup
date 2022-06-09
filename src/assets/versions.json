@@ -133,7 +133,11 @@
     },
     {
       "version": "2.11.1",
-      "description": "implementazione beta IVIM AMQP"
+      "description": "implementazione di prova IVIM AMQP"
+    },
+    {
+      "version": "2.11.2",
+      "description": "nuova icona per alert traffico, aggiunti use case per alert con icone specializzate"
     }
   ]
 }

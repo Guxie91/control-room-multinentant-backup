@@ -199,7 +199,6 @@ export class MqttMessagesHandlerService {
         category = 'cars';
         break;
     }
-    let publisherLabel = this.getPublisherLabel(topic.split('/')[1]);
     let newEtsiMessage = new EtsiMessage(
       category,
       'cam',
@@ -215,7 +214,7 @@ export class MqttMessagesHandlerService {
       false,
       stationType,
       vehicleRole,
-      publisherLabel,
+      "Cooperative Awareness Message",
       JSON.stringify(payloadJSON)
     );
     return newEtsiMessage;
@@ -338,14 +337,7 @@ export class MqttMessagesHandlerService {
     let longitude = +payloadJSON.longitude;
     let id = latitude + longitude;
     let publisherId = payloadJSON['publisherId'];
-    let originatingCountry = payloadJSON['originatingCountry'];
-    let info =
-      payloadJSON['messageType'].toUpperCase() +
-      ' - ' +
-      publisherId +
-      ' (' +
-      originatingCountry +
-      ')';
+    let info = "Infrastructure to Vehicle Information Message";
     let publisherLabel = this.getPublisherLabel(
       topic.split('/')[1],
       publisherId

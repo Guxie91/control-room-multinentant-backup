@@ -26,6 +26,7 @@ import {
   RedCarIcon,
   RedPedestrianIcon,
   RedRoadworksIcon,
+  RedTrafficIcon,
   RoadworksIcon,
   TrafficIcon,
   TrafficLightsIcon,
@@ -307,7 +308,12 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     if (etsiMessage.category == 'alert') {
       etsiMessage.hide = !this.subCategoriesItsEvents[5].active;
       switch (etsiMessage.code) {
+        case 1:
+        case 27:
+          dynamicIcon = RedTrafficIcon;
+          break;
         case 2:
+        case 94:
           dynamicIcon = RedCarAccident;
           break;
         case 3:

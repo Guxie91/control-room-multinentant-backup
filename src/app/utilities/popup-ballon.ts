@@ -6,7 +6,7 @@ export const pedestrianWalkingPopup =
 export const emergencyVehicleApproachingPopup =
   '<div style="text-align:center;">' +
   '<img src="./assets/img/WhiteAmbulanceCat.png" class="alertImg" />' +
-  '<br/><span class="alertLabel whiteText">Emergency Vehicle Approaching</span></div>';
+  '<br/><span class="alertLabel whiteText">Emergency Vehicle</span></div>';
 
 export const stationaryVehicleWarning =
   '<div style="text-align:center;">' +
@@ -26,7 +26,7 @@ export const roadworksPopup =
 export const weatherPopup =
   '<div style="text-align:center;">' +
   '<img src="./assets/img/WhiteWeatherCat.png" class="alertImg popupImg" />' +
-  '<br/><span class="alertLabel whiteText">Adverse Weather</span></div>';
+  '<br/><span class="alertLabel whiteText">Adverse Weather Condition</span></div>';
 
 export const trafficPopup =
   '<div style="text-align:center;">' +

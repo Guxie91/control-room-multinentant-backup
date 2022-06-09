@@ -1,10 +1,13 @@
 <div *ngIf="!unknown">
   <img class="CatImg" src="./assets/img/TrafficLight.png" *ngIf="event.category=='traffic_lights'" />
-  <img class="CatImg" src="./assets/img/RoadworksCat.png" *ngIf="event.category=='roadworks'" />
-  <img class="CatImg" src="./assets/img/WeatherCat.png" *ngIf="event.category=='weather'" />
-  <img class="CatImg" src="./assets/img/InfoCat.png" *ngIf="event.category=='info'" />
-  <img class="CatImg" src="./assets/img/TrafficCat.png" *ngIf="event.category=='traffic'" />
+  <img class="CatImg" src="./assets/img/OrangeRoadworks.png" *ngIf="event.category=='roadworks'" />
+  <img class="CatImg" src="./assets/img/OrangeWeather.png" *ngIf="event.category=='weather'" />
+  <img class="CatImg" src="./assets/img/OrangeInfo.png" *ngIf="event.category=='info'" />
+  <img class="CatImg" src="./assets/img/OrangeTraffic.png" *ngIf="event.category=='traffic'" />
   <div *ngIf="event.category=='alert'" [ngSwitch]="event.code">
+    <div *ngSwitchCase="1">
+      <img class="CatImg" src="./assets/img/RedTrafficCat.png" />
+    </div>
     <div *ngSwitchCase="2">
       <img class="CatImg" src="./assets/img/RedAccidentCar.png" />
     </div>
@@ -14,8 +17,17 @@
     <div *ngSwitchCase="12">
       <img class="CatImg" src="./assets/img/RedPedestrianCat.png" />
     </div>
+    <div *ngSwitchCase="26">
+      <img class="CatImg" src="./assets/img/RedCarCat.png" />
+    </div>
+    <div *ngSwitchCase="27">
+      <img class="CatImg" src="./assets/img/RedTrafficCat.png" />
+    </div>
     <div *ngSwitchCase="91">
       <img class="CatImg" src="./assets/img/RedCarCat.png" />
+    </div>
+    <div *ngSwitchCase="92">
+      <img class="CatImg" src="./assets/img/RedAccidentCar.png" />
     </div>
     <div *ngSwitchCase="94">
       <img class="CatImg" src="./assets/img/RedCarCat.png" />
