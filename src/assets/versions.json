@@ -106,8 +106,7 @@
     {
       "version": "2.9.1",
       "description": "fix bug id DENM su c-roads"
-    }
-    ,
+    },
     {
       "version": "2.10.0",
       "description": "implementazione cambio topic con tenant id"
@@ -131,6 +130,10 @@
     {
       "version": "2.11.0",
       "description": "aggiunta icona accident, implementazione lente dettagli in tabella, aggiunta campo publisherLabel"
+    },
+    {
+      "version": "2.11.1",
+      "description": "implementazione beta IVIM AMQP"
     }
   ]
 }

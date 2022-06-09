@@ -16,8 +16,18 @@ export class MqttMessagesHandlerService {
     let topic = decodedMessage.topic;
     let newEtsiMessage;
     //identify message type
-    if (payloadJSON['messageType'] == 'denm') {
-      newEtsiMessage = this.createCustomDENM(message.topic, payloadJSON);
+    if (
+      payloadJSON['messageType'] === 'DENM' ||
+      payloadJSON['messageType'] === 'denm'
+    ) {
+      newEtsiMessage = this.createAMQP_DENM(message.topic, payloadJSON);
+      return newEtsiMessage;
+    }
+    if (
+      payloadJSON['messageType'] === 'IVIM' ||
+      payloadJSON['messageType'] === 'ivim'
+    ) {
+      newEtsiMessage = this.createAMQP_IVIM(message.topic, payloadJSON);
       return newEtsiMessage;
     }
     if (
@@ -291,12 +301,18 @@ export class MqttMessagesHandlerService {
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
     let messageType = payload['messageType'].toUpperCase();
-    if (messageType === 'MAPEM') {
-      id = id * 2;
-    }
     let info =
       messageType + ' - ' + publisherId + ' (' + originatingCountry + ')';
-    let publisherLabel = this.getPublisherLabel(topic.split('/')[1], publisherId);
+    if (messageType === 'MAPEM') {
+      id = id + 1000;
+      info = 'Road and Lane Topology Message';
+    } else {
+      info = 'Traffic Light Maneuver Message';
+    }
+    let publisherLabel = this.getPublisherLabel(
+      topic.split('/')[1],
+      publisherId
+    );
     let newMessage = new EtsiMessage(
       'traffic_lights',
       messageType,
@@ -317,7 +333,44 @@ export class MqttMessagesHandlerService {
     );
     return newMessage;
   }
-  createCustomDENM(topic: string, payloadJSON: any) {
+  createAMQP_IVIM(topic: string, payloadJSON: any) {
+    let latitude = +payloadJSON.latitude;
+    let longitude = +payloadJSON.longitude;
+    let id = latitude + longitude;
+    let publisherId = payloadJSON['publisherId'];
+    let originatingCountry = payloadJSON['originatingCountry'];
+    let info =
+      payloadJSON['messageType'].toUpperCase() +
+      ' - ' +
+      publisherId +
+      ' (' +
+      originatingCountry +
+      ')';
+    let publisherLabel = this.getPublisherLabel(
+      topic.split('/')[1],
+      publisherId
+    );
+    let newMessage = new EtsiMessage(
+      'info',
+      'ivim',
+      id,
+      info,
+      topic,
+      [payloadJSON.quadTree],
+      new LatLng(latitude, longitude),
+      new Date(),
+      false,
+      false,
+      [],
+      false,
+      0,
+      0,
+      publisherLabel,
+      JSON.stringify(payloadJSON)
+    );
+    return newMessage;
+  }
+  createAMQP_DENM(topic: string, payloadJSON: any) {
     let latitude = +payloadJSON.latitude;
     let longitude = +payloadJSON.longitude;
     let id = latitude + longitude;
