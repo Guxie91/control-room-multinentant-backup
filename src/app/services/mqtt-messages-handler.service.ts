@@ -71,6 +71,7 @@ export class MqttMessagesHandlerService {
     if (category.length == 1) {
       category = topic.split('/')[2];
     }
+    let publisherLabel = this.getPublisherLabel(topic.split('/')[1]);
     let newEtsiMessage = new EtsiMessage(
       category,
       'ivim',
@@ -85,7 +86,9 @@ export class MqttMessagesHandlerService {
       [],
       false,
       -1,
-      -1
+      -1,
+      publisherLabel,
+      JSON.stringify(payloadJSON)
     );
     return newEtsiMessage;
   }
@@ -186,6 +189,7 @@ export class MqttMessagesHandlerService {
         category = 'cars';
         break;
     }
+    let publisherLabel = this.getPublisherLabel(topic.split('/')[1]);
     let newEtsiMessage = new EtsiMessage(
       category,
       'cam',
@@ -200,11 +204,14 @@ export class MqttMessagesHandlerService {
       [],
       false,
       stationType,
-      vehicleRole
+      vehicleRole,
+      publisherLabel,
+      JSON.stringify(payloadJSON)
     );
     return newEtsiMessage;
   }
   createErrorMessage(topic: string, quadkeyArr: string[], message: string) {
+    let publisherLabel = this.getPublisherLabel(topic.split('/')[1]);
     let newEtsiMessage = new EtsiMessage(
       'error',
       'unknown',
@@ -219,7 +226,9 @@ export class MqttMessagesHandlerService {
       [],
       false,
       0,
-      0
+      0,
+      publisherLabel,
+      message
     );
     return newEtsiMessage;
   }
@@ -230,29 +239,7 @@ export class MqttMessagesHandlerService {
     let subCauseCode = +decodedMessage.payloadJSON.denm.situation.eventType
       .subCauseCode;
     let info = '';
-    switch (causeCode) {
-      /*
-      case 12:
-        if (subCauseCode == 0) {
-          info = 'Avviso (Vulnerable Road User)';
-        }
-        break;
-      case 91:
-        if (subCauseCode == 0) {
-          info = 'Avviso (Vehicle Breakdown)';
-        }
-        break;
-      case 95:
-        if (subCauseCode == 1) {
-          info = 'Avviso (Emergency Vehicle Approaching)';
-        }
-        break;
-      */
-      default:
-        info = this.codeHandler.getDescriptionDetail(
-          decodedMessage.payloadJSON
-        );
-    }
+    info = this.codeHandler.getDescriptionDetail(decodedMessage.payloadJSON);
     let latitude = +decodedMessage.payloadJSON.denm.management.eventPosition
       .latitude;
     let longitude = +decodedMessage.payloadJSON.denm.management.eventPosition
@@ -274,6 +261,9 @@ export class MqttMessagesHandlerService {
       //tenant id
       category = decodedMessage.topic.split('/')[2];
     }
+    let publisherLabel = this.getPublisherLabel(
+      decodedMessage.topic.split('/')[1]
+    );
     let newMessage = new EtsiMessage(
       category,
       'denm',
@@ -288,7 +278,9 @@ export class MqttMessagesHandlerService {
       [],
       false,
       causeCode,
-      subCauseCode
+      subCauseCode,
+      publisherLabel,
+      JSON.stringify(decodedMessage.payloadJSON)
     );
     return newMessage;
   }
@@ -299,8 +291,12 @@ export class MqttMessagesHandlerService {
     let publisherId = payload['publisherId'];
     let originatingCountry = payload['originatingCountry'];
     let messageType = payload['messageType'].toUpperCase();
+    if (messageType === 'MAPEM') {
+      id = id * 2;
+    }
     let info =
       messageType + ' - ' + publisherId + ' (' + originatingCountry + ')';
+    let publisherLabel = this.getPublisherLabel(topic.split('/')[1], publisherId);
     let newMessage = new EtsiMessage(
       'traffic_lights',
       messageType,
@@ -315,7 +311,9 @@ export class MqttMessagesHandlerService {
       [],
       false,
       0,
-      0
+      0,
+      publisherLabel,
+      JSON.stringify(payload)
     );
     return newMessage;
   }
@@ -339,6 +337,10 @@ export class MqttMessagesHandlerService {
       originatingCountry +
       ')';
     info = this.codeHandler.getAdHocDescription(info, causeCode, subCauseCode);
+    let publisherLabel = this.getPublisherLabel(
+      topic.split('/')[1],
+      publisherId
+    );
     let newMessage = new EtsiMessage(
       'alert',
       'denm',
@@ -353,7 +355,9 @@ export class MqttMessagesHandlerService {
       [],
       false,
       causeCode,
-      subCauseCode
+      subCauseCode,
+      publisherLabel,
+      JSON.stringify(payloadJSON)
     );
     return newMessage;
   }
@@ -373,5 +377,21 @@ export class MqttMessagesHandlerService {
       quadkeyArr: quadkeyArr,
       payloadJSON: payloadJSON,
     };
+  }
+  getPublisherLabel(tenantId: string, publisherId?: string) {
+    if (+tenantId == 2) {
+      return 'Città Metropolitana di Genova';
+    }
+    if (+tenantId == 4) {
+      return 'TIM Innovation Lab';
+    }
+    if (+tenantId == 5) {
+      if (publisherId) {
+        return 'C-Roads [' + publisherId + ']';
+      } else {
+        return 'C-Roads';
+      }
+    }
+    return '';
   }
 }

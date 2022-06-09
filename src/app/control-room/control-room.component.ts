@@ -1,3 +1,4 @@
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { Subscription } from 'rxjs';
@@ -21,6 +22,7 @@ import {
   InfoIcon,
   MotorBikeIcon,
   PedestrianIcon,
+  RedCarAccident,
   RedCarIcon,
   RedPedestrianIcon,
   RedRoadworksIcon,
@@ -29,6 +31,7 @@ import {
   TrafficLightsIcon,
   WeatherIcon,
 } from '../utilities/marker-icons';
+import { EventDetailsComponent } from './event-details/event-details.component';
 
 @Component({
   selector: 'app-control-room',
@@ -113,7 +116,8 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private mqtt: MqttHandlerService,
     private http: HttpHandlerService,
-    private codeHandler: CodeHandlerService
+    private codeHandler: CodeHandlerService,
+    private modalService: NgbModal
   ) {}
   ngOnDestroy(): void {
     this.map.removeLayer(OPEN_STREET_MAP);
@@ -303,6 +307,9 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     if (etsiMessage.category == 'alert') {
       etsiMessage.hide = !this.subCategoriesItsEvents[5].active;
       switch (etsiMessage.code) {
+        case 2:
+          dynamicIcon = RedCarAccident;
+          break;
         case 3:
           dynamicIcon = RedRoadworksIcon;
           break;
@@ -667,5 +674,13 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     return info;
+  }
+  openDetails(event: EtsiMessage) {
+    const detailsPopup = this.modalService.open(EventDetailsComponent, {
+      centered: true,
+      scrollable: true,
+      size: 'lg'
+    });
+    detailsPopup.componentInstance.event = event;
   }
 }

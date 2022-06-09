@@ -5,6 +5,9 @@
   <img class="CatImg" src="./assets/img/InfoCat.png" *ngIf="event.category=='info'" />
   <img class="CatImg" src="./assets/img/TrafficCat.png" *ngIf="event.category=='traffic'" />
   <div *ngIf="event.category=='alert'" [ngSwitch]="event.code">
+    <div *ngSwitchCase="2">
+      <img class="CatImg" src="./assets/img/RedAccidentCar.png" />
+    </div>
     <div *ngSwitchCase="3">
       <img class="CatImg" src="./assets/img/RedRoadworksCat.png" />
     </div>

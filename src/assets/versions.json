@@ -127,6 +127,10 @@
     {
       "version": "2.10.4",
       "description": "update icona alert 'vehicle breakdown', fix inconsistenza aggiornamento mapem/spatem, cambio riga tabella id->categoria"
+    },
+    {
+      "version": "2.11.0",
+      "description": "aggiunta icona accident, implementazione lente dettagli in tabella, aggiunta campo publisherLabel"
     }
   ]
 }

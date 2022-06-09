@@ -16,7 +16,9 @@ export class EtsiMessage{
     public denms:DENMMessage[] = [],
     public special:boolean = false,
     public code:number = 0,
-    public subCode = 0
+    public subCode = 0,
+    public publisherLabel = "",
+    public originalPayload = ""
   ) {
 
   }

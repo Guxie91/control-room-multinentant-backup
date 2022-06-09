@@ -24,7 +24,7 @@
           class="subFilterVehicleImg" [src]="sub.url" [alt]="sub.name" /></button>
     </div>
     <div *ngIf="events.length == 0" class="loadingDiv">
-      <br/>
+      <br />
       <app-loading-spinner></app-loading-spinner>
     </div>
     <div class="eventsTable">
@@ -58,15 +58,13 @@
                   Cooperative Awareness Message
                 </span>
                 <span class="eventLabel" *ngIf="event.type!='cam'">
-                    {{event.topic}}
+                  {{event.publisherLabel}}
                 </span>
               </td>
               <td nowrap>
-                <span class="eventLabel" style="text-overflow: ellipsis;">
-                  <!--
-                  [ID: {{event.id.toString().length>7?event.id.toString().substring(0,7)+"...":event.id}}]
-                  -->
-                  [{{event.category}}]
+                <span class="eventLabel" style="text-overflow: ellipsis; margin: 0 auto;">
+                  <img (click)="openDetails(event)" class="searchLensDetails" src="./assets/img/src/View.png"
+                    alt="more" />
                 </span>
               </td>
             </tr>
