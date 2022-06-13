@@ -444,6 +444,12 @@ export class MqttMessagesHandlerService {
     }
     if (+tenantId == 5) {
       if (publisherId) {
+        if(publisherId == "IT16383"){
+          return 'C-Roads [AlmavivA]';
+        }
+        if(publisherId == "IT00156"){
+          return 'C-Roads [5T]';
+        }
         return 'C-Roads [' + publisherId + ']';
       } else {
         return 'C-Roads';
