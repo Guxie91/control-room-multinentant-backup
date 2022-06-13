@@ -375,16 +375,25 @@ export class MqttMessagesHandlerService {
     let subCauseCode = payloadJSON['subCauseCode']
       ? payloadJSON['subCauseCode']
       : 0;
-    let info =
+    let defaultInfo =
       payloadJSON['messageType'].toUpperCase() +
+      ' [' +
       causeCode +
+      ', ' +
       subCauseCode +
-      ' - ' +
+      '] - ' +
       publisherId +
       ' (' +
       originatingCountry +
       ')';
-    info = this.codeHandler.getAdHocDescription(info, causeCode, subCauseCode);
+    let info = this.codeHandler.getAdHocDescription(
+      defaultInfo,
+      causeCode.toString(),
+      subCauseCode.toString()
+    );
+    info = info.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => {
+      return str.toUpperCase();
+    });
     let publisherLabel = this.getPublisherLabel(
       topic.split('/')[1],
       publisherId
@@ -402,8 +411,8 @@ export class MqttMessagesHandlerService {
       false,
       [],
       false,
-      causeCode,
-      subCauseCode,
+      +causeCode,
+      +subCauseCode,
       publisherLabel,
       JSON.stringify(payloadJSON)
     );

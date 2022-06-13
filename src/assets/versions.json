@@ -142,6 +142,10 @@
     {
       "version": "2.11.3",
       "description": "aggiunti ulteriori usecase, originatingStationId label per i denm"
+    },
+    {
+      "version": "2.11.4",
+      "description": "fix libreria traduzione causeCode/subcauseCode per messaggi denm AMQP"
     }
   ]
 }
