@@ -24,6 +24,7 @@ import {
   PedestrianIcon,
   RedCarAccident,
   RedCarIcon,
+  RedEmergencyIcon,
   RedPedestrianIcon,
   RedRoadworksIcon,
   RedTrafficIcon,
@@ -313,7 +314,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
           dynamicIcon = RedTrafficIcon;
           break;
         case 2:
-        case 94:
+        case 92:
           dynamicIcon = RedCarAccident;
           break;
         case 3:
@@ -322,9 +323,14 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
         case 12:
           dynamicIcon = RedPedestrianIcon;
           break;
+        case 14:
+        case 26:
         case 91:
         case 94:
           dynamicIcon = RedCarIcon;
+          break;
+        case 95:
+          dynamicIcon = RedEmergencyIcon;
           break;
         case 97:
           switch (etsiMessage.subCode) {

@@ -214,7 +214,7 @@ export class MqttMessagesHandlerService {
       false,
       stationType,
       vehicleRole,
-      "Cooperative Awareness Message",
+      'Cooperative Awareness Message',
       JSON.stringify(payloadJSON)
     );
     return newEtsiMessage;
@@ -270,8 +270,11 @@ export class MqttMessagesHandlerService {
       //tenant id
       category = decodedMessage.topic.split('/')[2];
     }
+    let publisherId =
+      decodedMessage.payloadJSON.denm.management.actionID.originatingStationID;
     let publisherLabel = this.getPublisherLabel(
-      decodedMessage.topic.split('/')[1]
+      decodedMessage.topic.split('/')[1],
+      publisherId
     );
     let newMessage = new EtsiMessage(
       category,
@@ -337,7 +340,7 @@ export class MqttMessagesHandlerService {
     let longitude = +payloadJSON.longitude;
     let id = latitude + longitude;
     let publisherId = payloadJSON['publisherId'];
-    let info = "Infrastructure to Vehicle Information Message";
+    let info = 'Infrastructure to Vehicle Information Message';
     let publisherLabel = this.getPublisherLabel(
       topic.split('/')[1],
       publisherId

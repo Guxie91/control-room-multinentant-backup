@@ -138,6 +138,10 @@
     {
       "version": "2.11.2",
       "description": "nuova icona per alert traffico, aggiunti use case per alert con icone specializzate"
+    },
+    {
+      "version": "2.11.3",
+      "description": "aggiunti ulteriori usecase, originatingStationId label per i denm"
     }
   ]
 }
