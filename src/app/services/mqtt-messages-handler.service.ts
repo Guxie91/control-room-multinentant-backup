@@ -399,7 +399,7 @@ export class MqttMessagesHandlerService {
       publisherId
     );
     let newMessage = new EtsiMessage(
-      'alert',
+      topic.split('/')[2],
       'denm',
       id,
       info,

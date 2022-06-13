@@ -146,6 +146,10 @@
     {
       "version": "2.11.4",
       "description": "fix libreria traduzione causeCode/subcauseCode per messaggi denm AMQP"
+    },
+    {
+      "version": "2.11.4",
+      "description": "fix topic DENM AMQP"
     }
   ]
 }
