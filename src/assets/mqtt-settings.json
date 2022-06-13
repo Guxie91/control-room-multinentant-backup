@@ -17,15 +17,6 @@
         "password": "90f42da9f103",
         "rejectUnauthorized": false
       }
-    },
-    {
-      "name": "TEST",
-      "url": "wss://broker-inesistente.com/ws/",
-      "options": {
-        "username": "username",
-        "password": "password",
-        "rejectUnauthorized": false
-      }
     }
   ]
 }
