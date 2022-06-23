@@ -150,6 +150,10 @@
     {
       "version": "2.11.5",
       "description": "fix topic DENM AMQP"
+    },
+    {
+      "version": "2.12.0",
+      "description": "implementato mapping publisherID -> publisherName su file esterno"
     }
   ]
 }

@@ -1,14 +1,27 @@
+import { take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { LatLng } from 'leaflet';
 import { IMqttMessage } from 'ngx-mqtt';
 import { EtsiMessage } from '../models/etsi-message.model';
 import { CodeHandlerService } from './code-handler.service';
+import { HttpHandlerService } from './http-handler.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MqttMessagesHandlerService {
-  constructor(private codeHandler: CodeHandlerService) {}
+  publishersMap: { name: string; code: string }[] = [];
+  constructor(
+    private codeHandler: CodeHandlerService,
+    private http: HttpHandlerService
+  ) {
+    this.http
+      .fetchPublishers()
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.publishersMap = response.publishers;
+      });
+  }
   manageMessage(message: IMqttMessage) {
     let decodedMessage = this.extractMessage(message);
     let payloadJSON = decodedMessage.payloadJSON;
@@ -444,11 +457,10 @@ export class MqttMessagesHandlerService {
     }
     if (+tenantId == 5) {
       if (publisherId) {
-        if(publisherId == "IT16383"){
-          return 'C-Roads [AlmavivA]';
-        }
-        if(publisherId == "IT00156"){
-          return 'C-Roads [5T]';
+        for (let pub of this.publishersMap) {
+          if (pub.code == publisherId) {
+            return 'C-Roads [' + pub.name + ']';
+          }
         }
         return 'C-Roads [' + publisherId + ']';
       } else {

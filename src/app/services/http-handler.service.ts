@@ -52,4 +52,9 @@ export class HttpHandlerService {
       versions: { version: string; description: string }[];
     }>("./assets/versions.json?t=" + new Date().getTime());
   }
+  fetchPublishers() {
+    return this.http.get<{
+      publishers: { name: string; code: string }[];
+    }>("./assets/publishersMap.json?t=" + new Date().getTime());
+  }
 }
