@@ -1,35 +1,33 @@
-import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { take } from "rxjs/operators";
-import { HttpHandlerService } from "../services/http-handler.service";
-import { MqttHandlerService } from "../services/mqtt-handler.service";
-import { MQTT_SERVICE_OPTIONS } from "../utilities/mqtt-service-options";
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { take } from 'rxjs/operators';
+import { HttpHandlerService } from '../services/http-handler.service';
+import { MqttHandlerService } from '../services/mqtt-handler.service';
+import { MQTT_SERVICE_OPTIONS } from '../utilities/mqtt-service-options';
 
 export class BrokerMQTT {
   constructor(
-    public name: string,
-    public url: string,
+    public name: string = '',
+    public url: string = '',
     public options: {
       username: string;
       password: string;
       rejectUnauthorized: boolean;
-    }
+    } = { username: '', password: '', rejectUnauthorized: false }
   ) {}
 }
 
 @Component({
-  selector: "app-settings-menu",
-  templateUrl: "./settings-menu.component.html",
-  styleUrls: ["./settings-menu.component.css"],
+  selector: 'app-settings-menu',
+  templateUrl: './settings-menu.component.html',
+  styleUrls: ['./settings-menu.component.css'],
 })
 export class SettingsMenuComponent implements OnInit {
-  currentBroker: BrokerMQTT = {
-    name: "",
-    url: "",
-    options: { username: "", password: "", rejectUnauthorized: false },
-  };
   brokers: BrokerMQTT[] = [];
+  autoFocus: string = 'on';
+  currentlySelectedBroker: BrokerMQTT = new BrokerMQTT();
+  previousBroker: BrokerMQTT = new BrokerMQTT();
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -44,23 +42,50 @@ export class SettingsMenuComponent implements OnInit {
         this.brokers = data.mqtt_settings;
         for (let broker of this.brokers) {
           if (MQTT_SERVICE_OPTIONS.url == broker.url) {
-            this.currentBroker = broker;
+            this.previousBroker = broker;
+            this.currentlySelectedBroker = broker;
           }
         }
       });
+    let autoFocus = localStorage.getItem('autoFocus');
+    if (autoFocus == 'on' || autoFocus == null) {
+      this.autoFocus = 'on';
+      this.mqtt.autoFocusChanged.next('on');
+      localStorage.setItem('autoFocus', 'on');
+    }
+    if (autoFocus == 'off') {
+      this.autoFocus = 'off';
+      this.mqtt.autoFocusChanged.next('off');
+      localStorage.setItem('autoFocus', 'off');
+    }
   }
-  trackByFn(index: number) {
-    return index;
-  }
-  onSubmit(form: NgForm) {
-    let broker = form.value.broker;
-    this.mqtt.disconnectFromBroker();
-    console.log(
-      "Disconnected from previous broker, switching to " + broker.name + "..."
-    );
-    MQTT_SERVICE_OPTIONS.url = broker.url;
-    this.mqtt.connectToBroker(broker.options);
+  onSubmit() {
+    let broker = this.currentlySelectedBroker;
+    if (broker.name != this.previousBroker.name) {
+      this.mqtt.disconnectFromBroker();
+      console.log(
+        'Disconnected from previous broker, switching to ' + broker.name + '...'
+      );
+      MQTT_SERVICE_OPTIONS.url = broker.url;
+      this.mqtt.connectToBroker(broker.options);
+    } else {
+      console.log('No broker changes detected!');
+    }
+    if (this.autoFocus == 'on') {
+      this.mqtt.autoFocusChanged.next('on');
+      localStorage.setItem('autoFocus', 'on');
+    }
+    if (this.autoFocus == 'off') {
+      this.mqtt.autoFocusChanged.next('off');
+      localStorage.setItem('autoFocus', 'off');
+    }
     this.activeModal.close();
     return;
+  }
+  onCancel() {
+    this.activeModal.close();
+  }
+  onChangeFocus() {
+    console.log('Autofocus ' + this.autoFocus);
   }
 }

@@ -1,0 +1,159 @@
+{
+  "versions": [
+    { "version": "1.0.0", "description": "Demo Navya 2021" },
+    {
+      "version": "2.0.0",
+      "description": "Versione multitenant 2022 con layout rivisto"
+    },
+    { "version": "2.1.0", "description": "Aggiunta la funzione di ricerca" },
+    {
+      "version": "2.2.0",
+      "description": "Aggiunte le righe espandibili con info aggiuntive"
+    },
+    {
+      "version": "2.3.0",
+      "description": "Aggiunte le opzioni: cambio broker e auto-tracking"
+    },
+    {
+      "version": "2.4.0",
+      "description": "Aggiunta la possibilità di aggiungere dinamicamente veicoli speciali identificati tramite id"
+    },
+    {
+      "version": "2.5.0",
+      "description": "Aggiunto il tracking dello stato della connessione"
+    },
+    {
+      "version": "2.6.0",
+      "description": "Aggiunta la possibilità di identificare i messaggi da server centrale/i e gestirli autonomamente"
+    },
+    {
+      "version": "2.6.1",
+      "description": "fix feature precedente: i denm centralizzati sono identificati con originatingStationId+messageId"
+    },
+    { "version": "2.6.2", "description": "fix di style, nuove icone" },
+    {
+      "version": "2.7.0",
+      "description": "revisione del codice in funzione dello standard etsi"
+    },
+    {
+      "version": "2.8.0",
+      "description": "revisione del codice per corretto sfruttamento del campo vehicleRole (aggiunto ciclista)"
+    },
+    {
+      "version": "2.8.1",
+      "description": "ulteriori aggiunte al riconoscimento di vehicleRole e stationType, correzioni su alcune stringhe di info"
+    },
+    {
+      "version": "2.8.2",
+      "description": "implementate le icone di pompieri e bus, con tutti i meccanismi relativi"
+    },
+    {
+      "version": "2.8.3",
+      "description": "vari bugfix sulla implementazione precedente, aggiunti altri stationType"
+    },
+    {
+      "version": "2.8.4",
+      "description": "altri bugfix, modifica gestione DENM"
+    },
+    {
+      "version": "2.8.5",
+      "description": "display della versione corrente nella pagina di login"
+    },
+    {
+      "version": "2.8.6",
+      "description": "cambio icona categoria veicola, aggiunta icona per motocicli e ciclomotori"
+    },
+    {
+      "version": "2.8.7",
+      "description": "autopan fix, nuovo usecase: CCRW per HMI"
+    },
+    {
+      "version": "2.8.8",
+      "description": "nuovo tenant: C-Roads; preparativi per cambio gestione topic con tenant id"
+    },
+    {
+      "version": "2.8.9",
+      "description": "correzione icone categoria 'alert'; correzioni css; inserita conversione camelcase -> stringcase per use-case non pervenuti"
+    },
+    {
+      "version": "2.8.10",
+      "description": "bugfix etichetta veicoli speciali in tabella"
+    },
+    {
+      "version": "2.8.11",
+      "description": "durata eventi modificata in base al tipo, eliminato doppia riga in tabella denm marker"
+    },
+    {
+      "version": "2.8.12",
+      "description": "aggiustamenti durata e identificazione denm, modifica credenziali login tenant tim, nuove icone per denm, piccoli fix"
+    },
+    {
+      "version": "2.8.13",
+      "description": "fix icone rosse denm"
+    },
+    {
+      "version": "2.8.14",
+      "description": "filtro popup su selezione in tabella"
+    },
+    {
+      "version": "2.8.15",
+      "description": "modifica gestione DENM con filtro basato su topic, implemetazione sperimentale adapter c-roads"
+    },
+    {
+      "version": "2.9.0",
+      "description": "inserita funzionalità di inserimento MAPEM SPATEM"
+    },
+    {
+      "version": "2.9.1",
+      "description": "fix bug id DENM su c-roads"
+    },
+    {
+      "version": "2.10.0",
+      "description": "implementazione cambio topic con tenant id"
+    },
+    {
+      "version": "2.10.1",
+      "description": "patch gestione DENM Almaviva, correzione id Navetta Navya"
+    },
+    {
+      "version": "2.10.2",
+      "description": "update tempo di vita messaggi"
+    },
+    {
+      "version": "2.10.3",
+      "description": "update popup INF"
+    },
+    {
+      "version": "2.10.4",
+      "description": "update icona alert 'vehicle breakdown', fix inconsistenza aggiornamento mapem/spatem, cambio riga tabella id->categoria"
+    },
+    {
+      "version": "2.11.0",
+      "description": "aggiunta icona accident, implementazione lente dettagli in tabella, aggiunta campo publisherLabel"
+    },
+    {
+      "version": "2.11.1",
+      "description": "implementazione di prova IVIM AMQP"
+    },
+    {
+      "version": "2.11.2",
+      "description": "nuova icona per alert traffico, aggiunti use case per alert con icone specializzate"
+    },
+    {
+      "version": "2.11.3",
+      "description": "aggiunti ulteriori usecase, originatingStationId label per i denm"
+    },
+    {
+      "version": "2.11.4",
+      "description": "fix libreria traduzione causeCode/subcauseCode per messaggi denm AMQP"
+    },
+    {
+      "version": "2.11.5",
+      "description": "fix topic DENM AMQP"
+    },
+    {
+      "version": "2.12.0",
+      "description": "implementato mapping publisherID -> publisherName su file esterno"
+    }
+  ]
+}

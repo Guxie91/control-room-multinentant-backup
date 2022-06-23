@@ -1,6 +1,6 @@
 export class DENMMessage {
   constructor(
-    public stationID: string,
+    public stationID: number,
     public causeCode: string,
     public subCauseCode: string,
     public description:string,

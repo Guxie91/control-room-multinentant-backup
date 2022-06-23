@@ -1,0 +1,80 @@
+{
+  "tenants": [
+    {
+      "id": "0",
+      "name": "tim",
+      "api_key": "bc77b7a056186e0b804d359c45b90b6f:e0a46d9efb822ce6b9027991c3a83a5d",
+      "coordinates": [41.96197018263711, 12.46440905663906],
+      "zoom": 6,
+      "title": "Control Room C-V2X",
+      "footerText": "©2021 Service Innovation",
+      "color": "#0033a1",
+      "categories": [
+        "Lavori in corso",
+        "Avvisi",
+        "Semafori",
+        "Meteo",
+        "Traffico",
+        "Pericoli"
+      ],
+      "topics": ["its/#", "dashboard/#", "json/#"]
+    },
+    {
+      "id": "2",
+      "name": "genova",
+      "api_key": "4fa9fb05c7aafdfbd315eca23074d929:c41d5443e860087e8484bb4ac356cd98",
+      "coordinates": [44.40233147421894, 8.946791963838923],
+      "zoom": 10,
+      "title": "Città Metropolitana di Genova - Control Room C-V2X",
+      "footerText": "",
+      "color": "rgb(146, 27, 43)",
+      "categories": [
+        "Ordinanze",
+        "Pannelli a messaggio variabile",
+        "Semafori",
+        "Sensori Meteo",
+        "Sensori Traffico",
+        "Pericoli"
+      ],
+      "topics": ["dashboard/#", "json/#", "its/2/#"]
+    },
+    {
+      "id": "4",
+      "name": "navya",
+      "api_key": "789",
+      "coordinates": [41.96197018263711, 12.46440905663906],
+      "zoom": 18,
+      "title": "Control Room C-V2X",
+      "footerText": "©2021 Service Innovation",
+      "color": "#0033a1",
+      "categories": [
+        "Lavori in corso",
+        "Avvisi",
+        "Semafori",
+        "Meteo",
+        "Traffico",
+        "Pericoli"
+      ],
+      "topics": ["dashboard/#", "json/#", "its/4/#"]
+    },
+    {
+      "id": "5",
+      "name": "c-roads",
+      "api_key": "",
+      "coordinates": [44.40233147421894, 8.946791963838923],
+      "zoom": 3,
+      "title": "Control Room C-V2X",
+      "footerText": "©2021 Service Innovation",
+      "color": "#50737f",
+      "categories": [
+        "Lavori in corso",
+        "Avvisi",
+        "Semafori",
+        "Meteo",
+        "Traffico",
+        "Pericoli"
+      ],
+      "topics": ["dashboard/#", "json/#", "its/5/#"]
+    }
+  ]
+}

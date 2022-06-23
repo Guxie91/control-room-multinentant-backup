@@ -1,6 +1,6 @@
 export class CustomMessage {
   constructor(
-    public stationId: string,
+    public stationId: number,
     public popup: string,
     public status: string
   ) {}

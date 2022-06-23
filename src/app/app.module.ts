@@ -18,6 +18,8 @@ import { MQTT_SERVICE_OPTIONS } from "./utilities/mqtt-service-options";
 import { EventIconComponent } from './control-room/event-icon/event-icon.component';
 import { LoadingSpinnerComponent } from './utilities/loading-spinner/loading-spinner.component';
 import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
+import { EventDetailsComponent } from './control-room/event-details/event-details.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
     EventIconComponent,
     LoadingSpinnerComponent,
     SettingsMenuComponent,
+    EventDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +42,7 @@ import { SettingsMenuComponent } from './settings-menu/settings-menu.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxJsonViewerModule,
     HttpClientModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
   ],

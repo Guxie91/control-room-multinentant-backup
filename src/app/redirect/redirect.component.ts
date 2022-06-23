@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { take } from "rxjs/operators";
 import { Tenant } from "../models/tenant.model";
 import { HttpHandlerService } from "../services/http-handler.service";
+import { TenantHandlerService } from "../services/tenant-handler.service";
 
 @Component({
   selector: "app-redirect",
@@ -10,7 +11,10 @@ import { HttpHandlerService } from "../services/http-handler.service";
 })
 export class RedirectComponent implements OnInit {
   tenants: Tenant[] = [];
-  constructor(private http: HttpHandlerService) {}
+  constructor(
+    private http: HttpHandlerService,
+    private tenantHandler: TenantHandlerService
+  ) {}
 
   ngOnInit(): void {
     this.http
@@ -18,6 +22,12 @@ export class RedirectComponent implements OnInit {
       .pipe(take(1))
       .subscribe((result) => {
         this.tenants = result.tenants;
+        if (this.tenants.length < 9) {
+          while (this.tenants.length < 9) {
+            this.tenants.push(new Tenant());
+          }
+        }
       });
+      this.tenantHandler.handleTenant("tim");
   }
 }

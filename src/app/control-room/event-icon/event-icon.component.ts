@@ -1,4 +1,3 @@
-import { ThisReceiver } from "@angular/compiler";
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DENMMessage } from "src/app/models/DENMMessage.model";
@@ -22,9 +21,7 @@ export class EventIconComponent implements OnInit, OnDestroy {
     let DENMMessageSub = this.mqtt.newDENMMessage.subscribe(
       (message: DENMMessage) => {
         if (message.stationID == this.event.id) {
-          if (message.causeCode == "95" && message.subCauseCode == "1") {
-            this.red = true;
-          }
+          this.red = true;
           for (let denm of this.event.denms) {
             if (
               message.causeCode == denm.causeCode &&
@@ -41,7 +38,7 @@ export class EventIconComponent implements OnInit, OnDestroy {
     this.subscriptions.push(DENMMessageSub);
     let DENMExpiredSub = this.mqtt.DENMExpired.subscribe(
       (message: DENMMessage) => {
-        if(message.stationID == this.event.id){
+        if (message.stationID == this.event.id) {
           this.red = false;
         }
       }
@@ -50,13 +47,18 @@ export class EventIconComponent implements OnInit, OnDestroy {
     if (
       this.event.category != "roadworks" &&
       this.event.category != "weather" &&
+      this.event.category != "traffic_lights" &&
       this.event.category != "info" &&
       this.event.category != "traffic" &&
       this.event.category != "pedestrians" &&
       this.event.category != "cars" &&
-      this.event.category != "emergency"
+      this.event.category != "emergency" &&
+      this.event.category != "alert"
     ) {
       this.unknown = true;
+    }
+    if (this.event.highlight == true) {
+      this.red = true;
     }
   }
   ngOnDestroy(): void {

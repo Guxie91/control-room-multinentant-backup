@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Tenant } from "../models/tenant.model";
 import { MqttSettings } from "../models/mqtt-settings";
-import { take } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +15,7 @@ export class HttpHandlerService {
   }
   fetchTenants() {
     return this.http.get<{ tenants: Tenant[] }>(
-      "./assets/settings.json?t=" + new Date().getTime()
+      "./assets/tenants.json?t=" + new Date().getTime()
     );
   }
   fetchMqttOptions() {
@@ -35,7 +34,27 @@ export class HttpHandlerService {
   }
   fetchLabels() {
     return this.http.get<{ tenants: Tenant[] }>(
-      "./assets/settings.json?t=" + new Date().getTime()
+      "./assets/tenants.json?t=" + new Date().getTime()
     );
+  }
+  fetchSpecialVehicles(){
+    return this.http.get<{special_ids:number[], names:string[]}>(
+      "./assets/special-vehicles/vehicles-list.json?t=" + new Date().getTime()
+    );
+  }
+  fetchServersIds(){
+    return this.http.get<{serversIDs:number[]}>(
+      "./assets/cv2x-servers.json?t=" + new Date().getTime()
+    );
+  }
+  fetchVersions() {
+    return this.http.get<{
+      versions: { version: string; description: string }[];
+    }>("./assets/versions.json?t=" + new Date().getTime());
+  }
+  fetchPublishers() {
+    return this.http.get<{
+      publishers: { name: string; code: string }[];
+    }>("./assets/publishersMap.json?t=" + new Date().getTime());
   }
 }

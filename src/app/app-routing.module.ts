@@ -7,7 +7,7 @@ import { RedirectComponent } from "./redirect/redirect.component";
 import { AuthGuardService } from "./services/auth-guard.service";
 
 const routes: Routes = [
-  { path: "", pathMatch: "full", component: RedirectComponent },
+  { path: "", pathMatch: "full", redirectTo: "redirect" },
   { path: ":tenant/login", component: LoginComponent },
   {
     path: ":tenant/control-room",
@@ -15,7 +15,8 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   { path: "logout", component: LogoutComponent },
-  { path: "**", redirectTo: "" },
+  { path: "redirect", component: RedirectComponent },
+  { path: "**", redirectTo: "redirect" },
 ];
 
 @NgModule({

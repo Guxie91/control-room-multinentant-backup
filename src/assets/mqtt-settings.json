@@ -13,8 +13,8 @@
       "name": "ITS",
       "url": "wss://smart-roads.tilab.com/ws/",
       "options": {
-        "username": "test",
-        "password": "test",
+        "username": "cr_cv2x_client",
+        "password": "90f42da9f103",
         "rejectUnauthorized": false
       }
     }

@@ -67,6 +67,10 @@ td {
   bottom: 0;
 }
 
+.footerHud{
+  margin-left: 210px !important;
+}
+
 .leftalignment {
   text-align: left !important;
 }

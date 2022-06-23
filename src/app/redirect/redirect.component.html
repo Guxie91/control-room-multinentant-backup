@@ -1,10 +1,18 @@
-<div style="text-align:center; margin-top: 50px;">
-  <h2>Tenant disponibili</h2>
-  <div *ngFor="let tenant of tenants">
-    <a [routerLink]="['/',tenant.name,'login']">
-      <span class="eventLabel">{{tenant.name.toUpperCase()}}</span>
-    </a>
-    <br />
+<div class="tenantContainer">
+  <div style="text-align:center; margin-top: 50px;">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let tenant of tenants">
+        <a [routerLink]="['/',tenant.name,'login']">
+          <div class="card tenantCard" [ngClass]="{'obscuredTenant': tenant.name === 'default'}">
+            <div [style.background-color]="tenant.color" class="cardImgSpace">
+              <img class="cardImg" [src]='"./assets/" + tenant.name + "/img/card.png"' />
+            </div>
+            <div class="card-body tenantName" [style.background-color]="tenant.color">
+              <span class="headerLabel">{{tenant.name=="default"?"":tenant.name.toUpperCase()}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
-

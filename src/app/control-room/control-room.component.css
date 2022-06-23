@@ -83,9 +83,25 @@ table{
 }
 .searchLens {
   width: 25px;
+  margin-right: 10px;
+}
+.searchLensDetails{
+  width: 20px;
+  margin: 0px;
+  padding: 0px;
+}
+.searchLensDetails:hover{
+  cursor: pointer;
+  opacity: 40%;
 }
 .popup{
   font-weight: bold;
   font-family: "TIMSansWeb-Regular";
   color: blue;
+}
+.tagCell{
+  width: 80px;
+}
+.subFilterVehicleImg{
+  height: 40px;
 }

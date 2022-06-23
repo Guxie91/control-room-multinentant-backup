@@ -24,6 +24,7 @@
     "bootstrap": "^4.5.0",
     "leaflet": "^1.7.1",
     "leaflet.tilelayer.colorfilter": "^1.2.5",
+    "ngx-json-viewer": "^3.0.2",
     "ngx-mqtt": "^9.0.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
