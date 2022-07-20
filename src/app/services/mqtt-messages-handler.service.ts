@@ -452,7 +452,7 @@ export class MqttMessagesHandlerService {
     if (+tenantId == 2) {
       return 'Città Metropolitana di Genova';
     }
-    if (+tenantId == 4) {
+    if (+tenantId == 4 || +tenantId == 1) {
       return 'TIM Innovation Lab';
     }
     if (+tenantId == 5) {

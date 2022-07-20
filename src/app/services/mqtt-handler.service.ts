@@ -293,10 +293,10 @@ export class MqttHandlerService {
       if (event.id == etsiMessage.id) {
         event.timestamp = etsiMessage.timestamp;
         event.coordinates = etsiMessage.coordinates;
-
+        event.originalPayload = etsiMessage.originalPayload;
         if (event.type != 'cam') {
           event.info = etsiMessage.info;
-          event.originalPayload = etsiMessage.originalPayload;
+
           if (etsiMessage.type == 'SPATEM' || etsiMessage.type == 'MAPEM') {
             event.type = etsiMessage.type;
           }

@@ -154,6 +154,10 @@
     {
       "version": "2.12.0",
       "description": "implementato mapping publisherID -> publisherName su file esterno"
+    },
+    {
+      "version": "2.12.1",
+      "description": "fix apikey, fix minori codice"
     }
   ]
 }

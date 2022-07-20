@@ -3,7 +3,7 @@
     {
       "id": "0",
       "name": "tim",
-      "api_key": "bc77b7a056186e0b804d359c45b90b6f:e0a46d9efb822ce6b9027991c3a83a5d",
+      "api_key": "0",
       "coordinates": [41.96197018263711, 12.46440905663906],
       "zoom": 6,
       "title": "Control Room C-V2X",
@@ -22,7 +22,7 @@
     {
       "id": "2",
       "name": "genova",
-      "api_key": "4fa9fb05c7aafdfbd315eca23074d929:c41d5443e860087e8484bb4ac356cd98",
+      "api_key": "0",
       "coordinates": [44.40233147421894, 8.946791963838923],
       "zoom": 10,
       "title": "Città Metropolitana di Genova - Control Room C-V2X",
@@ -41,7 +41,7 @@
     {
       "id": "4",
       "name": "navya",
-      "api_key": "789",
+      "api_key": "0",
       "coordinates": [41.96197018263711, 12.46440905663906],
       "zoom": 18,
       "title": "Control Room C-V2X",
@@ -60,7 +60,7 @@
     {
       "id": "5",
       "name": "c-roads",
-      "api_key": "",
+      "api_key": "0",
       "coordinates": [44.40233147421894, 8.946791963838923],
       "zoom": 3,
       "title": "Control Room C-V2X",
