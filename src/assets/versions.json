@@ -158,7 +158,7 @@
     {
       "version": "2.12.1",
       "description": "fix apikey, fix minori codice"
-    }{
+    },{
       "version": "2.13.0",
       "description": "implementazione disegno quadkeys, tracciamento topic/quadkeys"
     }
