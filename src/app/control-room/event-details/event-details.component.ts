@@ -15,5 +15,6 @@ export class EventDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.payloadJSON = JSON.parse(this.event.originalPayload);
+    this.event.topics = [...new Set(this.event.topics)];
   }
 }

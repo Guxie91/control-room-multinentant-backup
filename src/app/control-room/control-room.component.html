@@ -59,6 +59,10 @@
                 </span>
               </td>
               <td nowrap>
+                <span class="eventLabel" style="text-overflow: ellipsis; margin: 0 auto;" *ngIf="event.quadkeys.length>0 && event.type!='cam'">
+                  <img (click)="drawQuadkeys(event)" class="searchLensDetails" src="./assets/img/Grid.png"
+                    alt="more" />
+                </span>
                 <span class="eventLabel" style="text-overflow: ellipsis; margin: 0 auto;">
                   <img (click)="openDetails(event)" class="searchLensDetails" src="./assets/img/src/View.png"
                     alt="more" />

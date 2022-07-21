@@ -100,7 +100,7 @@ export class MqttMessagesHandlerService {
       'ivim',
       id,
       info,
-      topic,
+      [topic],
       quadkeyArr,
       new LatLng(latitude, longitude),
       new Date(),
@@ -217,8 +217,8 @@ export class MqttMessagesHandlerService {
       'cam',
       id,
       info,
-      topic,
-      quadkeyArr,
+      [topic],
+      [],
       new LatLng(latitude, longitude),
       new Date(),
       false,
@@ -239,7 +239,7 @@ export class MqttMessagesHandlerService {
       'unknown',
       -1,
       message,
-      topic,
+      [topic],
       quadkeyArr,
       new LatLng(0, 0),
       new Date(),
@@ -294,7 +294,7 @@ export class MqttMessagesHandlerService {
       'denm',
       id,
       info,
-      decodedMessage.topic,
+      [decodedMessage.topic],
       decodedMessage.quadkeyArr,
       new LatLng(latitude, longitude),
       new Date(),
@@ -328,13 +328,24 @@ export class MqttMessagesHandlerService {
       topic.split('/')[1],
       publisherId
     );
+    let quadTree = payload.quadTree.split(',');
+    if(quadTree[0] == ""){
+      quadTree.splice(0,1);
+    }
+    for (let quad of quadTree) {
+      if (quad == "") {
+        quadTree.splice(quad.indexOf(), 1);
+      } else {
+        quad.replaceAll(',', '');
+      }
+    }
     let newMessage = new EtsiMessage(
       'traffic_lights',
       messageType,
       id,
       info,
-      topic,
-      [],
+      [topic],
+      quadTree,
       new LatLng(latitude, longitude),
       new Date(),
       false,
@@ -358,13 +369,24 @@ export class MqttMessagesHandlerService {
       topic.split('/')[1],
       publisherId
     );
+    let quadTree = payloadJSON.quadTree.split(',');
+    if(quadTree[0] == ""){
+      quadTree.splice(0,1);
+    }
+    for (let quad of quadTree) {
+      if (quad == "") {
+        quadTree.splice(quad.indexOf(), 1);
+      } else {
+        quad.replaceAll(',', '');
+      }
+    }
     let newMessage = new EtsiMessage(
       'info',
       'ivim',
       id,
       info,
-      topic,
-      [payloadJSON.quadTree],
+      [topic],
+      quadTree,
       new LatLng(latitude, longitude),
       new Date(),
       false,
@@ -411,13 +433,24 @@ export class MqttMessagesHandlerService {
       topic.split('/')[1],
       publisherId
     );
+    let quadTree = payloadJSON.quadTree.split(',');
+    if(quadTree[0] == ""){
+      quadTree.splice(0,1);
+    }
+    for (let quad of quadTree) {
+      if (quad == "") {
+        quadTree.splice(quad.indexOf(), 1);
+      } else {
+        quad.replaceAll(',', '');
+      }
+    }
     let newMessage = new EtsiMessage(
       topic.split('/')[2],
       'denm',
       id,
       info,
-      topic,
-      [payloadJSON.quadTree],
+      [topic],
+      quadTree,
       new LatLng(latitude, longitude),
       new Date(),
       false,
@@ -433,11 +466,10 @@ export class MqttMessagesHandlerService {
   }
   extractMessage(message: IMqttMessage) {
     //disassemble topic
-    //topic switch +1
     let topicData = message.topic.split('/');
     //collect quadkeys or other topic elements
     let quadkey = '';
-    for (let i = 2; i < topicData.length; i++) {
+    for (let i = 3; i < topicData.length; i++) {
       quadkey += topicData[i];
     }
     const quadkeyArr = [quadkey];

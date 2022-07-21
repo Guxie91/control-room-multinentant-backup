@@ -34,6 +34,8 @@ import {
   WeatherIcon,
 } from '../utilities/marker-icons';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { TenantHandlerService } from '../services/tenant-handler.service';
+declare var Quadkey: any;
 
 @Component({
   selector: 'app-control-room',
@@ -114,12 +116,15 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   autoFocus = 'on';
   specialVehiclesIDs: number[] = [];
   specialVehiclesNames: string[] = [];
+  gridLayer = L.layerGroup();
+  gridIsOn = false;
   /* ************************************** */
   constructor(
     private mqtt: MqttHandlerService,
     private http: HttpHandlerService,
     private codeHandler: CodeHandlerService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private tenantService: TenantHandlerService
   ) {}
   ngOnDestroy(): void {
     this.map.removeLayer(OPEN_STREET_MAP);
@@ -263,11 +268,19 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
   createOrUpdateMarker(etsiMessage: EtsiMessage) {
     //if marker for that id exists, check for update
     for (let mark of this.markers) {
-      if (
-        etsiMessage.id == mark.messageId &&
-        etsiMessage.type == mark.type &&
-        etsiMessage.topic == mark.topic
-      ) {
+      if (etsiMessage.id == mark.messageId && etsiMessage.type == mark.type) {
+        //handle list of topics
+        let foundTopic = false;
+        for (let topic of mark.topics) {
+          if (etsiMessage.topics[0] == topic) {
+            foundTopic = true;
+            break;
+          }
+        }
+        if (foundTopic == false) {
+          mark.topics.push(etsiMessage.topics[0]);
+        }
+        mark.topics = [...new Set(mark.topics)];
         //update coordinates
         mark.marker.setLatLng({
           lat: etsiMessage.coordinates.lat,
@@ -420,7 +433,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     let mark = new MarkerBundle(
       etsiMessage.id,
       newMarker,
-      etsiMessage.topic,
+      etsiMessage.topics,
       etsiMessage.type
     );
     this.markers.push(mark);
@@ -430,6 +443,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   onFocus(id: number) {
+    this.clearGrid();
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = -1;
       for (let mark of this.markers) {
@@ -469,6 +483,7 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   onMarkerClicked(id: number) {
+    this.clearGrid();
     if (this.lastSelectedEvent == id) {
       this.lastSelectedEvent = -1;
     } else {
@@ -688,11 +703,53 @@ export class ControlRoomComponent implements OnInit, OnDestroy, AfterViewInit {
     return info;
   }
   openDetails(event: EtsiMessage) {
+    this.clearGrid();
     const detailsPopup = this.modalService.open(EventDetailsComponent, {
       centered: true,
       scrollable: true,
-      size: 'lg'
+      size: 'lg',
     });
     detailsPopup.componentInstance.event = event;
+  }
+  drawQuadkeys(selected:EtsiMessage){
+    if(!this.gridIsOn){
+      this.displaySelectedGrid(selected);
+    }else{
+      this.clearGrid();
+    }
+  }
+  private displaySelectedGrid(selected:EtsiMessage) {
+    this.gridLayer = L.layerGroup();
+    if (this.lastSelectedEvent < 0 || selected.id != this.lastSelectedEvent) {
+      return;
+    }
+    let quadkeys = selected.quadkeys;
+    quadkeys.forEach((quadkey) => {
+      this.drawQuad(quadkey, this.tenantService.getCurrentTenant().color);
+    });
+    this.map.addLayer(this.gridLayer);
+    this.gridIsOn = true;
+  }
+  private drawQuad(_key: string, _color: string) {
+    var bbox = Quadkey.bbox(_key);
+    var bounds = L.latLngBounds([
+      [bbox.min.lat, bbox.min.lng],
+      [bbox.max.lat, bbox.max.lng],
+    ]);
+    L.rectangle(bounds, { color: _color, weight: 1 }).addTo(this.gridLayer);
+    // disegna punto centrale
+    var pos = Quadkey.origin(_key);
+    L.circle([pos.lat, pos.lng], {
+      color: _color,
+      fillColor: _color,
+      fillOpacity: 0.5,
+      radius: 2,
+    })
+      .addTo(this.gridLayer)
+      .bindPopup("latLng: " + JSON.stringify(pos));
+  }
+  private clearGrid() {
+    this.gridLayer.removeFrom(this.map);
+    this.gridIsOn = false;
   }
 }

@@ -7,7 +7,7 @@ export class EtsiMessage{
     public type:string,
     public id:number,
     public info:string,
-    public topic:string,
+    public topics:string[] = [],
     public quadkeys:string[],
     public coordinates:LatLng,
     public timestamp: Date,

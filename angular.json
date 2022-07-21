@@ -33,7 +33,8 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/js/denm.js"
+              "src/assets/js/denm.js",
+              "src/assets/js/quadkeys.js"
             ]
           },
           "configurations": {
