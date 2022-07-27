@@ -161,6 +161,9 @@
     },{
       "version": "2.13.0",
       "description": "implementazione disegno quadkeys, tracciamento topic/quadkeys"
+    },{
+      "version": "2.13.1",
+      "description": "update tabella publishers"
     }
   ]
 }
